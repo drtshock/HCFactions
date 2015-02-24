@@ -15,6 +15,7 @@ import org.bukkit.Location;
 
 public class CmdShow extends FCommand {
 
+    private DecimalFormat dc = new DecimalFormat("#.##");   
     public CmdShow() {
         this.aliases.add("show");
         this.aliases.add("who");
@@ -61,13 +62,16 @@ public class CmdShow extends FCommand {
         msg(TL.COMMAND_SHOW_JOINING.toString() + peaceStatus, (faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString()));
 
         double powerBoost = faction.getPowerBoost();
-        String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? TL.COMMAND_SHOW_BONUS.toString() : TL.COMMAND_SHOW_PENALTY.toString() + powerBoost + ")");
-        String raidable = faction.isRaidable() ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
-        msg(TL.COMMAND_SHOW_POWER, faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost, raidable);
+        String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? TL.COMMAND_SHOW_BONUS.toString() + powerBoost + ")" : TL.COMMAND_SHOW_PENALTY.toString() + powerBoost + ")");
+        
+        msg(TL.COMMAND_SHOW_POWER, faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
 
         if (P.p.getConfig().getBoolean("hcf.dtr.enabled", false)) {
-            DecimalFormat dc = new DecimalFormat("#.##");        
-            msg(TL.COMMAND_SHOW_DEATHS_TIL_RAIDABLE, dc.format(faction.getDTR()).toString(), dc.format(faction.getMaxDTR()).toString());
+            fme.updateDTR();
+            String raidable = faction.isRaidable() ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
+            String dtr = dc.format(faction.getDTR()).toString();
+            String maxDtr = dc.format(faction.getMaxDTR()).toString();
+            msg(TL.COMMAND_SHOW_DEATHS_TIL_RAIDABLE, dtr, maxDtr, raidable);
             if(faction.hasHome()) {
                 Location home = faction.getHome();
                 msg(TL.COMMAND_SHOW_DTR_HOME_SET, home.getBlockX(), home.getBlockY(), home.getBlockZ());
@@ -75,7 +79,8 @@ public class CmdShow extends FCommand {
                 msg(TL.COMMAND_SHOW_DTR_HOME_UNSET);
             }
             if(faction.isDTRFrozen()) {
-                String time = DurationFormatUtils.formatDuration(faction.getFreezeLeft()*1000, "H:mm:ss", true);
+                long left = faction.getFreezeLeft();
+                String time = DurationFormatUtils.formatDuration(left, "mm:ss", true);
                 msg(TL.COMMAND_SHOW_DTR_FROZEN, time);
             }
         }

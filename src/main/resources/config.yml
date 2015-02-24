@@ -177,13 +177,11 @@ world-border:
   buffer: 0
   
 # Raids
-# Allow a faction to be raided if they have more land than power.
+# Allow a faction to be raided if their DTR is <= 0 
 # This will make claimed territory lose all protections
 #   allowing factions to open chests, break blocks, etc. if they
 #   have claimed chunks >= power.
 hcf:
-  raidable: false
-
   # DTR (death til raidable) will be in /f show if enabled. Configure the message in the lang.yml
   # When DTR is below 0, the faction is considered raidable
   # DTR is the sum of all faction member's DTR value, or MaxFactionDTR if it's larger

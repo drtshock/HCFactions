@@ -548,6 +548,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void alterDTR(double delta) {
+        this.dtr += delta;
         Faction faction = this.getFaction();
         double fdt = faction.getDTR();
         fdt += delta;

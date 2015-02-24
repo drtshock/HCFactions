@@ -268,9 +268,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public long getFreezeLeft() {
         if (isDTRFrozen()) {
             int freezeSeconds = P.p.getConfig().getInt("hcf.dtr.dtr-freeze", 0);
-            Date date = new Date(lastDeath);
-            date.setTime(date.getTime() + freezeSeconds * 1000);
-            return date.getTime();
+            return freezeSeconds * 1000 - (System.currentTimeMillis() - lastDeath);
         }
         return 0;
     }
@@ -469,21 +467,18 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     // -------------------------------
     
     public double getDTR() {
-        this.updateDTR();
         return dtr;
     }
     
     public void updateDTR() {
-        this.dtr = 0;
         for (FPlayer fplayer : fplayers) {
             dtr += fplayer.getDTR();
         }
         double max = P.p.getConfig().getDouble("hcf.dtr.max-faction-dtr", 6.0);
-        double min = P.p.getConfig().getDouble("hcf.dtr.min-faction-dtr", -6.0);
         if(max > 0 && dtr > max) {
             dtr = max;
-        } else if(min < 0 && dtr < min) {
-            dtr = min;
+        } else if(getMinDTR() < 0 && dtr < getMinDTR()) {
+            dtr = getMinDTR();
         }
     }
     
@@ -493,11 +488,10 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             ret += fplayer.getMaxDTR();
         }
         double max = P.p.getConfig().getDouble("hcf.dtr.max-faction-dtr", 6.0);
-        double min = P.p.getConfig().getDouble("hcf.dtr.min-faction-dtr", -6.0);
         if(max > 0 && ret > max) {
             ret = max;
-        } else if(min < 0 && ret < min) {
-            ret = min;
+        } else if(getMinDTR() < 0 && ret < getMinDTR()) {
+            ret = getMinDTR();
         }
         return ret; 
     }

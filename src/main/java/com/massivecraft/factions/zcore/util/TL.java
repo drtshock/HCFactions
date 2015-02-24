@@ -435,7 +435,7 @@ public enum TL {
     COMMAND_SHOW_JOINING("<a>Joining: <i>%1$s "),
     COMMAND_SHOW_INVITATION("invitation is required"),
     COMMAND_SHOW_UNINVITED("no invitation is needed"),
-    COMMAND_SHOW_POWER("<a>Land / Power / Maxpower: <i> %1$d/%2$d/%3$d %4$s. <a>Raidable: <i>%5$s"),
+    COMMAND_SHOW_POWER("<a>Land / Power / Maxpower: <i> %1$d/%2$d/%3$d %4$s"),
     COMMAND_SHOW_BONUS(" (bonus: "),
     COMMAND_SHOW_PENALTY(" (penalty: "),
     COMMAND_SHOW_DEPRECIATED("(%1$s depreciated)"), //This is spelled correctly.
@@ -446,10 +446,10 @@ public enum TL {
     COMMAND_SHOW_MEMBERSONLINE("Members online: "),
     COMMAND_SHOW_MEMBERSOFFLINE("Members offline: "),
     COMMAND_SHOW_COMMANDDESCRIPTION("Show faction information"),
-    COMMAND_SHOW_DTR_HOME_SET("<i>Faction Home: %1$s, %2$s, %3$s"),
-    COMMAND_SHOW_DTR_HOME_UNSET("<i>Faction Home: Not set"),
+    COMMAND_SHOW_DTR_HOME_SET("<a>Faction Home: <i>%1$s, %2$s, %3$s"),
+    COMMAND_SHOW_DTR_HOME_UNSET("<a>Faction Home: <i>Not set"),
     COMMAND_SHOW_DTR_FROZEN("<a>DTR Freeze: <i>%s"),
-    COMMAND_SHOW_DEATHS_TIL_RAIDABLE("<a>DTR: <i>%1$s/%2$s"),
+    COMMAND_SHOW_DEATHS_TIL_RAIDABLE("<a>DTR: <i>%1$s / %2$s <a>Raidable: <i>(%3$s)"),
 
     COMMAND_SHOWINVITES_PENDING("Players with pending invites: "),
     COMMAND_SHOWINVITES_CLICKTOREVOKE("Click to revoke invite for %1$s"),

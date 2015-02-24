@@ -174,6 +174,8 @@ public interface Faction extends EconomyParticipator {
     
     public void setDTR(double dtr);
     
+    public void updateDTR();
+    
     // -------------------------------
     // FPlayers
     // -------------------------------
