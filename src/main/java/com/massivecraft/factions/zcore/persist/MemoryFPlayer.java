@@ -50,6 +50,9 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     // FIELD: power
     protected double power;
+    
+    // FIELD: dtr
+    protected double dtr;
 
     // FIELD: powerBoost
     // special increase/decrease to min and max power for this player
@@ -57,6 +60,9 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     // FIELD: lastPowerUpdateTime
     protected long lastPowerUpdateTime;
+    
+    // FIELD: lastDtrUpdateTime
+    protected long lastDtrUpdateTime;
 
     // FIELD: lastLoginTime
     protected long lastLoginTime;
@@ -521,7 +527,54 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.alterPower(-Conf.powerPerDeath);
         if (hasFaction()) {
             getFaction().setLastDeath(System.currentTimeMillis());
+            // Only update DTR if player is in a faction
+            if(P.p.getConfig().getBoolean("hcf.dtr.enabled", false)) {
+                this.updateDTR();
+                this.alterDTR(-P.p.getConfig().getDouble("hcf.dtr.DeathDTR", 1)); 
+            }           
+        }        
+    }
+
+    // ----------------------------------------------//
+    // DTR
+    // ----------------------------------------------//
+    public double getDTR() {
+        return this.dtr;
+    }
+
+    public void alterDTR(double delta) {
+        this.dtr += delta;
+        if (this.dtr > this.getMaxDTR()) {
+            this.dtr = this.getMaxDTR();
+        } else if (this.dtr < this.getMinDTR()) {
+            this.dtr = this.getMinDTR();
         }
+    }
+
+    public void updateDTR() {
+        if (this.isOffline() || (hasFaction() && getFaction().isPowerFrozen())) {
+            return; // Don't let dtr regen if faction dtr is frozen or player offline.
+        }
+        long now = System.currentTimeMillis();
+        long millisPassed = now - this.lastDtrUpdateTime;
+        this.lastDtrUpdateTime = now;
+
+        Player thisPlayer = this.getPlayer();
+        if (thisPlayer != null && thisPlayer.isDead()) {
+            return;  // don't let dead players regain power until they respawn
+        }
+
+        int millisPerMinute = 60 * 1000;
+        double deltaDTr = P.p.getConfig().getDouble("hcf.dtr.MinuteDTR", 0.01);
+        this.alterDTR(millisPassed * deltaDTr / millisPerMinute);
+    }
+
+    public double getMaxDTR() {
+        return P.p.getConfig().getDouble("hcf.dtr.MaxPlayerTDR", 0.6);
+    }
+
+    public double getMinDTR() {
+        return P.p.getConfig().getDouble("hcf.dtr.MinPlayerTDR", -1.0);
     }
 
     //----------------------------------------------//
