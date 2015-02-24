@@ -225,6 +225,8 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.id = id;
         this.resetFactionData(false);
         this.power = Conf.powerPlayerStarting;
+        // Set initial dtr to MinuteDTR, so faction doesn't initialize raidable
+        this.dtr = P.p.getConfig().getDouble("hcf.dtr.MinuteDTR", 0.01);
         this.lastPowerUpdateTime = System.currentTimeMillis();
         this.lastLoginTime = System.currentTimeMillis();
         this.mapAutoUpdating = false;
@@ -243,6 +245,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.factionId = other.factionId;
         this.id = other.id;
         this.power = other.power;
+        this.dtr = other.dtr;
         this.lastLoginTime = other.lastLoginTime;
         this.mapAutoUpdating = other.mapAutoUpdating;
         this.autoClaimFor = other.autoClaimFor;
