@@ -192,23 +192,4 @@ public class TextUtil {
         }
         return ret;
     }
-    
-    public static String toFancyTime(long seconds) {
-        if (seconds <= 0) {
-            return "0 seconds";
-        }
-        StringBuilder time = new StringBuilder();
-        int hours = (int) ((seconds * 60 * 60) % 24);
-        if (hours > 0) {
-            time.append(hours).append(" hour").append(hours > 1 ? "s" : "");
-        }
-        int minutes = (int) ((seconds * 60) % 60);
-        if (minutes > 0) {
-            if (hours > 0) {
-                time.append(", ");
-            }
-            time.append(minutes).append(" minute").append(minutes > 1 ? "s" : "");
-        }
-        return time.toString();
-    }
 }
