@@ -264,6 +264,16 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         }
         return System.currentTimeMillis() - lastDeath < freezeSeconds * 1000; 
     }
+    
+    public long getFreezeLeft() {
+        if (isDTRFrozen()) {
+            int freezeSeconds = P.p.getConfig().getInt("hcf.dtr.DTRFreeze", 0);
+            Date date = new Date(lastDeath);
+            date.setTime(date.getTime() + freezeSeconds * 1000);
+            return date.getTime();
+        }
+        return 0;
+    }
 
     public void setLastDeath(long time) {
         this.lastDeath = time;

@@ -168,6 +168,8 @@ public interface Faction extends EconomyParticipator {
     
     public boolean isRaidable();
     
+    public long getFreezeLeft();
+    
     // -------------------------------
     // FPlayers
     // -------------------------------
