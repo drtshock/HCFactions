@@ -185,7 +185,23 @@ hcf:
   raidable: false
 
   # DTR (death til raidable) will be in /f show if enabled. Configure the message in the lang.yml
-  dtr: false
+  dtr:
+    enabled: false
+    # Maximum DTR a faction can have 
+    MaxFactionDTR: 6.0
+    # Minimum DTR a faction can have 
+    MinFactionDTR: -6.0
+    # How much DTR is replenished per minute
+    MinuteDTR: 0.10
+    # Maximum DTR a player can have 
+    MaxPlayerDTR: .6
+    # Minimum DTR a player can have
+    MinPlayerDTR: -1.0
+    # When a Faction's DTR hits 0, the faction is set to raidable. 
+    # MinuteDTR is disabled until the freeze expires.
+    # Once freeze expires, DTR can regen and raidable is disabled
+    DTRFreeze: 0
+
 
   # Should we allow Factions to over claim if they are raidable (above has no effect on this)?
   # This has always been true, allowing factions to over claim others.
