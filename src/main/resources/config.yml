@@ -185,6 +185,8 @@ hcf:
   raidable: false
 
   # DTR (death til raidable) will be in /f show if enabled. Configure the message in the lang.yml
+  # When DTR is below 0, the faction is considered raidable
+  # DTR is the sum of all faction member's DTR value, or MaxFactionDTR if it's larger
   dtr:
     enabled: false
     # Maximum DTR a faction can have 
@@ -196,7 +198,7 @@ hcf:
     # How much DTR is replenished per faction member per minute 
     MinuteDTR: 0.01
     # Maximum DTR a player can have 
-    MaxPlayerDTR: .6
+    MaxPlayerDTR: .34
     # Minimum DTR a player can have
     MinPlayerDTR: -1.0
     # When a Faction's DTR hits 0, the faction is set to raidable. 

@@ -571,7 +571,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public double getMaxDTR() {
-        return P.p.getConfig().getDouble("hcf.dtr.MaxPlayerTDR", 0.6);
+        return P.p.getConfig().getDouble("hcf.dtr.MaxPlayerTDR", 0.34);
     }
 
     public double getMinDTR() {
