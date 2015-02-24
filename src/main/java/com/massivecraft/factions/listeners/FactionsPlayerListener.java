@@ -13,6 +13,7 @@ import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -276,7 +277,7 @@ public class FactionsPlayerListener implements Listener {
         FLocation loc = new FLocation(location);
         Faction otherFaction = Board.getInstance().getFactionAt(loc);
 
-        if (P.p.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() >= otherFaction.getPowerRounded()) {
+        if (P.p.getConfig().getBoolean("hcf.dtr.enabled", false) && otherFaction.getDTR() <= 0) {
             return true;
         }
 
