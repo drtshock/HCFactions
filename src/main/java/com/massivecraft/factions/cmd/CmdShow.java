@@ -6,10 +6,11 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
-import com.massivecraft.factions.zcore.util.TextUtil;
 
+import java.text.DecimalFormat;
 import java.util.Collection;
 
+import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Location;
 
 public class CmdShow extends FCommand {
@@ -65,7 +66,8 @@ public class CmdShow extends FCommand {
         msg(TL.COMMAND_SHOW_POWER, faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost, raidable);
 
         if (P.p.getConfig().getBoolean("hcf.dtr.enabled", false)) {
-            msg(TL.COMMAND_SHOW_DEATHS_TIL_RAIDABLE, faction.getDTR(), faction.getMaxDTR());
+            DecimalFormat dc = new DecimalFormat("#.##");        
+            msg(TL.COMMAND_SHOW_DEATHS_TIL_RAIDABLE, dc.format(faction.getDTR()), dc.format(faction.getMaxDTR()));
             if(faction.hasHome()) {
                 Location home = faction.getHome();
                 msg(TL.COMMAND_SHOW_DTR_HOME_SET, home.getBlockX(), home.getBlockY(), home.getBlockZ());
@@ -73,7 +75,8 @@ public class CmdShow extends FCommand {
                 msg(TL.COMMAND_SHOW_DTR_HOME_UNSET);
             }
             if(faction.isDTRFrozen()) {
-                msg(TL.COMMAND_SHOW_DTR_FROZEN, TextUtil.toFancyTime(faction.getFreezeLeft()));
+                String time = DurationFormatUtils.formatDuration(faction.getFreezeLeft()*1000, "H:mm:ss", true);
+                msg(TL.COMMAND_SHOW_DTR_FROZEN, time);
             }
         }
         if (faction.isPermanent()) {
