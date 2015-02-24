@@ -449,7 +449,7 @@ public enum TL {
     COMMAND_SHOW_DTR_HOME_SET("<i>Faction Home: %1$s, %2$s, %3$s"),
     COMMAND_SHOW_DTR_HOME_UNSET("<i>Faction Home: Not set"),
     COMMAND_SHOW_DTR_FROZEN("<a>DTR Freeze: <i>%s"),
-    COMMAND_SHOW_DEATHS_TIL_RAIDABLE("<a>DTR: <i>%1$d/%2$d"),
+    COMMAND_SHOW_DEATHS_TIL_RAIDABLE("<a>DTR: <i>%1$s/%2$s"),
 
     COMMAND_SHOWINVITES_PENDING("Players with pending invites: "),
     COMMAND_SHOWINVITES_CLICKTOREVOKE("Click to revoke invite for %1$s"),

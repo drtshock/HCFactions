@@ -67,7 +67,7 @@ public class CmdShow extends FCommand {
 
         if (P.p.getConfig().getBoolean("hcf.dtr.enabled", false)) {
             DecimalFormat dc = new DecimalFormat("#.##");        
-            msg(TL.COMMAND_SHOW_DEATHS_TIL_RAIDABLE, dc.format(faction.getDTR()), dc.format(faction.getMaxDTR()));
+            msg(TL.COMMAND_SHOW_DEATHS_TIL_RAIDABLE, dc.format(faction.getDTR()).toString(), dc.format(faction.getMaxDTR()).toString());
             if(faction.hasHome()) {
                 Location home = faction.getHome();
                 msg(TL.COMMAND_SHOW_DTR_HOME_SET, home.getBlockX(), home.getBlockY(), home.getBlockZ());
