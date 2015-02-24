@@ -247,18 +247,17 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public void setPowerBoost(double powerBoost) {
         this.powerBoost = powerBoost;
     }
-
+    
     public boolean isPowerFrozen() {
-        int freezeSeconds = P.p.getConfig().getInt("hcf.powerfreeze", 0);
+        int freezeSeconds = P.p.getConfig().getInt("hcf.dtr.power-freeze", 0);
         if (freezeSeconds == 0) {
             return false;
         }
-
-        return System.currentTimeMillis() - lastDeath < freezeSeconds * 1000;
+        return System.currentTimeMillis() - lastDeath < freezeSeconds * 1000; 
     }
     
     public boolean isDTRFrozen() {
-        int freezeSeconds = P.p.getConfig().getInt("hcf.dtr.DTRFreeze", 0);
+        int freezeSeconds = P.p.getConfig().getInt("hcf.dtr.dtr-freeze", 0);
         if (freezeSeconds == 0) {
             return false;
         }
@@ -267,7 +266,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     
     public long getFreezeLeft() {
         if (isDTRFrozen()) {
-            int freezeSeconds = P.p.getConfig().getInt("hcf.dtr.DTRFreeze", 0);
+            int freezeSeconds = P.p.getConfig().getInt("hcf.dtr.dtr-freeze", 0);
             Date date = new Date(lastDeath);
             date.setTime(date.getTime() + freezeSeconds * 1000);
             return date.getTime();
@@ -463,7 +462,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public boolean hasLandInflation() {
         return this.getLandRounded() > this.getPowerRounded();
     }
-    
+ 
     // -------------------------------
     // DTR
     // -------------------------------

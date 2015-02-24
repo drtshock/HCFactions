@@ -188,34 +188,33 @@ hcf:
   # When DTR is below 0, the faction is considered raidable
   # DTR is the sum of all faction member's DTR value, or MaxFactionDTR if it's larger
   dtr:
-    enabled: false
+    enabled: true
     # Maximum DTR a faction can have 
-    MaxFactionDTR: 6.0
+    max-faction-dtr: 6.0
     # Minimum DTR a faction can have 
-    MinFactionDTR: -6.0
+    min-faction-dtr: -6.0
     # How much DTR is lost on death
-    DeathDTR: 1 
+    death-dtr: 1 
     # How much DTR is replenished per faction member per minute 
-    MinuteDTR: 0.01
+    minute-dtr: 0.01
     # Maximum DTR a player can have 
-    MaxPlayerDTR: .34
+    max-player-dtr: .34
     # Minimum DTR a player can have
-    MinPlayerDTR: -1.0
-    # When a Faction's DTR hits 0, the faction is set to raidable. 
-    # MinuteDTR is disabled until the freeze expires.
-    # Once freeze expires, DTR can regen and raidable is disabled
-    DTRFreeze: 0
-
+    min-player-dtr: -1.0
+    # DTR Freeze
+    # After a player dies, how long should the faction not be able to regen dtr?
+    # This resets on each death but does not accumulate.
+    # Set to 0 for no freeze. Time is in seconds.
+    dtr-freeze: 0
+    # Power Freeze
+    # After a player dies, how long should the faction not be able to regen power?
+    # This resets on each death but does not accumulate.
+    # Set to 0 for no freeze. Time is in seconds.
+    power-freeze: 0 
 
   # Should we allow Factions to over claim if they are raidable (above has no effect on this)?
   # This has always been true, allowing factions to over claim others.
   allow-overclaim: true
-
-  # Power Freeze
-  # After a player dies, how long should the faction not be able to regen power?
-  # This resets on each death but does not accumulate.
-  # Set to 0 for no freeze. Time is in seconds.
-  powerfreeze: 0
 
   # Buffer Zone
   # Buffer Zone is an chunk area required between claims of different Factions.
