@@ -9,6 +9,8 @@ import com.massivecraft.factions.zcore.util.TL;
 
 import java.util.Collection;
 
+import org.bukkit.Location;
+
 public class CmdShow extends FCommand {
 
     public CmdShow() {
@@ -63,6 +65,12 @@ public class CmdShow extends FCommand {
 
         if (P.p.getConfig().getBoolean("hcf.dtr.enabled", false)) {
             msg(TL.COMMAND_SHOW_DEATHS_TIL_RAIDABLE, faction.getDTR(), faction.getMaxDTR());
+            if(faction.hasHome()) {
+                Location home = faction.getHome();
+                msg(TL.COMMAND_SHOW_DTR_HOME_SET, home.getBlockX(), home.getBlockY(), home.getBlockZ());
+            } else {
+                msg(TL.COMMAND_SHOW_DTR_HOME_UNSET);
+            }
         }
         if (faction.isPermanent()) {
             msg(TL.COMMAND_SHOW_PERMANENT);
