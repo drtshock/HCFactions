@@ -553,7 +553,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void updateDTR() {
-        if (this.isOffline() || (hasFaction() && getFaction().isPowerFrozen())) {
+        if (this.isOffline() || (hasFaction() && getFaction().isDTRFrozen())) {
             return; // Don't let dtr regen if faction dtr is frozen or player offline.
         }
         long now = System.currentTimeMillis();
@@ -766,7 +766,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             } else if (!currentFaction.hasLandInflation()) {
                 // TODO more messages WARN current faction most importantly
                 error = P.p.txt.parse(TL.CLAIM_THISISSPARTA.toString(), currentFaction.getTag(this));
-            } else if (currentFaction.hasLandInflation() && !P.p.getConfig().getBoolean("hcf.allow-overclaim", true)) {
+            } else if (currentFaction.isRaidable() && !P.p.getConfig().getBoolean("hcf.allow-overclaim", true)) {
                 // deny over claim when it normally would be allowed.
                 error = P.p.txt.parse(TL.CLAIM_OVERCLAIM_DISABLED.toString());
             } else if (!Board.getInstance().isBorderLocation(flocation)) {

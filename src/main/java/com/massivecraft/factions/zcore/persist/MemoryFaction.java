@@ -470,6 +470,10 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return ret;
     }
     
+    public boolean isRaidable() {
+        return this.getDTR() <= 0;
+    }
+    
     // -------------------------------
     // FPlayers
     // -------------------------------
