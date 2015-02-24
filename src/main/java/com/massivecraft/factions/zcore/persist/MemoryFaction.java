@@ -256,6 +256,14 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
         return System.currentTimeMillis() - lastDeath < freezeSeconds * 1000;
     }
+    
+    public boolean isDTRFrozen() {
+        int freezeSeconds = P.p.getConfig().getInt("hcf.dtr.DTRFreeze", 0);
+        if (freezeSeconds == 0) {
+            return false;
+        }
+        return System.currentTimeMillis() - lastDeath < freezeSeconds * 1000; 
+    }
 
     public void setLastDeath(long time) {
         this.lastDeath = time;
@@ -445,7 +453,23 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public boolean hasLandInflation() {
         return this.getLandRounded() > this.getPowerRounded();
     }
-
+    
+    // -------------------------------
+    // DTR
+    // -------------------------------
+    
+    public double getDTR() {
+        double ret = 0;
+        for (FPlayer fplayer : fplayers) {
+            ret += fplayer.getDTR();
+        }
+        double max = P.p.getConfig().getDouble("hcf.dtr.MaxFactionDTR");
+        if(max > 0 && ret > max) {
+            ret = max;
+        }
+        return ret;
+    }
+    
     // -------------------------------
     // FPlayers
     // -------------------------------

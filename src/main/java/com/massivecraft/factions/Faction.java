@@ -156,7 +156,14 @@ public interface Faction extends EconomyParticipator {
     public int getLandRoundedInWorld(String worldName);
 
     public boolean hasLandInflation();
-
+    
+    // ----------------------------------------------//
+    // DTR
+    // ----------------------------------------------//
+    public double getDTR();
+    
+    public boolean isDTRFrozen();
+    
     // -------------------------------
     // FPlayers
     // -------------------------------

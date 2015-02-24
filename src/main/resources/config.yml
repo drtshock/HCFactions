@@ -191,8 +191,10 @@ hcf:
     MaxFactionDTR: 6.0
     # Minimum DTR a faction can have 
     MinFactionDTR: -6.0
-    # How much DTR is replenished per minute
-    MinuteDTR: 0.10
+    # How much DTR is lost on death
+    DeathDTR: 1 
+    # How much DTR is replenished per faction member per minute 
+    MinuteDTR: 0.01
     # Maximum DTR a player can have 
     MaxPlayerDTR: .6
     # Minimum DTR a player can have

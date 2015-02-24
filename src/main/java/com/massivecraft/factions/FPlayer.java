@@ -173,6 +173,19 @@ public interface FPlayer extends EconomyParticipator {
     public void losePowerFromBeingOffline();
 
     public void onDeath();
+    
+    //----------------------------------------------//
+    // DTR
+    //----------------------------------------------//
+    public double getDTR();
+    
+    public void alterDTR(double delta);
+    
+    public void updateDTR();
+    
+    public double getMaxDTR();
+    
+    public double getMinDTR();
 
     //----------------------------------------------//
     // Territory
