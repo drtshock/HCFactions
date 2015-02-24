@@ -16,6 +16,7 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.zcore.util.TL;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -225,7 +226,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.id = id;
         this.resetFactionData(false);
         this.power = Conf.powerPlayerStarting;
-        // Set initial dtr to MinuteDTR, so faction doesn't initialize raidable
+        // initial dtr = 1 minute of dtr regeneration
         this.dtr = P.p.getConfig().getDouble("hcf.dtr.MinuteDTR", 0.01);
         this.lastPowerUpdateTime = System.currentTimeMillis();
         this.lastLoginTime = System.currentTimeMillis();
