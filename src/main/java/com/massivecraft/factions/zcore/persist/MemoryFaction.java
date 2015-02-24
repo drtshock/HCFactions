@@ -248,9 +248,9 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.powerBoost = powerBoost;
     }
     
-    public boolean isPowerFrozen() {
+    public boolean isPowerFrozen() {        
         int freezeSeconds = P.p.getConfig().getInt("hcf.dtr.power-freeze", 0);
-        if (freezeSeconds == 0) {
+        if (!P.p.getConfig().getBoolean("hcf.dtr.enabled", false) || freezeSeconds == 0) {
             return false;
         }
         return System.currentTimeMillis() - lastDeath < freezeSeconds * 1000; 
@@ -258,7 +258,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     
     public boolean isDTRFrozen() {
         int freezeSeconds = P.p.getConfig().getInt("hcf.dtr.dtr-freeze", 0);
-        if (freezeSeconds == 0) {
+        if (!P.p.getConfig().getBoolean("hcf.dtr.enabled", false) || freezeSeconds == 0) {
             return false;
         }
         return System.currentTimeMillis() - lastDeath < freezeSeconds * 1000; 
