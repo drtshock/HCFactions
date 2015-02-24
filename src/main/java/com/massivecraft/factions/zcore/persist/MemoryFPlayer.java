@@ -226,8 +226,8 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.id = id;
         this.resetFactionData(false);
         this.power = Conf.powerPlayerStarting;
-        // initial dtr = 1 minute of dtr regeneration
-        this.dtr = P.p.getConfig().getDouble("hcf.dtr.MinuteDTR", 0.01);
+        // start at 0?
+        this.dtr = 0.0;
         this.lastPowerUpdateTime = System.currentTimeMillis();
         this.lastLoginTime = System.currentTimeMillis();
         this.mapAutoUpdating = false;
@@ -548,11 +548,15 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void alterDTR(double delta) {
-        this.dtr += delta;
-        if (this.dtr > this.getMaxDTR()) {
-            this.dtr = this.getMaxDTR();
-        } else if (this.dtr < this.getMinDTR()) {
-            this.dtr = this.getMinDTR();
+        Faction faction = this.getFaction();
+        double fdt = faction.getDTR();
+        fdt += delta;
+        if(fdt > faction.getMaxDTR()) {
+            faction.setDTR(faction.getMaxDTR());
+        } else if(fdt < faction.getMinDTR()){
+            faction.setDTR(faction.getMinDTR());
+        } else {
+            faction.setDTR(fdt);
         }
     }
 
@@ -576,10 +580,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public double getMaxDTR() {
         return P.p.getConfig().getDouble("hcf.dtr.max-player-dtr", 0.34);
-    }
-
-    public double getMinDTR() {
-        return P.p.getConfig().getDouble("hcf.dtr.min-player-dtr", -1.0);
     }
 
     //----------------------------------------------//

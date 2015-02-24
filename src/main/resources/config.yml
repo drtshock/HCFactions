@@ -194,13 +194,11 @@ hcf:
     # Minimum DTR a faction can have 
     min-faction-dtr: -6.0
     # How much DTR is lost on death
-    death-dtr: 1 
+    death-dtr: 1.0
     # How much DTR is replenished per faction member per minute 
     minute-dtr: 0.01
     # Maximum DTR a player can have 
     max-player-dtr: .34
-    # Minimum DTR a player can have
-    min-player-dtr: -1.0
     # DTR Freeze
     # After a player dies, how long should the faction not be able to regen dtr?
     # This resets on each death but does not accumulate.

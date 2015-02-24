@@ -185,7 +185,6 @@ public interface FPlayer extends EconomyParticipator {
     
     public double getMaxDTR();
     
-    public double getMinDTR();
 
     //----------------------------------------------//
     // Territory

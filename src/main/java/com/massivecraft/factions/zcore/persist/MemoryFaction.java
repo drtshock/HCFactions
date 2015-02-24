@@ -32,6 +32,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected Integer permanentPower;
     protected LazyLocation home;
     protected transient long lastPlayerLoggedOffTime;
+    protected double dtr;
     protected double money;
     protected double powerBoost;
     protected Map<String, Relation> relationWish = new HashMap<String, Relation>();
@@ -468,18 +469,22 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     // -------------------------------
     
     public double getDTR() {
-        double ret = 0;
+        this.updateDTR();
+        return dtr;
+    }
+    
+    public void updateDTR() {
+        this.dtr = 0;
         for (FPlayer fplayer : fplayers) {
-            ret += fplayer.getDTR();
+            dtr += fplayer.getDTR();
         }
         double max = P.p.getConfig().getDouble("hcf.dtr.max-faction-dtr", 6.0);
         double min = P.p.getConfig().getDouble("hcf.dtr.min-faction-dtr", -6.0);
-        if(max > 0 && ret > max) {
-            ret = max;
-        } else if(min < 0 && ret < min) {
-            ret = min;
+        if(max > 0 && dtr > max) {
+            dtr = max;
+        } else if(min < 0 && dtr < min) {
+            dtr = min;
         }
-        return ret;
     }
     
     public double getMaxDTR() {
@@ -495,6 +500,14 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             ret = min;
         }
         return ret; 
+    }
+    
+    public double getMinDTR() {
+        return P.p.getConfig().getDouble("hcf.dtr.min-faction-dtr", -6.0);
+    }
+    
+    public void setDTR(double dtr) {
+        this.dtr = dtr;
     }
     
     public boolean isRaidable() {

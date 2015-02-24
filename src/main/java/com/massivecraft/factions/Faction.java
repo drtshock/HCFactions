@@ -164,11 +164,15 @@ public interface Faction extends EconomyParticipator {
     
     public double getMaxDTR();
     
+    public double getMinDTR();
+    
     public boolean isDTRFrozen();
     
     public boolean isRaidable();
     
     public long getFreezeLeft();
+    
+    public void setDTR(double dtr);
     
     // -------------------------------
     // FPlayers
