@@ -472,9 +472,12 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         for (FPlayer fplayer : fplayers) {
             ret += fplayer.getDTR();
         }
-        double max = P.p.getConfig().getDouble("hcf.dtr.MaxFactionDTR");
+        double max = P.p.getConfig().getDouble("hcf.dtr.max-faction-dtr", 6.0);
+        double min = P.p.getConfig().getDouble("hcf.dtr.min-faction-dtr", -6.0);
         if(max > 0 && ret > max) {
             ret = max;
+        } else if(min < 0 && ret < min) {
+            ret = min;
         }
         return ret;
     }
@@ -484,9 +487,12 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         for (FPlayer fplayer : fplayers) {
             ret += fplayer.getMaxDTR();
         }
-        double max = P.p.getConfig().getDouble("hcf.dtr.MaxFactionDTR");
+        double max = P.p.getConfig().getDouble("hcf.dtr.max-faction-dtr", 6.0);
+        double min = P.p.getConfig().getDouble("hcf.dtr.min-faction-dtr", -6.0);
         if(max > 0 && ret > max) {
             ret = max;
+        } else if(min < 0 && ret < min) {
+            ret = min;
         }
         return ret; 
     }

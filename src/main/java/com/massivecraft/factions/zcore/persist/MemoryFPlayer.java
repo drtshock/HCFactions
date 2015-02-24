@@ -533,7 +533,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             // Only update DTR if player is in a faction
             if(P.p.getConfig().getBoolean("hcf.dtr.enabled", false)) {
                 this.updateDTR();
-                this.alterDTR(-P.p.getConfig().getDouble("hcf.dtr.DeathDTR", 1)); 
+                this.alterDTR(-P.p.getConfig().getDouble("hcf.dtr.death-dtr", 1)); 
             }           
         }        
     }
@@ -569,16 +569,16 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
 
         int millisPerMinute = 60 * 1000;
-        double deltaDTr = P.p.getConfig().getDouble("hcf.dtr.MinuteDTR", 0.01);
+        double deltaDTr = P.p.getConfig().getDouble("hcf.dtr.minute-dtr", 0.01);
         this.alterDTR(millisPassed * deltaDTr / millisPerMinute);
     }
 
     public double getMaxDTR() {
-        return P.p.getConfig().getDouble("hcf.dtr.MaxPlayerTDR", 0.34);
+        return P.p.getConfig().getDouble("hcf.dtr.max-player-dtr", 0.34);
     }
 
     public double getMinDTR() {
-        return P.p.getConfig().getDouble("hcf.dtr.MinPlayerTDR", -1.0);
+        return P.p.getConfig().getDouble("hcf.dtr.min-player-dtr", -1.0);
     }
 
     //----------------------------------------------//
