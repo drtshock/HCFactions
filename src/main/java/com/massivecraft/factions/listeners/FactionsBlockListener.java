@@ -199,7 +199,8 @@ public class FactionsBlockListener implements Listener {
 
             return false;
         }
-        if (P.p.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() >= otherFaction.getPowerRounded()) {
+        // is faction raidable? 
+        if (P.p.getConfig().getBoolean("hcf.dtr.enabled", false) && otherFaction.getDTR() <= 0) {
             return true;
         }
 
