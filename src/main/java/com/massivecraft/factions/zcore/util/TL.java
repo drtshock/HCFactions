@@ -447,9 +447,9 @@ public enum TL {
     COMMAND_SHOW_MEMBERSOFFLINE("Members offline: "),
     COMMAND_SHOW_COMMANDDESCRIPTION("Show faction information"),
     COMMAND_SHOW_DTR_HOME_SET("<i>Faction Home: %1$s, %2$s, %3$s"),
-    COMMAND_SHOW_DTR_HOME_UNSET("<i>Faction Home: Not set,"),
-    COMMAND_SHOW_DTR_FROZEN("<i>DTR Freeze: %s"),
-    COMMAND_SHOW_DEATHS_TIL_RAIDABLE("<i>DTR: %1$d / %2$d"),
+    COMMAND_SHOW_DTR_HOME_UNSET("<i>Faction Home: Not set"),
+    COMMAND_SHOW_DTR_FROZEN("<a>DTR Freeze: <i>%s"),
+    COMMAND_SHOW_DEATHS_TIL_RAIDABLE("<a>DTR: <i>%1$d/%2$d"),
 
     COMMAND_SHOWINVITES_PENDING("Players with pending invites: "),
     COMMAND_SHOWINVITES_CLICKTOREVOKE("Click to revoke invite for %1$s"),
