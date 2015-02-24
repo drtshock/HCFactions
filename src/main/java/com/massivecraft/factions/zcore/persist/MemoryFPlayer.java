@@ -539,6 +539,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     // DTR
     // ----------------------------------------------//
     public double getDTR() {
+        this.updateDTR();
         return this.dtr;
     }
 
