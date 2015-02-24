@@ -6,6 +6,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 
 import java.util.Collection;
 
@@ -70,6 +71,9 @@ public class CmdShow extends FCommand {
                 msg(TL.COMMAND_SHOW_DTR_HOME_SET, home.getBlockX(), home.getBlockY(), home.getBlockZ());
             } else {
                 msg(TL.COMMAND_SHOW_DTR_HOME_UNSET);
+            }
+            if(faction.isDTRFrozen()) {
+                msg(TL.COMMAND_SHOW_DTR_FROZEN, TextUtil.toFancyTime(faction.getFreezeLeft()));
             }
         }
         if (faction.isPermanent()) {
