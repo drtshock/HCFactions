@@ -241,7 +241,6 @@ public enum TL {
     COMMAND_JOIN_ALREADYMEMBER("<b>%1$s %2$s already a member of %3$s"),
     COMMAND_JOIN_ATLIMIT(" <b>!<white> The faction %1$s is at the limit of %2$d members, so %3$s cannot currently join."),
     COMMAND_JOIN_INOTHERFACTION("<b>%1$s must leave %2$s current faction first."),
-    COMMAND_JOIN_NEGATIVEPOWER("<b>%1$s cannot join a faction with a negative power level."),
     COMMAND_JOIN_REQUIRESINVITATION("<i>This faction requires invitation."),
     COMMAND_JOIN_ATTEMPTEDJOIN("%1$s<i> tried to join your faction."),
     COMMAND_JOIN_TOJOIN("to join a faction"),
@@ -361,28 +360,6 @@ public enum TL {
     COMMAND_PERMANENT_YOURS("%1$s has %2$s your faction"),
     COMMAND_PERMANENT_OTHER("%s<i> has %s the faction '%s<i>'."),
 
-    COMMAND_PERMANENTPOWER_DESCRIPTION("Toggle faction power permanence"), //TODO: This a real word?
-    COMMAND_PERMANENTPOWER_GRANT("added permanentpower status to"),
-    COMMAND_PERMANENTPOWER_REVOKE("removed permanentpower status from"),
-    COMMAND_PERMANENTPOWER_SUCCESS("<i>You %s <h>%s<i>."),
-    COMMAND_PERMANENTPOWER_FACTION("%s<i> %s your faction"),
-
-    COMMAND_POWER_TOSHOW("to show player power info"),
-    COMMAND_POWER_FORSHOW("for showing player power info"),
-    COMMAND_POWER_POWER("%1$s<a> - Power / Maxpower: <i>%2$d / %3$d %4$s"),
-    COMMAND_POWER_BONUS(" (bonus: "),
-    COMMAND_POWER_PENALTY(" (penalty: "),
-    COMMAND_POWER_DESCRIPTION("Show player power info"),
-
-    COMMAND_POWERBOOST_HELP_1("<b>You must specify \"p\" or \"player\" to target a player or \"f\" or \"faction\" to target a faction."),
-    COMMAND_POWERBOOST_HELP_2("<b>ex. /f powerboost p SomePlayer 0.5  -or-  /f powerboost f SomeFaction -5"),
-    COMMAND_POWERBOOST_INVALIDNUM("<b>You must specify a valid numeric value for the power bonus/penalty amount."),
-    COMMAND_POWERBOOST_PLAYER("Player \"%1$s\""),
-    COMMAND_POWERBOOST_FACTION("Faction \"%1$s\""),
-    COMMAND_POWERBOOST_BOOST("<i>%1$s now has a power bonus/penalty of %2$d to min and max power levels."),
-    COMMAND_POWERBOOST_BOOSTLOG("%1$s has set the power bonus/penalty for %2$s to %3$d."),
-    COMMAND_POWERBOOST_DESCRIPTION("Apply permanent power bonus/penalty to specified player or faction"),
-
     COMMAND_RELATIONS_ALLTHENOPE("<b>Nope! You can't."),
     COMMAND_RELATIONS_MORENOPE("<b>Nope! You can't declare a relation to yourself :)"),
     COMMAND_RELATIONS_ALREADYINRELATIONSHIP("<b>You already have that relation wish set with %1$s."),
@@ -435,7 +412,7 @@ public enum TL {
     COMMAND_SHOW_JOINING("<a>Joining: <i>%1$s "),
     COMMAND_SHOW_INVITATION("invitation is required"),
     COMMAND_SHOW_UNINVITED("no invitation is needed"),
-    COMMAND_SHOW_POWER("<a>Land / Power / Maxpower: <i> %1$d/%2$d/%3$d %4$s"),
+    COMMAND_SHOW_LAND("<a>Land / Max Land: <i> %1$d / %2$d"),
     COMMAND_SHOW_BONUS(" (bonus: "),
     COMMAND_SHOW_PENALTY(" (penalty: "),
     COMMAND_SHOW_DEPRECIATED("(%1$s depreciated)"), //This is spelled correctly.
@@ -455,7 +432,7 @@ public enum TL {
     COMMAND_SHOWINVITES_CLICKTOREVOKE("Click to revoke invite for %1$s"),
     COMMAND_SHOWINVITES_DESCRIPTION("Show pending faction invites"),
 
-    COMMAND_STATUS_FORMAT("%1$s Power: %2$s Last Seen: %3$s"),
+    COMMAND_STATUS_FORMAT("%1$s Last Seen: %2$s"),
     COMMAND_STATUS_ONLINE("Online"),
     COMMAND_STATUS_AGOSUFFIX(" ago."),
     COMMAND_STATUS_DESCRIPTION("Show the status of a player"),
