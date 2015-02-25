@@ -90,8 +90,8 @@ public class FactionsPlayerListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
 
-        // Make sure player's power is up to date when they log off.
-        me.getPower();
+        // Make sure player's dtr is up to date when they log off.
+        me.updateDTR();
         // and update their last login time to point to when the logged off, for auto-remove routine
         me.setLastLoginTime(System.currentTimeMillis());
 
@@ -423,7 +423,7 @@ public class FactionsPlayerListener implements Listener {
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
 
-        me.getPower();  // update power, so they won't have gained any while dead
+        me.updateDTR();  // update dtr, so they won't have gained any while dead
 
         Location home = me.getFaction().getHome();
         if (Conf.homesEnabled &&
