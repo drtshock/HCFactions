@@ -197,11 +197,6 @@ hcf:
     # This resets on each death but does not accumulate.
     # Set to 0 for no freeze. Time is in seconds.
     dtr-freeze: 0
-    # Power Freeze
-    # After a player dies, how long should the faction not be able to regen power?
-    # This resets on each death but does not accumulate.
-    # Set to 0 for no freeze. Time is in seconds.
-    power-freeze: 0 
   
   # Max land a faction can have claimed
   faction-land-max: 40 
