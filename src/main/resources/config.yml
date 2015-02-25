@@ -86,7 +86,6 @@ tooltips:
   # {lastSeen} will show human readable info on when the player was last seen, or online.
   show:
     - "&6Last Seen: &f{lastSeen}"
-    - "&6Power: &f{power}"
     - "&6Rank: &f{group}"
     - "&6Balance: &a${balance}"
 
@@ -102,7 +101,7 @@ scoreboard:
 # FInfo scoreboard is displayed when a player walks into a new Faction's territory.
 # Scoreboard disappears after <expiration> seconds.
 # Things to be replaced in this:
-# {power} - faction's power. {chunks} - total claimed chunks. {members} - total members.
+# {chunks} - total claimed chunks. {members} - total members.
 # {online} - online members. {leader} - faction's leader. {open} - shows either true or false if open.
 # {raidable} - true if the faction can be claimed over, otherwise false.
 # {warps} - the number of warps that a faction has set.
@@ -110,8 +109,6 @@ scoreboard:
 # Commenting this section out will cause the info to appear in chat as the plugin originally did.
   finfo-enabled: false # Default to false to keep original functionality.
   finfo:
-    - "&6Power"
-    - "{power}"
     - "&3Members"
     - "{online}/{members}"
     - "&4Leader"
@@ -137,8 +134,6 @@ scoreboard:
   default:
     - "&6Your Faction"
     - "{faction}"
-    - "&3Your Power"
-    - "{power}"
     - "&aBalance"
     - "${balance}"
 
@@ -207,10 +202,6 @@ hcf:
     # This resets on each death but does not accumulate.
     # Set to 0 for no freeze. Time is in seconds.
     power-freeze: 0 
-
-  # Should we allow Factions to over claim if they are raidable (above has no effect on this)?
-  # This has always been true, allowing factions to over claim others.
-  allow-overclaim: true
   
   # Max land a faction can have claimed
   faction-land-max: 40 
