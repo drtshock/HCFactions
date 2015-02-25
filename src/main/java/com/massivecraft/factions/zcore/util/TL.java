@@ -412,7 +412,7 @@ public enum TL {
     COMMAND_SHOW_JOINING("<a>Joining: <i>%1$s "),
     COMMAND_SHOW_INVITATION("invitation is required"),
     COMMAND_SHOW_UNINVITED("no invitation is needed"),
-    COMMAND_SHOW_LAND("<a>Land / Max Land: <i> %1$d / %2$d"),
+    COMMAND_SHOW_LAND("<a>Land / Max: <i> %1$d / %2$d"),
     COMMAND_SHOW_BONUS(" (bonus: "),
     COMMAND_SHOW_PENALTY(" (penalty: "),
     COMMAND_SHOW_DEPRECIATED("(%1$s depreciated)"), //This is spelled correctly.
