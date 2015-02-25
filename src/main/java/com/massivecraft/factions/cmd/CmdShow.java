@@ -64,7 +64,7 @@ public class CmdShow extends FCommand {
         double powerBoost = faction.getPowerBoost();
         String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? TL.COMMAND_SHOW_BONUS.toString() + powerBoost + ")" : TL.COMMAND_SHOW_PENALTY.toString() + powerBoost + ")");
         
-        msg(TL.COMMAND_SHOW_POWER, faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded(), boost);
+        msg(TL.COMMAND_SHOW_LAND, faction.getLand(), faction.getMaxLand());
 
         if (P.p.getConfig().getBoolean("hcf.dtr.enabled", false)) {
             fme.updateDTR();
@@ -89,7 +89,7 @@ public class CmdShow extends FCommand {
         }
 
         if (Econ.shouldBeUsed()) {
-            double value = Econ.calculateTotalLandValue(faction.getLandRounded());
+            double value = Econ.calculateTotalLandValue(faction.getLand());
             double refund = value * Conf.econClaimRefundMultiplier;
             if (value > 0.0D) {
                 String stringValue = Econ.moneyString(value);

@@ -62,7 +62,6 @@ public class CmdHelp extends FCommand {
         pageLines.add(p.cmdBase.cmdHelp.getUseageTemplate(true));
         pageLines.add(p.cmdBase.cmdList.getUseageTemplate(true));
         pageLines.add(p.cmdBase.cmdShow.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdPower.getUseageTemplate(true));
         pageLines.add(p.cmdBase.cmdJoin.getUseageTemplate(true));
         pageLines.add(p.cmdBase.cmdLeave.getUseageTemplate(true));
         pageLines.add(p.cmdBase.cmdChat.getUseageTemplate(true));
@@ -174,8 +173,6 @@ public class CmdHelp extends FCommand {
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_MOAR_2.toString()));
         pageLines.add(p.cmdBase.cmdChatSpy.getUseageTemplate(true));
         pageLines.add(p.cmdBase.cmdPermanent.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdPermanentPower.getUseageTemplate(true));
-        pageLines.add(p.cmdBase.cmdPowerBoost.getUseageTemplate(true));
         pageLines.add(p.cmdBase.cmdConfig.getUseageTemplate(true));
         helpPages.add(pageLines);
 

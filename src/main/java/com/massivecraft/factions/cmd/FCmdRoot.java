@@ -35,9 +35,6 @@ public class FCmdRoot extends FCommand {
     public CmdOwnerList cmdOwnerList = new CmdOwnerList();
     public CmdPeaceful cmdPeaceful = new CmdPeaceful();
     public CmdPermanent cmdPermanent = new CmdPermanent();
-    public CmdPermanentPower cmdPermanentPower = new CmdPermanentPower();
-    public CmdPowerBoost cmdPowerBoost = new CmdPowerBoost();
-    public CmdPower cmdPower = new CmdPower();
     public CmdRelationAlly cmdRelationAlly = new CmdRelationAlly();
     public CmdRelationEnemy cmdRelationEnemy = new CmdRelationEnemy();
     public CmdRelationNeutral cmdRelationNeutral = new CmdRelationNeutral();
@@ -61,7 +58,6 @@ public class FCmdRoot extends FCommand {
     public CmdFWarp cmdFWarp = new CmdFWarp();
     public CmdSetFWarp cmdSetFWarp = new CmdSetFWarp();
     public CmdDelFWarp cmdDelFWarp = new CmdDelFWarp();
-    public CmdModifyPower cmdModifyPower = new CmdModifyPower();
     public CmdLogins cmdLogins = new CmdLogins();
     public CmdClaimLine cmdClaimLine = new CmdClaimLine();
     public CmdTop cmdTop = new CmdTop();
@@ -115,9 +111,6 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdOwnerList);
         this.addSubCommand(this.cmdPeaceful);
         this.addSubCommand(this.cmdPermanent);
-        this.addSubCommand(this.cmdPermanentPower);
-        this.addSubCommand(this.cmdPower);
-        this.addSubCommand(this.cmdPowerBoost);
         this.addSubCommand(this.cmdRelationAlly);
         this.addSubCommand(this.cmdRelationEnemy);
         this.addSubCommand(this.cmdRelationNeutral);
@@ -141,7 +134,6 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdFWarp);
         this.addSubCommand(this.cmdSetFWarp);
         this.addSubCommand(this.cmdDelFWarp);
-        this.addSubCommand(this.cmdModifyPower);
         this.addSubCommand(this.cmdLogins);
         this.addSubCommand(this.cmdClaimLine);
         this.addSubCommand(this.cmdTop);

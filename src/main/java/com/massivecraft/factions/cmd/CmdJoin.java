@@ -61,11 +61,6 @@ public class CmdJoin extends FCommand {
             return;
         }
 
-        if (!Conf.canLeaveWithNegativePower && fplayer.getPower() < 0) {
-            msg(TL.COMMAND_JOIN_NEGATIVEPOWER, fplayer.describeTo(fme, true));
-            return;
-        }
-
         if (!(faction.getOpen() || faction.isInvited(fplayer) || fme.isAdminBypassing() || Permission.JOIN_ANY.has(sender, false))) {
             msg(TL.COMMAND_JOIN_REQUIRESINVITATION);
             if (samePlayer) {

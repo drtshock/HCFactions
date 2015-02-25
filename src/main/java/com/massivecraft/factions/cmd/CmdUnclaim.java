@@ -91,7 +91,7 @@ public class CmdUnclaim extends FCommand {
         }
 
         if (Econ.shouldBeUsed()) {
-            double refund = Econ.calculateClaimRefund(myFaction.getLandRounded());
+            double refund = Econ.calculateClaimRefund(myFaction.getLand());
 
             if (Conf.bankEnabled && Conf.bankFactionPaysLandCosts) {
                 if (!Econ.modifyMoney(myFaction, refund, TL.COMMAND_UNCLAIM_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIM_FORUNCLAIM.toString())) {

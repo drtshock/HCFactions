@@ -74,11 +74,6 @@ public class CmdKick extends FCommand {
                 msg(TL.COMMAND_KICK_INSUFFICIENTRANK);
                 return;
             }
-
-            if (!Conf.canLeaveWithNegativePower && toKick.getPower() < 0) {
-                msg(TL.COMMAND_KICK_NEGATIVEPOWER);
-                return;
-            }
         }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make sure they can pay

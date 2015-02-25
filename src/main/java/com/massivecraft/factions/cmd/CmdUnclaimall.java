@@ -30,7 +30,7 @@ public class CmdUnclaimall extends FCommand {
     @Override
     public void perform() {
         if (Econ.shouldBeUsed()) {
-            double refund = Econ.calculateTotalLandRefund(myFaction.getLandRounded());
+            double refund = Econ.calculateTotalLandRefund(myFaction.getLand());
             if (Conf.bankEnabled && Conf.bankFactionPaysLandCosts) {
                 if (!Econ.modifyMoney(myFaction, refund, TL.COMMAND_UNCLAIMALL_TOUNCLAIM.toString(), TL.COMMAND_UNCLAIMALL_FORUNCLAIM.toString())) {
                     return;

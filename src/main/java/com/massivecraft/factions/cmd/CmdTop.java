@@ -58,15 +58,15 @@ public class CmdTop extends FCommand {
                     return 0;
                 }
             });
-        } else if (criteria.equalsIgnoreCase("power")) {
+        } else if (criteria.equalsIgnoreCase("dtr")) {
             Collections.sort(factionList, new Comparator<Faction>() {
                 @Override
                 public int compare(Faction f1, Faction f2) {
-                    int f1Size = f1.getPowerRounded();
-                    int f2Size = f2.getPowerRounded();
-                    if (f1Size < f2Size) {
+                    double f1dtr = f1.getDTR();
+                    double f2dtr = f2.getDTR();
+                    if (f1dtr < f2dtr) {
                         return 1;
-                    } else if (f1Size > f2Size) {
+                    } else if (f1dtr > f2dtr) {
                         return -1;
                     }
                     return 0;
@@ -76,8 +76,8 @@ public class CmdTop extends FCommand {
             Collections.sort(factionList, new Comparator<Faction>() {
                 @Override
                 public int compare(Faction f1, Faction f2) {
-                    int f1Size = f1.getLandRounded();
-                    int f2Size = f2.getLandRounded();
+                    int f1Size = f1.getLand();
+                    int f2Size = f2.getLand();
                     if (f1Size < f2Size) {
                         return 1;
                     } else if (f1Size > f2Size) {
@@ -161,9 +161,9 @@ public class CmdTop extends FCommand {
         } else if (criteria.equalsIgnoreCase("members")) {
             return String.valueOf(faction.getFPlayers().size());
         } else if (criteria.equalsIgnoreCase("land")) {
-            return String.valueOf(faction.getLandRounded());
-        } else if (criteria.equalsIgnoreCase("power")) {
-            return String.valueOf(faction.getPowerRounded());
+            return String.valueOf(faction.getLand());
+        } else if (criteria.equalsIgnoreCase("dtr")) {
+            return String.valueOf(faction.getDTR());
         } else { // Last one is balance, and it has 3 different things it could be.
             double balance = Econ.getBalance(faction.getAccountId());
             for(FPlayer fp : faction.getFPlayers()) {

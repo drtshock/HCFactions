@@ -97,7 +97,7 @@ public class CmdList extends FCommand {
                 lines.add(p.txt.parse("<i>Factionless<i> %d online", Factions.getInstance().getNone().getFPlayersWhereOnline(true).size()));
                 continue;
             }
-            lines.add(p.txt.parse("%s<i> %d/%d online, %d/%d/%d", faction.getTag(fme), faction.getFPlayersWhereOnline(true).size(), faction.getFPlayers().size(), faction.getLandRounded(), faction.getPowerRounded(), faction.getPowerMaxRounded()));
+            lines.add(p.txt.parse("%s<i> %d/%d online, %d/%d", faction.getTag(fme), faction.getFPlayersWhereOnline(true).size(), faction.getFPlayers().size(), faction.getLand(), faction.getMaxLand()));
         }
 
         sendMessage(lines);
