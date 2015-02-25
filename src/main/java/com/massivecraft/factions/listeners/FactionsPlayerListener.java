@@ -366,7 +366,7 @@ public class FactionsPlayerListener implements Listener {
             return true;
         }
 
-        if (P.p.getConfig().getBoolean("hcf.raidable", false) && otherFaction.getLandRounded() >= otherFaction.getPowerRounded()) {
+        if (P.p.getConfig().getBoolean("hcf.dtr.enabled", false) && otherFaction.isRaidable()) {
             return true;
         }
 
