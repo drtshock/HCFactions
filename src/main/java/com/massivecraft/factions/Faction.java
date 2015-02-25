@@ -87,16 +87,6 @@ public interface Faction extends EconomyParticipator {
 
     public String getAccountId();
 
-    public Integer getPermanentPower();
-
-    public void setPermanentPower(Integer permanentPower);
-
-    public boolean hasPermanentPower();
-
-    public double getPowerBoost();
-
-    public void setPowerBoost(double powerBoost);
-
     public boolean noPvPInTerritory();
 
     public boolean noMonstersInTerritory();
@@ -110,8 +100,6 @@ public interface Faction extends EconomyParticipator {
     public boolean isWarZone();
 
     public boolean isPlayerFreeType();
-    
-    public boolean isPowerFrozen();
 
     public void setLastDeath(long time);
 

@@ -29,13 +29,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected String description;
     protected boolean open;
     protected boolean peaceful;
-    protected Integer permanentPower;
     protected LazyLocation home;
     protected transient long lastPlayerLoggedOffTime;
     protected double dtr;
     protected int land;
     protected double money;
-    protected double powerBoost;
     protected Map<String, Relation> relationWish = new HashMap<String, Relation>();
     protected Map<FLocation, Set<String>> claimOwnership = new ConcurrentHashMap<FLocation, Set<String>>();
     protected transient Set<FPlayer> fplayers = new HashSet<FPlayer>();
@@ -229,34 +227,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
         return aid;
     }
-
-    public Integer getPermanentPower() {
-        return this.permanentPower;
-    }
-
-    public void setPermanentPower(Integer permanentPower) {
-        this.permanentPower = permanentPower;
-    }
-
-    public boolean hasPermanentPower() {
-        return this.permanentPower != null;
-    }
-
-    public double getPowerBoost() {
-        return this.powerBoost;
-    }
-
-    public void setPowerBoost(double powerBoost) {
-        this.powerBoost = powerBoost;
-    }
-    
-    public boolean isPowerFrozen() {        
-        int freezeSeconds = P.p.getConfig().getInt("hcf.dtr.power-freeze", 0);
-        if (!P.p.getConfig().getBoolean("hcf.dtr.enabled", false) || freezeSeconds == 0) {
-            return false;
-        }
-        return System.currentTimeMillis() - lastDeath < freezeSeconds * 1000; 
-    }
     
     public boolean isDTRFrozen() {
         int freezeSeconds = P.p.getConfig().getInt("hcf.dtr.dtr-freeze", 0);
@@ -298,7 +268,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.peacefulExplosionsEnabled = false;
         this.permanent = false;
         this.money = 0.0;
-        this.powerBoost = 0.0;
     }
 
     public MemoryFaction(MemoryFaction old) {
@@ -309,11 +278,9 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         description = old.description;
         open = old.open;
         peaceful = old.peaceful;
-        permanentPower = old.permanentPower;
         home = old.home;
         lastPlayerLoggedOffTime = old.lastPlayerLoggedOffTime;
         money = old.money;
-        powerBoost = old.powerBoost;
         relationWish = old.relationWish;
         claimOwnership = old.claimOwnership;
         fplayers = new HashSet<FPlayer>();
@@ -421,7 +388,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public int getMaxLand() {
         int landPerPlayer = P.p.getConfig().getInt("hcf.land-per-player", 5);
         int maxFactionLand = P.p.getConfig().getInt("hcf.faction-land-max", 40);
-        return Math.max(fplayers.size() * landPerPlayer, maxFactionLand);
+        return Math.min(fplayers.size() * landPerPlayer, maxFactionLand);
     }
     
     public int getLandInWorld(String worldName) {

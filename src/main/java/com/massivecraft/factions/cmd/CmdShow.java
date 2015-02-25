@@ -60,12 +60,9 @@ public class CmdShow extends FCommand {
         }
 
         msg(TL.COMMAND_SHOW_JOINING.toString() + peaceStatus, (faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString()));
-
-        double powerBoost = faction.getPowerBoost();
-        String boost = (powerBoost == 0.0) ? "" : (powerBoost > 0.0 ? TL.COMMAND_SHOW_BONUS.toString() + powerBoost + ")" : TL.COMMAND_SHOW_PENALTY.toString() + powerBoost + ")");
-        
+           
         msg(TL.COMMAND_SHOW_LAND, faction.getLand(), faction.getMaxLand());
-
+        
         if (P.p.getConfig().getBoolean("hcf.dtr.enabled", false)) {
             fme.updateDTR();
             String raidable = faction.isRaidable() ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
