@@ -143,6 +143,13 @@ public interface Faction extends EconomyParticipator {
     // ----------------------------------------------//
     // Power
     // ----------------------------------------------//
+    
+    public int getLand();
+    
+    public int getLandInWorld(String worldName);
+    
+    public int getMaxLand();
+    
     public double getPower();
 
     public double getPowerMax();

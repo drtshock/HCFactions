@@ -33,6 +33,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected LazyLocation home;
     protected transient long lastPlayerLoggedOffTime;
     protected double dtr;
+    protected int land;
     protected double money;
     protected double powerBoost;
     protected Map<String, Relation> relationWish = new HashMap<String, Relation>();
@@ -460,6 +461,20 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public boolean hasLandInflation() {
         return this.getLandRounded() > this.getPowerRounded();
+    }
+    
+    public int getLand() {
+        return Board.getInstance().getFactionCoordCount(this);
+    }
+    
+    public int getMaxLand() {
+        int landPerPlayer = P.p.getConfig().getInt("hcf.land-per-player", 5);
+        int maxFactionLand = P.p.getConfig().getInt("hcf.faction-land-max", 40);
+        return Math.max(fplayers.size() * landPerPlayer, maxFactionLand);
+    }
+    
+    public int getLandInWorld(String worldName) {
+        return Board.getInstance().getFactionCoordCountInWorld(this, worldName);
     }
  
     // -------------------------------
