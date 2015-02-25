@@ -188,7 +188,7 @@ hcf:
   dtr:
     enabled: true
     # Maximum DTR a faction can have 
-    max-faction-dtr: 6.0
+    max-faction-dtr: 5.5
     # Minimum DTR a faction can have 
     min-faction-dtr: -6.0
     # How much DTR is lost on death
@@ -196,7 +196,7 @@ hcf:
     # How much DTR is replenished per faction member per minute 
     minute-dtr: 0.01
     # Maximum DTR a player can have 
-    max-player-dtr: .34
+    max-player-dtr: .51
     # DTR Freeze
     # After a player dies, how long should the faction not be able to regen dtr?
     # This resets on each death but does not accumulate.
@@ -211,7 +211,14 @@ hcf:
   # Should we allow Factions to over claim if they are raidable (above has no effect on this)?
   # This has always been true, allowing factions to over claim others.
   allow-overclaim: true
-
+  
+  # Max land a faction can have claimed
+  faction-land-max: 40 
+  
+  # How much land a faction gets per member
+  #
+  land-per-player: 5
+  
   # Buffer Zone
   # Buffer Zone is an chunk area required between claims of different Factions.
   # This is default to 0 and has always been that way. Meaning Factions can have
