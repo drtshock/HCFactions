@@ -22,26 +22,26 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 public abstract class MemoryFaction implements Faction, EconomyParticipator {
-    protected String id = null;
-    protected boolean peacefulExplosionsEnabled;
-    protected boolean permanent;
-    protected String tag;
-    protected String description;
-    protected boolean open;
-    protected boolean peaceful;
-    protected LazyLocation home;
-    protected transient long lastPlayerLoggedOffTime;
-    protected double dtr;
-    protected int land;
-    protected double money;
-    protected Map<String, Relation> relationWish = new HashMap<String, Relation>();
+    protected ConcurrentHashMap<String, LazyLocation> warps = new ConcurrentHashMap<String, LazyLocation>();
     protected Map<FLocation, Set<String>> claimOwnership = new ConcurrentHashMap<FLocation, Set<String>>();
+    protected HashMap<String, List<String>> announcements = new HashMap<String, List<String>>();
+    protected Map<String, Relation> relationWish = new HashMap<String, Relation>();
     protected transient Set<FPlayer> fplayers = new HashSet<FPlayer>();
     protected Set<String> invites = new HashSet<String>();
-    protected HashMap<String, List<String>> announcements = new HashMap<String, List<String>>();
-    protected ConcurrentHashMap<String, LazyLocation> warps = new ConcurrentHashMap<String, LazyLocation>();
+    protected String id = null;
+    protected transient long lastPlayerLoggedOffTime;    
+    protected boolean peacefulExplosionsEnabled;
+    protected String description;
+    protected LazyLocation home;
+    protected boolean permanent;
+    protected boolean peaceful;
+    protected boolean open;
+    protected double money;
     private long lastDeath;
-
+    protected String tag;
+    protected double dtr;
+    protected int land;
+    
     public HashMap<String, List<String>> getAnnouncements() {
         return this.announcements;
     }
