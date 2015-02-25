@@ -23,17 +23,6 @@ public class Conf {
     public static ChatColor colorPeaceful = ChatColor.GOLD;
     public static ChatColor colorWar = ChatColor.DARK_RED;
 
-    // Power
-    public static double powerPlayerMax = 10.0;
-    public static double powerPlayerMin = -10.0;
-    public static double powerPlayerStarting = 0.0;
-    public static double powerPerMinute = 0.2; // Default health rate... it takes 5 min to heal one power
-    public static double powerPerDeath = 4.0; // A death makes you lose 4 power
-    public static boolean powerRegenOffline = false;  // does player power regenerate even while they're offline?
-    public static double powerOfflineLossPerDay = 0.0;  // players will lose this much power per day offline
-    public static double powerOfflineLossLimit = 0.0;  // players will no longer lose power from being offline once their power drops to this amount or less
-    public static double powerFactionMax = 0.0;  // if greater than 0, the cap on how much power a faction can have (additional power from players beyond that will act as a "buffer" of sorts)
-
     public static String prefixAdmin = "**";
     public static String prefixMod = "*";
 
@@ -52,9 +41,6 @@ public class Conf {
     public static boolean showMapFactionKey = true;
     public static boolean showNeutralFactionsOnMap = true;
     public static boolean showEnemyFactionsOnMap = true;
-
-    // Disallow joining/leaving/kicking while power is negative
-    public static boolean canLeaveWithNegativePower = true;
 
     // Configuration for faction-only chat
     public static boolean factionOnlyChat = true;
