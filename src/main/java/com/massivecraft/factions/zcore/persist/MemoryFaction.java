@@ -409,59 +409,10 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         }
         return count;
     }
-
-    // ----------------------------------------------//
-    // Power
-    // ----------------------------------------------//
-    public double getPower() {
-        if (this.hasPermanentPower()) {
-            return this.getPermanentPower();
-        }
-
-        double ret = 0;
-        for (FPlayer fplayer : fplayers) {
-            ret += fplayer.getPower();
-        }
-        if (Conf.powerFactionMax > 0 && ret > Conf.powerFactionMax) {
-            ret = Conf.powerFactionMax;
-        }
-        return ret + this.powerBoost;
-    }
-
-    public double getPowerMax() {
-        if (this.hasPermanentPower()) {
-            return this.getPermanentPower();
-        }
-
-        double ret = 0;
-        for (FPlayer fplayer : fplayers) {
-            ret += fplayer.getPowerMax();
-        }
-        if (Conf.powerFactionMax > 0 && ret > Conf.powerFactionMax) {
-            ret = Conf.powerFactionMax;
-        }
-        return ret + this.powerBoost;
-    }
-
-    public int getPowerRounded() {
-        return (int) Math.round(this.getPower());
-    }
-
-    public int getPowerMaxRounded() {
-        return (int) Math.round(this.getPowerMax());
-    }
-
-    public int getLandRounded() {
-        return Board.getInstance().getFactionCoordCount(this);
-    }
-
-    public int getLandRoundedInWorld(String worldName) {
-        return Board.getInstance().getFactionCoordCountInWorld(this, worldName);
-    }
-
-    public boolean hasLandInflation() {
-        return this.getLandRounded() > this.getPowerRounded();
-    }
+    
+    // -------------------------------
+    // Land
+    // -------------------------------
     
     public int getLand() {
         return Board.getInstance().getFactionCoordCount(this);

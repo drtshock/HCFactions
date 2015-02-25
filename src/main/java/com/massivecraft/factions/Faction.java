@@ -141,7 +141,7 @@ public interface Faction extends EconomyParticipator {
     public int getRelationCount(Relation relation);
 
     // ----------------------------------------------//
-    // Power
+    // Land
     // ----------------------------------------------//
     
     public int getLand();
@@ -149,20 +149,6 @@ public interface Faction extends EconomyParticipator {
     public int getLandInWorld(String worldName);
     
     public int getMaxLand();
-    
-    public double getPower();
-
-    public double getPowerMax();
-
-    public int getPowerRounded();
-
-    public int getPowerMaxRounded();
-
-    public int getLandRounded();
-
-    public int getLandRoundedInWorld(String worldName);
-
-    public boolean hasLandInflation();
     
     // ----------------------------------------------//
     // DTR

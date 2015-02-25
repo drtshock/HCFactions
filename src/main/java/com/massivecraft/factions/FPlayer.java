@@ -40,10 +40,6 @@ public interface FPlayer extends EconomyParticipator {
 
     public void setRole(Role role);
 
-    public double getPowerBoost();
-
-    public void setPowerBoost(double powerBoost);
-
     public Faction getAutoClaimFor();
 
     public void setAutoClaimFor(Faction faction);
@@ -149,42 +145,19 @@ public interface FPlayer extends EconomyParticipator {
     // Health
     //----------------------------------------------//
     public void heal(int amnt);
-
-
-    //----------------------------------------------//
-    // Power
-    //----------------------------------------------//
-    public double getPower();
-
-    public void alterPower(double delta);
-
-    public double getPowerMax();
-
-    public double getPowerMin();
-
-    public int getPowerRounded();
-
-    public int getPowerMaxRounded();
-
-    public int getPowerMinRounded();
-
-    public void updatePower();
-
-    public void losePowerFromBeingOffline();
-
-    public void onDeath();
-    
+   
     //----------------------------------------------//
     // DTR
     //----------------------------------------------//
     public double getDTR();
     
+    public double getMaxDTR();
+    
     public void alterDTR(double delta);
     
     public void updateDTR();
     
-    public double getMaxDTR();
-    
+    public void onDeath();
 
     //----------------------------------------------//
     // Territory

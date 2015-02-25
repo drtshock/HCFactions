@@ -1,6 +1,5 @@
 package com.massivecraft.factions.zcore.persist.json;
 
-import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
 
@@ -20,7 +19,7 @@ public class JSONFPlayer extends MemoryFPlayer {
     }
 
     public boolean shouldBeSaved() {
-        if (!this.hasFaction() && (this.getPowerRounded() == this.getPowerMaxRounded() || this.getPowerRounded() == (int) Math.round(Conf.powerPlayerStarting))) {
+        if (!this.hasFaction()) {
             return false;
         }
         return true;

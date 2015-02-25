@@ -48,19 +48,9 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected Role role;
     // FIELD: title
     protected String title;
-
-    // FIELD: power
-    protected double power;
     
     // FIELD: dtr
     protected double dtr;
-
-    // FIELD: powerBoost
-    // special increase/decrease to min and max power for this player
-    protected double powerBoost;
-
-    // FIELD: lastPowerUpdateTime
-    protected long lastPowerUpdateTime;
     
     // FIELD: lastDtrUpdateTime
     protected long lastDtrUpdateTime;
@@ -136,14 +126,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void setRole(Role role) {
         this.role = role;
-    }
-
-    public double getPowerBoost() {
-        return this.powerBoost;
-    }
-
-    public void setPowerBoost(double powerBoost) {
-        this.powerBoost = powerBoost;
     }
 
     public Faction getAutoClaimFor() {
@@ -225,17 +207,15 @@ public abstract class MemoryFPlayer implements FPlayer {
     public MemoryFPlayer(String id) {
         this.id = id;
         this.resetFactionData(false);
-        this.power = Conf.powerPlayerStarting;
         // start at 0?
         this.dtr = 0.0;
-        this.lastPowerUpdateTime = System.currentTimeMillis();
+        this.lastDtrUpdateTime = System.currentTimeMillis();
         this.lastLoginTime = System.currentTimeMillis();
         this.mapAutoUpdating = false;
         this.autoClaimFor = null;
         this.autoSafeZoneEnabled = false;
         this.autoWarZoneEnabled = false;
         this.loginPvpDisabled = Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0;
-        this.powerBoost = 0.0;
 
         if (!Conf.newPlayerStartingFactionID.equals("0") && Factions.getInstance().isValidFactionId(Conf.newPlayerStartingFactionID)) {
             this.factionId = Conf.newPlayerStartingFactionID;
@@ -245,7 +225,6 @@ public abstract class MemoryFPlayer implements FPlayer {
     public MemoryFPlayer(MemoryFPlayer other) {
         this.factionId = other.factionId;
         this.id = other.id;
-        this.power = other.power;
         this.dtr = other.dtr;
         this.lastLoginTime = other.lastLoginTime;
         this.mapAutoUpdating = other.mapAutoUpdating;
@@ -253,7 +232,6 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.autoSafeZoneEnabled = other.autoSafeZoneEnabled;
         this.autoWarZoneEnabled = other.autoWarZoneEnabled;
         this.loginPvpDisabled = other.loginPvpDisabled;
-        this.powerBoost = other.powerBoost;
         this.role = other.role;
         this.title = other.title;
         this.chatMode = other.chatMode;
@@ -294,9 +272,8 @@ public abstract class MemoryFPlayer implements FPlayer {
 
 
     public void setLastLoginTime(long lastLoginTime) {
-        losePowerFromBeingOffline();
         this.lastLoginTime = lastLoginTime;
-        this.lastPowerUpdateTime = lastLoginTime;
+        this.lastDtrUpdateTime = lastLoginTime;
         if (Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0) {
             this.loginPvpDisabled = true;
         }
@@ -452,93 +429,6 @@ public abstract class MemoryFPlayer implements FPlayer {
         player.setHealth(player.getHealth() + amnt);
     }
 
-
-    //----------------------------------------------//
-    // Power
-    //----------------------------------------------//
-    public double getPower() {
-        this.updatePower();
-        return this.power;
-    }
-
-    public void alterPower(double delta) {
-        this.power += delta;
-        if (this.power > this.getPowerMax()) {
-            this.power = this.getPowerMax();
-        } else if (this.power < this.getPowerMin()) {
-            this.power = this.getPowerMin();
-        }
-    }
-
-    public double getPowerMax() {
-        return Conf.powerPlayerMax + this.powerBoost;
-    }
-
-    public double getPowerMin() {
-        return Conf.powerPlayerMin + this.powerBoost;
-    }
-
-    public int getPowerRounded() {
-        return (int) Math.round(this.getPower());
-    }
-
-    public int getPowerMaxRounded() {
-        return (int) Math.round(this.getPowerMax());
-    }
-
-    public int getPowerMinRounded() {
-        return (int) Math.round(this.getPowerMin());
-    }
-
-    public void updatePower() {
-        if (this.isOffline()) {
-            losePowerFromBeingOffline();
-            if (!Conf.powerRegenOffline) {
-                return;
-            }
-        } else if (hasFaction() && getFaction().isPowerFrozen()) {
-            return; // Don't let power regen if faction power is frozen.
-        }
-        long now = System.currentTimeMillis();
-        long millisPassed = now - this.lastPowerUpdateTime;
-        this.lastPowerUpdateTime = now;
-
-        Player thisPlayer = this.getPlayer();
-        if (thisPlayer != null && thisPlayer.isDead()) {
-            return;  // don't let dead players regain power until they respawn
-        }
-
-        int millisPerMinute = 60 * 1000;
-        this.alterPower(millisPassed * Conf.powerPerMinute / millisPerMinute);
-    }
-
-    public void losePowerFromBeingOffline() {
-        if (Conf.powerOfflineLossPerDay > 0.0 && this.power > Conf.powerOfflineLossLimit) {
-            long now = System.currentTimeMillis();
-            long millisPassed = now - this.lastPowerUpdateTime;
-            this.lastPowerUpdateTime = now;
-
-            double loss = millisPassed * Conf.powerOfflineLossPerDay / (24 * 60 * 60 * 1000);
-            if (this.power - loss < Conf.powerOfflineLossLimit) {
-                loss = this.power;
-            }
-            this.alterPower(-loss);
-        }
-    }
-
-    public void onDeath() {
-        this.updatePower();
-        this.alterPower(-Conf.powerPerDeath);
-        if (hasFaction()) {
-            getFaction().setLastDeath(System.currentTimeMillis());
-            // Only update DTR if player is in a faction
-            if(P.p.getConfig().getBoolean("hcf.dtr.enabled", false)) {
-                this.updateDTR();
-                this.alterDTR(-P.p.getConfig().getDouble("hcf.dtr.death-dtr", 1)); 
-            }           
-        }        
-    }
-
     // ----------------------------------------------//
     // DTR
     // ----------------------------------------------//
@@ -581,6 +471,17 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public double getMaxDTR() {
         return P.p.getConfig().getDouble("hcf.dtr.max-player-dtr", 0.51);
+    }
+    
+    public void onDeath() {
+        if (hasFaction()) {
+            getFaction().setLastDeath(System.currentTimeMillis());
+            // Only update DTR if player is in a faction
+            if(P.p.getConfig().getBoolean("hcf.dtr.enabled", false)) {
+                this.updateDTR();
+                this.alterDTR(-P.p.getConfig().getDouble("hcf.dtr.death-dtr", 1)); 
+            }           
+        }        
     }
 
     //----------------------------------------------//
@@ -652,11 +553,6 @@ public abstract class MemoryFPlayer implements FPlayer {
             return;
         }
 
-        if (!Conf.canLeaveWithNegativePower && this.getPower() < 0) {
-            msg(TL.LEAVE_NEGATIVEPOWER);
-            return;
-        }
-
         // if economy is enabled and they're not on the bypass list, make sure they can pay
         if (makePay && !Econ.hasAtLeast(this, Conf.econCostLeave, TL.LEAVE_TOLEAVE.toString())) {
             return;
@@ -716,7 +612,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         FLocation flocation = new FLocation(location);
         Faction myFaction = getFaction();
         Faction currentFaction = Board.getInstance().getFactionAt(flocation);
-        int ownedLand = forFaction.getLandRounded();
+        int ownedLand = forFaction.getLand();
         int factionBuffer = P.p.getConfig().getInt("hcf.buffer-zone", 0);
         int worldBuffer = P.p.getConfig().getInt("world-border.buffer", 0);
 
@@ -743,13 +639,11 @@ public abstract class MemoryFPlayer implements FPlayer {
             error = P.p.txt.parse(TL.CLAIM_SAFEZONE.toString());
         } else if (currentFaction.isWarZone()) {
             error = P.p.txt.parse(TL.CLAIM_WARZONE.toString());
-        } else if (P.p.getConfig().getBoolean("hcf.overclaim", true) && ownedLand >= forFaction.getPowerRounded()) {
-            error = P.p.txt.parse(TL.CLAIM_POWER.toString());
         } else if (Conf.claimedLandsMax != 0 && ownedLand >= Conf.claimedLandsMax && forFaction.isNormal()) {
             error = P.p.txt.parse(TL.CLAIM_LIMIT.toString());
         } else if (currentFaction.getRelationTo(forFaction) == Relation.ALLY) {
             error = P.p.txt.parse(TL.CLAIM_ALLY.toString());
-        } else if (Conf.claimsMustBeConnected && !this.isAdminBypassing() && myFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.getInstance().isConnectedLocation(flocation, myFaction) && (!Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !currentFaction.isNormal())) {
+        } else if (Conf.claimsMustBeConnected && !this.isAdminBypassing() && myFaction.getLandInWorld(flocation.getWorldName()) > 0 && !Board.getInstance().isConnectedLocation(flocation, myFaction) && (!Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction || !currentFaction.isNormal())) {
             if (Conf.claimsCanBeUnconnectedIfOwnedByOtherFaction) {
                 error = P.p.txt.parse(TL.CLAIM_CONTIGIOUS.toString());
             } else {
@@ -768,9 +662,6 @@ public abstract class MemoryFPlayer implements FPlayer {
                 error = P.p.txt.parse(TL.CLAIM_PEACEFUL.toString(), currentFaction.getTag(this));
             } else if (currentFaction.isPeaceful()) {
                 error = P.p.txt.parse(TL.CLAIM_PEACEFULTARGET.toString(), currentFaction.getTag(this));
-            } else if (!currentFaction.hasLandInflation()) {
-                // TODO more messages WARN current faction most importantly
-                error = P.p.txt.parse(TL.CLAIM_THISISSPARTA.toString(), currentFaction.getTag(this));
             } else if (currentFaction.isRaidable() && !P.p.getConfig().getBoolean("hcf.allow-overclaim", true)) {
                 // deny over claim when it normally would be allowed.
                 error = P.p.txt.parse(TL.CLAIM_OVERCLAIM_DISABLED.toString());
@@ -793,7 +684,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         FLocation flocation = new FLocation(location);
         Faction currentFaction = Board.getInstance().getFactionAt(flocation);
 
-        int ownedLand = forFaction.getLandRounded();
+        int ownedLand = forFaction.getLand();
 
         if (!this.canClaimForFactionAtLocation(forFaction, location, notifyFailure)) {
             return false;
@@ -806,7 +697,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         if (mustPay) {
             cost = Econ.calculateClaimCost(ownedLand, currentFaction.isNormal());
 
-            if (Conf.econClaimUnconnectedFee != 0.0 && forFaction.getLandRoundedInWorld(flocation.getWorldName()) > 0 && !Board.getInstance().isConnectedLocation(flocation, forFaction)) {
+            if (Conf.econClaimUnconnectedFee != 0.0 && forFaction.getLandInWorld(flocation.getWorldName()) > 0 && !Board.getInstance().isConnectedLocation(flocation, forFaction)) {
                 cost += Conf.econClaimUnconnectedFee;
             }
 
@@ -850,7 +741,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public boolean shouldBeSaved() {
-        if (!this.hasFaction() && (this.getPowerRounded() == this.getPowerMaxRounded() || this.getPowerRounded() == (int) Math.round(Conf.powerPlayerStarting))) {
+        if (!this.hasFaction()) {
             return false;
         }
         return true;
