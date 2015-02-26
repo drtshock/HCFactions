@@ -148,7 +148,7 @@ warmups:
 #################### HCF Features ####################
 ######################################################
 # These features were requested as part of Hardcore Factions or something.
-# All of them are disabled by default.
+# All of them are disabled by default. (Except land settings!)
 
 # Max Relation Types
 # Limits factions to having a max number of each relation.
@@ -173,14 +173,17 @@ world-border:
 # Raids
 # Allow a faction to be raided if their DTR is <= 0 
 # This will make claimed territory lose all protections
-#   allowing factions to open chests, break blocks, etc. if they
-#   have claimed chunks >= power.
+#   allowing factions to open chests, break blocks, etc. 
 hcf:
-  # DTR (death til raidable) will be in /f show if enabled. Configure the message in the lang.yml
+  # DTR (death till raidable) will be in /f show if enabled. Configure the message in the lang.yml
   # When DTR is below 0, the faction is considered raidable
   # DTR is the sum of all faction member's DTR value, or MaxFactionDTR if it's larger
   dtr:
     enabled: false
+    # Should we hide faction homes in /f show ?
+    # Anyone will be able to find the home of a faction if set to false
+    # However, a faction could hide by not just not setting a home :p
+    hide-homes: false
     # Maximum DTR a faction can have 
     max-faction-dtr: 5.5
     # Minimum DTR a faction can have 
@@ -201,7 +204,6 @@ hcf:
   faction-land-max: 40 
   
   # How much land a faction gets per member
-  #
   land-per-player: 5
   
   # Buffer Zone

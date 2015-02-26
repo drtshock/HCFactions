@@ -69,12 +69,16 @@ public class CmdShow extends FCommand {
             String dtr = dc.format(faction.getDTR()).toString();
             String maxDtr = dc.format(faction.getMaxDTR()).toString();
             msg(TL.COMMAND_SHOW_DEATHS_TIL_RAIDABLE, dtr, maxDtr, raidable);
-            if(faction.hasHome()) {
-                Location home = faction.getHome();
-                msg(TL.COMMAND_SHOW_DTR_HOME_SET, home.getBlockX(), home.getBlockY(), home.getBlockZ());
-            } else {
-                msg(TL.COMMAND_SHOW_DTR_HOME_UNSET);
-            }
+            // Dont hide faction home if disabled in config OR if sender is member of faction
+            // TODO: Maybe add home hiding bypass for allies too?-> || fme.getRelationTo(faction).isAlly()
+            if(!P.p.getConfig().getBoolean("hcf.dtr.hide-homes", false) || fme.getRelationTo(faction).isMember()) {
+                if(faction.hasHome()) {
+                    Location home = faction.getHome();
+                    msg(TL.COMMAND_SHOW_DTR_HOME_SET, home.getBlockX(), home.getBlockY(), home.getBlockZ());
+                } else {
+                    msg(TL.COMMAND_SHOW_DTR_HOME_UNSET);
+                } 
+            }           
             if(faction.isFrozen()) {
                 long left = faction.getFreezeLeft();
                 String time = DurationFormatUtils.formatDuration(left, "mm:ss", true);
