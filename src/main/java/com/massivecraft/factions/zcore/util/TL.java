@@ -171,9 +171,9 @@ public enum TL {
     COMMAND_DTR_DESCRIPTION("Change the faction deaths-till-raidable value"),
     COMMAND_DTR_ERROR_MAX("<b>Cannot set DTR above this faction's max value of <i>%s"),
     COMMAND_DTR_ERROR_MIN("<b>Cannot set DTR below config's min value of <i>%s"),
-    COMMAND_DTR_SET("set dtr to %s"),
+    COMMAND_DTR_SET("set dtr to <a>%s <i>for"),
     COMMAND_DTR_SUCCESS("<i>You %s <h>%s<i>."),
-    COMMAND_DTR_FACTION("%s<i> %s for your faction"),
+    COMMAND_DTR_FACTION("%s<i> %s your faction"),
 
     COMMAND_FWARP_CLICKTOWARP("Click to warp!"),
     COMMAND_FWARP_COMMANDFORMAT("<i>/f warp <warpname>"),

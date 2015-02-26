@@ -15,7 +15,7 @@ import org.bukkit.Location;
 
 public class CmdShow extends FCommand {
 
-    private DecimalFormat dc = new DecimalFormat("#.##");   
+    private DecimalFormat dc = new DecimalFormat("#.###");   
     public CmdShow() {
         this.aliases.add("show");
         this.aliases.add("who");

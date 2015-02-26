@@ -12,13 +12,14 @@ import com.massivecraft.factions.zcore.util.TL;
 
 public class CmdDtr extends FCommand {
 
-    private DecimalFormat dc = new DecimalFormat("#.##"); 
+    private DecimalFormat dc = new DecimalFormat("#.###"); 
     
     public CmdDtr() {
         super();
         this.aliases.add("dtr");
 
-        this.requiredArgs.add("");
+        this.requiredArgs.add("faction");
+        this.optionalArgs.put("dtr", "value");
 
         this.permission = Permission.DTR.node;
         this.disableOnLock = true;
@@ -33,7 +34,6 @@ public class CmdDtr extends FCommand {
     public void perform() {
         Faction targetFaction = this.argAsFaction(0);
         if (targetFaction == null) {
-            msg(TL.COMMAND_AUTOCLAIM_DISABLED);
             return;
         }
 
@@ -41,6 +41,7 @@ public class CmdDtr extends FCommand {
         String change = "";
         double max = targetFaction.getMaxDTR();
         double min = targetFaction.getMinDTR();
+        
         if (targetDtr > max) {
             msg(TL.COMMAND_DTR_ERROR_MAX.format(dc.format(max).toString()));
             return;
