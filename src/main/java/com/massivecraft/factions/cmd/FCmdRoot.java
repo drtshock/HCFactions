@@ -19,6 +19,7 @@ public class FCmdRoot extends FCommand {
     public CmdDeinvite cmdDeinvite = new CmdDeinvite();
     public CmdDescription cmdDescription = new CmdDescription();
     public CmdDisband cmdDisband = new CmdDisband();
+    public CmdDtr cmdDtr = new CmdDtr();
     public CmdHelp cmdHelp = new CmdHelp();
     public CmdHome cmdHome = new CmdHome();
     public CmdInvite cmdInvite = new CmdInvite();
@@ -95,6 +96,7 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdDeinvite);
         this.addSubCommand(this.cmdDescription);
         this.addSubCommand(this.cmdDisband);
+        this.addSubCommand(this.cmdDtr);
         this.addSubCommand(this.cmdHelp);
         this.addSubCommand(this.cmdHome);
         this.addSubCommand(this.cmdInvite);

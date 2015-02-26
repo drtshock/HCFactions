@@ -23,6 +23,7 @@ public enum Permission {
     DESCRIPTION("description"),
     DISBAND("disband"),
     DISBAND_ANY("disband.any"),
+    DTR("dtr"),
     HELP("help"),
     HOME("home"),
     INVITE("invite"),

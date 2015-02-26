@@ -173,6 +173,7 @@ public class CmdHelp extends FCommand {
         pageLines.add(p.txt.parse(TL.COMMAND_HELP_MOAR_2.toString()));
         pageLines.add(p.cmdBase.cmdChatSpy.getUseageTemplate(true));
         pageLines.add(p.cmdBase.cmdPermanent.getUseageTemplate(true));
+        pageLines.add(p.cmdBase.cmdDtr.getUseageTemplate(true));
         pageLines.add(p.cmdBase.cmdConfig.getUseageTemplate(true));
         helpPages.add(pageLines);
 
