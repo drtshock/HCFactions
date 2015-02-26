@@ -141,13 +141,14 @@ public interface Faction extends EconomyParticipator {
     // ----------------------------------------------//
     // DTR
     // ----------------------------------------------//
+    
     public double getDTR();
     
     public double getMaxDTR();
     
     public double getMinDTR();
     
-    public boolean isDTRFrozen();
+    public boolean isFrozen();
     
     public boolean isRaidable();
     

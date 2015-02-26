@@ -227,22 +227,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
         return aid;
     }
-    
-    public boolean isDTRFrozen() {
-        int freezeSeconds = P.p.getConfig().getInt("hcf.dtr.dtr-freeze", 0);
-        if (!P.p.getConfig().getBoolean("hcf.dtr.enabled", false) || freezeSeconds == 0) {
-            return false;
-        }
-        return System.currentTimeMillis() - lastDeath < freezeSeconds * 1000; 
-    }
-    
-    public long getFreezeLeft() {
-        if (isDTRFrozen()) {
-            int freezeSeconds = P.p.getConfig().getInt("hcf.dtr.dtr-freeze", 0);
-            return freezeSeconds * 1000 - (System.currentTimeMillis() - lastDeath);
-        }
-        return 0;
-    }
 
     public void setLastDeath(long time) {
         this.lastDeath = time;
@@ -420,7 +404,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         for (FPlayer fplayer : fplayers) {
             ret += fplayer.getMaxDTR();
         }
-        double max = P.p.getConfig().getDouble("hcf.dtr.max-faction-dtr", 6.0);
+        double max = P.p.getConfig().getDouble("hcf.dtr.max-faction-dtr", 5.5);
         if(max > 0 && ret > max) {
             ret = max;
         } else if(getMinDTR() < 0 && ret < getMinDTR()) {
@@ -439,6 +423,22 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     
     public boolean isRaidable() {
         return this.getDTR() <= 0;
+    }
+    
+    public boolean isFrozen() {
+        int freezeSeconds = P.p.getConfig().getInt("hcf.dtr.dtr-freeze", 0);
+        if (!P.p.getConfig().getBoolean("hcf.dtr.enabled", false) || freezeSeconds == 0) {
+            return false;
+        }
+        return System.currentTimeMillis() - lastDeath < freezeSeconds * 1000; 
+    }
+    
+    public long getFreezeLeft() {
+        if (isFrozen()) {
+            int freezeSeconds = P.p.getConfig().getInt("hcf.dtr.dtr-freeze", 0);
+            return freezeSeconds * 1000 - (System.currentTimeMillis() - lastDeath);
+        }
+        return 0;
     }
     
     // -------------------------------

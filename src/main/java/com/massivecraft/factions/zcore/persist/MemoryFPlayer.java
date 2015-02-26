@@ -452,7 +452,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void updateDTR() {
-        if (this.isOffline() || (hasFaction() && getFaction().isDTRFrozen())) {
+        if (this.isOffline() || (hasFaction() && getFaction().isFrozen())) {
             return; // Don't let dtr regen if faction dtr is frozen or player offline.
         }
         long now = System.currentTimeMillis();

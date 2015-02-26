@@ -75,7 +75,7 @@ public class CmdShow extends FCommand {
             } else {
                 msg(TL.COMMAND_SHOW_DTR_HOME_UNSET);
             }
-            if(faction.isDTRFrozen()) {
+            if(faction.isFrozen()) {
                 long left = faction.getFreezeLeft();
                 String time = DurationFormatUtils.formatDuration(left, "mm:ss", true);
                 msg(TL.COMMAND_SHOW_DTR_FROZEN, time);
