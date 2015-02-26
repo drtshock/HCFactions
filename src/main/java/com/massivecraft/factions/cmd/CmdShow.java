@@ -19,7 +19,7 @@ public class CmdShow extends FCommand {
     public CmdShow() {
         this.aliases.add("show");
         this.aliases.add("who");
-        this.dc = new DecimalFormat(TL.GENERIC_DTR_DECIMALFORMAT.toString());
+        this.dc = new DecimalFormat(TL.GENERIC_DECIMALFORMAT.toString());
         this.optionalArgs.put("faction tag", "yours");
 
         this.permission = Permission.SHOW.node;

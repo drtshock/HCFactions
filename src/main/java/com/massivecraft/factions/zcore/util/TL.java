@@ -538,7 +538,7 @@ public enum TL {
     GENERIC_OWNERS("Owner(s): %1$s"),
     GENERIC_PUBLICLAND("Public faction land."),
     GENERIC_FACTIONLESS("factionless"),
-    GENERIC_DTR_DECIMALFORMAT("#.###"),
+    GENERIC_DECIMALFORMAT("#.###"),
     GENERIC_SERVERADMIN("A server admin"),
     GENERIC_DISABLED("disabled"),
     GENERIC_ENABLED("enabled"),

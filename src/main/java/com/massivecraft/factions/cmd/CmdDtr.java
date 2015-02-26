@@ -14,7 +14,7 @@ public class CmdDtr extends FCommand {
     
     public CmdDtr() {
         super();
-        this.dc = new DecimalFormat(TL.GENERIC_DTR_DECIMALFORMAT.toString());
+        this.dc = new DecimalFormat(TL.GENERIC_DECIMALFORMAT.toString());
         this.aliases.add("dtr");
 
         this.requiredArgs.add("faction");
