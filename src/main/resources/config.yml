@@ -179,6 +179,7 @@ hcf:
   # When DTR is below 0, the faction is considered raidable
   # DTR is the sum of all faction member's DTR value, or MaxFactionDTR if it's larger
   dtr:
+    # Set to true to enable DTR features! (below)
     enabled: false
     # Should we hide faction homes in /f show ?
     # Anyone will be able to find the home of a faction if set to false
@@ -199,6 +200,13 @@ hcf:
     # This resets on each death but does not accumulate.
     # Set to 0 for no freeze. Time is in seconds.
     dtr-freeze: 0
+    # DTR Freeze background regeneration
+    # When a DTR freeze is started, current DTR will not change, but
+    #  IF we set allow-background-regen to true, then after the freeze, 
+    #  the faction will have recovered the DTR that generated during the freeze. 
+    # If set to false, then the DTR the faction would have generated during the 
+    #   DTR freeze period is simply ignored, so therefore a more harsh penalty :p
+    allow-background-regen: false
   
   # Max land a faction can have claimed
   faction-land-max: 40 

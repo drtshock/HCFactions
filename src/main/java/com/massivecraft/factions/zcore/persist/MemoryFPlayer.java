@@ -452,8 +452,14 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void updateDTR() {
-        if (this.isOffline() || (hasFaction() && getFaction().isFrozen())) {
-            return; // Don't let dtr regen if faction dtr is frozen or player offline.
+        if (this.isOffline()) {
+            return;
+        } else if ((hasFaction() && getFaction().isFrozen())) {
+            if (!P.p.getConfig().getBoolean("hcf.dtr.allow-background-regen", false)) {
+                // if we're blocking background regen, then fake a dtr update
+                this.lastDtrUpdateTime = System.currentTimeMillis();
+            }
+            return;
         }
         long now = System.currentTimeMillis();
         long millisPassed = now - this.lastDtrUpdateTime;
@@ -474,14 +480,14 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
     
     public void onDeath() {
+        // Only update DTR if player is in a faction
         if (hasFaction()) {
             getFaction().setLastDeath(System.currentTimeMillis());
-            // Only update DTR if player is in a faction
-            if(P.p.getConfig().getBoolean("hcf.dtr.enabled", false)) {
+            if (P.p.getConfig().getBoolean("hcf.dtr.enabled", false)) {
                 this.updateDTR();
-                this.alterDTR(-P.p.getConfig().getDouble("hcf.dtr.death-dtr", 1)); 
-            }           
-        }        
+                this.alterDTR(-P.p.getConfig().getDouble("hcf.dtr.death-dtr", 1.0));
+            }
+        }
     }
 
     //----------------------------------------------//
