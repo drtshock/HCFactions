@@ -15,11 +15,11 @@ import org.bukkit.Location;
 
 public class CmdShow extends FCommand {
 
-    private DecimalFormat dc = new DecimalFormat("#.###");   
+    private DecimalFormat dc;   
     public CmdShow() {
         this.aliases.add("show");
         this.aliases.add("who");
-
+        this.dc = new DecimalFormat(TL.GENERIC_DTR_DECIMALFORMAT.toString());
         this.optionalArgs.put("faction tag", "yours");
 
         this.permission = Permission.SHOW.node;

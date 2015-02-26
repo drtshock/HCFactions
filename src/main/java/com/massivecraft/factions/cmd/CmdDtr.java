@@ -4,18 +4,17 @@ import java.text.DecimalFormat;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
 
 
 public class CmdDtr extends FCommand {
 
-    private DecimalFormat dc = new DecimalFormat("#.###"); 
+    private DecimalFormat dc;
     
     public CmdDtr() {
         super();
+        this.dc = new DecimalFormat(TL.GENERIC_DTR_DECIMALFORMAT.toString());
         this.aliases.add("dtr");
 
         this.requiredArgs.add("faction");

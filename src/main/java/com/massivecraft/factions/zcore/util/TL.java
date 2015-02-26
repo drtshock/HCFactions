@@ -171,7 +171,7 @@ public enum TL {
     COMMAND_DTR_DESCRIPTION("Change the faction deaths-till-raidable value"),
     COMMAND_DTR_ERROR_MAX("<b>Cannot set DTR above this faction's max value of <i>%s"),
     COMMAND_DTR_ERROR_MIN("<b>Cannot set DTR below config's min value of <i>%s"),
-    COMMAND_DTR_SET("set dtr to <a>%s <i>for"),
+    COMMAND_DTR_SET("set dtr to %s for"),
     COMMAND_DTR_SUCCESS("<i>You %s <h>%s<i>."),
     COMMAND_DTR_FACTION("%s<i> %s your faction"),
 
@@ -430,7 +430,7 @@ public enum TL {
     COMMAND_SHOW_DTR_HOME_SET("<a>Faction Home: <i>%1$s, %2$s, %3$s"),
     COMMAND_SHOW_DTR_HOME_UNSET("<a>Faction Home: <i>Not set"),
     COMMAND_SHOW_DTR_FROZEN("<a>DTR Freeze: <i>%s"),
-    COMMAND_SHOW_DEATHS_TIL_RAIDABLE("<a>DTR: <i>%1$s / %2$s <a>Raidable: <i>(%3$s)"),
+    COMMAND_SHOW_DEATHS_TIL_RAIDABLE("<a>DTR: <i>%1$s / %2$s <a>Raidable: <i>%3$s"),
 
     COMMAND_SHOWINVITES_PENDING("Players with pending invites: "),
     COMMAND_SHOWINVITES_CLICKTOREVOKE("Click to revoke invite for %1$s"),
@@ -538,6 +538,7 @@ public enum TL {
     GENERIC_OWNERS("Owner(s): %1$s"),
     GENERIC_PUBLICLAND("Public faction land."),
     GENERIC_FACTIONLESS("factionless"),
+    GENERIC_DTR_DECIMALFORMAT("#.###"),
     GENERIC_SERVERADMIN("A server admin"),
     GENERIC_DISABLED("disabled"),
     GENERIC_ENABLED("enabled"),
@@ -657,8 +658,8 @@ public enum TL {
     /**
      * Raidable is used in multiple places. Allow more than just true/false.
      */
-    RAIDABLE_TRUE("raidable-true", "true"),
-    RAIDABLE_FALSE("raidable-false", "false"),
+    RAIDABLE_TRUE("raidable-true", "&ctrue"),
+    RAIDABLE_FALSE("raidable-false", "&afalse"),
     /**
      * Warmups
      */
