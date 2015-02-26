@@ -167,6 +167,13 @@ public enum TL {
     COMMAND_DISBAND_BROADCAST_NOTYOURS("<h>%1$s<i> disbanded the faction %2$s."),
     COMMAND_DISBAND_HOLDINGS("<i>You have been given the disbanded faction's bank, totaling %1$s."),
     COMMAND_DISBAND_DESCRIPTION("Disband a faction"),
+    
+    COMMAND_DTR_DESCRIPTION("Change the faction deaths-till-raidable value"),
+    COMMAND_DTR_ERROR_MAX("<b>Cannot set DTR above this faction's max value of <i>%s"),
+    COMMAND_DTR_ERROR_MIN("<b>Cannot set DTR below config's min value of <i>%s"),
+    COMMAND_DTR_SET("set dtr to %s"),
+    COMMAND_DTR_SUCCESS("<i>You %s <h>%s<i>."),
+    COMMAND_DTR_FACTION("%s<i> %s for your faction"),
 
     COMMAND_FWARP_CLICKTOWARP("Click to warp!"),
     COMMAND_FWARP_COMMANDFORMAT("<i>/f warp <warpname>"),
@@ -296,9 +303,6 @@ public enum TL {
     COMMAND_MOD_PROMOTES("%1$s<i> was promoted to moderator in your faction."),
     COMMAND_MOD_PROMOTED("<i>You have promoted %1$s<i> to moderator."),
     COMMAND_MOD_DESCRIPTION("Give or revoke moderator rights"),
-
-    COMMAND_MODIFYPOWER_ADDED("<i>Added <a>%1$f <i>power to <a>%2$s. <i>New total rounded power: <a>%3$d"),
-    COMMAND_MODIFYPOWER_DESCRIPTION("Modify the power of a faction/player"),
 
     COMMAND_MONEY_LONG("<i>The faction money commands."),
     COMMAND_MONEY_DESCRIPTION("Faction money commands"),
