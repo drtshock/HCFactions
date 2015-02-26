@@ -75,7 +75,6 @@ tooltips:
     - "&6Claimed: &f{chunks}"
     - "&6Raidable: &f{raidable}"
     - "&6Warps: &f{warps}"
-    - "&6Power: &f{power}/{maxPower}"
     - "&6Members: &f{online}/{members}"
 
   # Show
@@ -181,7 +180,7 @@ hcf:
   # When DTR is below 0, the faction is considered raidable
   # DTR is the sum of all faction member's DTR value, or MaxFactionDTR if it's larger
   dtr:
-    enabled: true
+    enabled: false
     # Maximum DTR a faction can have 
     max-faction-dtr: 5.5
     # Minimum DTR a faction can have 
