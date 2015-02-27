@@ -320,14 +320,7 @@ public class P extends MPlugin {
     }
 
     public String getPrimaryGroup(OfflinePlayer player) {
-        if (perms == null) {
-            return " ";
-        }
-        String group = perms.getPrimaryGroup(Bukkit.getWorlds().get(0).getName(), player);
-        if (group == null) {
-            return " ";
-        }
-        return group;
+        return perms == null ? " " : perms.getPrimaryGroup(Bukkit.getWorlds().get(0).getName(), player);
     }
     
     public void debug(Level level, String s) {
