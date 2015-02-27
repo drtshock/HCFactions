@@ -1,5 +1,5 @@
-# FactionsUUID by drtshock
-# Report issues https://github.com/drtshock/Factions/issues?state=open
+# HCFactions by drtshock and milkywayz 
+# Report issues https://github.com/drtshock/HCFProblems/issues/new
 # Live support http://webchat.esper.net/?channels=drtshock&prompt=1
 
 # Made with love <3
@@ -19,11 +19,6 @@ findfactionsexploit:
   cooldown: 2000 # in miliseconds. 2000 = 2 seconds.
   log: false
 
-### Hard Core Settings ###
-# Many of the features that are / are to come in this section have been requested by
-#   people in relation to HCF servers. All settings are set to the normal Factions
-#   behavior by default.
-
 # Default Relation allows you to change the default relation for Factions.
 # Example usage would be so people can't leave then make a new Faction while Raiding
 #   in order to be able to execute commands if the default relation is neutral.
@@ -41,8 +36,6 @@ portals:
   # Example: put ALLY to allow ALLY and MEMBER to be able to create portals.
   minimum-relation: MEMBER # If typed incorrectly, defaults to NEUTRAL.
 
-### Hard Core Settings ###
-
 # Warps
 # What should be the max amount of warps that a Factoin can set?
 max-warps: 5
@@ -53,9 +46,9 @@ max-warps: 5
 # If enabled is set to false, it will ignore the values.
 warp-cost:
   enabled: false
-  setwarp: 5
-  delwarp: 5
-  warp: 5
+  setwarp: 5.0
+  delwarp: 5.0
+  warp: 5.0
 
 # Pistons
 # Should we disable pistons in Faction territory? This will prevent people from doing something like:
@@ -144,12 +137,6 @@ warmups:
   # Delay for /f warp
   f-warp: 0
 
-######################################################
-#################### HCF Features ####################
-######################################################
-# These features were requested as part of Hardcore Factions or something.
-# All of them are disabled by default. (Except land settings!)
-
 # Max Relation Types
 # Limits factions to having a max number of each relation.
 # Setting to 0 means none allowed. -1 for disabled.
@@ -179,8 +166,6 @@ hcf:
   # When DTR is below 0, the faction is considered raidable
   # DTR is the sum of all faction member's DTR value, or MaxFactionDTR if it's larger
   dtr:
-    # Set to true to enable DTR features! (below)
-    enabled: false
     # Should we hide faction homes in /f show ?
     # Anyone will be able to find the home of a faction if set to false
     # However, a faction could hide by not just not setting a home :p

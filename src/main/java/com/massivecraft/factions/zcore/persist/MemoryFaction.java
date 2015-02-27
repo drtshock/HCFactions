@@ -56,6 +56,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         if (!announcements.containsKey(fPlayer.getId())) {
             return;
         }
+        //TODO: TL
         fPlayer.sendMessage(ChatColor.LIGHT_PURPLE + "--Unread Faction Announcements--");
         for (String s : announcements.get(fPlayer.getPlayer().getUniqueId().toString())) {
             fPlayer.sendMessage(s);
@@ -212,7 +213,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         if (!Conf.homesMustBeInClaimedTerritory || this.home == null || (this.home.getLocation() != null && Board.getInstance().getFactionAt(new FLocation(this.home.getLocation())) == this)) {
             return;
         }
-
+        //TODO: TL
         msg("<b>Your faction home has been un-set since it is no longer in your territory.");
         this.home = null;
     }
@@ -426,16 +427,16 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
     
     public boolean isFrozen() {
-        int freezeSeconds = P.p.getConfig().getInt("hcf.dtr.dtr-freeze", 0);
-        if (!P.p.getConfig().getBoolean("hcf.dtr.enabled", false) || freezeSeconds == 0) {
-            return false;
+        long freezeSeconds = P.p.getConfig().getLong("hcf.dtr.dtr-freeze", 0);
+        if (freezeSeconds > 0) {
+            return System.currentTimeMillis() - lastDeath < freezeSeconds * 1000;
         }
-        return System.currentTimeMillis() - lastDeath < freezeSeconds * 1000; 
+        return false;
     }
     
     public long getFreezeLeft() {
         if (isFrozen()) {
-            int freezeSeconds = P.p.getConfig().getInt("hcf.dtr.dtr-freeze", 0);
+            long freezeSeconds = P.p.getConfig().getLong("hcf.dtr.dtr-freeze", 0);
             return freezeSeconds * 1000 - (System.currentTimeMillis() - lastDeath);
         }
         return 0;
@@ -602,7 +603,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
                 oldLeader.setRole(Role.NORMAL);
             }
             replacements.get(0).setRole(Role.ADMIN);
-            //TODO:TL
+            //TODO: TL
             this.msg("<i>Faction admin <h>%s<i> has been removed. %s<i> has been promoted as the new faction admin.", oldLeader == null ? "" : oldLeader.getName(), replacements.get(0).getName());
             P.p.log("Faction " + this.getTag() + " (" + this.getId() + ") admin was removed. Replacement admin: " + replacements.get(0).getName());
         }
