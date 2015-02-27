@@ -56,12 +56,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         if (!announcements.containsKey(fPlayer.getId())) {
             return;
         }
-        //TODO: TL
-        fPlayer.sendMessage(ChatColor.LIGHT_PURPLE + "--Unread Faction Announcements--");
+        fPlayer.msg(TL.FACTION_UNREAD_ANNOUNCEMENT.toString());
         for (String s : announcements.get(fPlayer.getPlayer().getUniqueId().toString())) {
             fPlayer.sendMessage(s);
         }
-        fPlayer.sendMessage(ChatColor.LIGHT_PURPLE + "--Unread Faction Announcements--");
+        fPlayer.msg(TL.FACTION_UNREAD_ANNOUNCEMENT.toString());
         announcements.remove(fPlayer.getId());
     }
 
@@ -213,8 +212,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         if (!Conf.homesMustBeInClaimedTerritory || this.home == null || (this.home.getLocation() != null && Board.getInstance().getFactionAt(new FLocation(this.home.getLocation())) == this)) {
             return;
         }
-        //TODO: TL
-        msg("<b>Your faction home has been un-set since it is no longer in your territory.");
+        msg(TL.FACTION_UNSET.toString());
         this.home = null;
     }
 
@@ -593,8 +591,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
                 P.p.log("The faction " + this.getTag() + " (" + this.getId() + ") has been disbanded since it has no members left.");
             }
 
-            for (FPlayer fplayer : FPlayers.getInstance().getOnlinePlayers()) {
-                fplayer.msg("The faction %s<i> was disbanded.", this.getTag(fplayer));
+            for (FPlayer fPlayer : FPlayers.getInstance().getOnlinePlayers()) {
+                msg(TL.FACTION_DISBANDED, this.getTag(fPlayer));
             }
 
             Factions.getInstance().removeFaction(getId());
@@ -603,8 +601,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
                 oldLeader.setRole(Role.NORMAL);
             }
             replacements.get(0).setRole(Role.ADMIN);
-            //TODO: TL
-            this.msg("<i>Faction admin <h>%s<i> has been removed. %s<i> has been promoted as the new faction admin.", oldLeader == null ? "" : oldLeader.getName(), replacements.get(0).getName());
+            msg(TL.FACTION_ADMIN_CHANGE, oldLeader == null ? "" : oldLeader.getName(), replacements.get(0).getName());
             P.p.log("Faction " + this.getTag() + " (" + this.getId() + ") admin was removed. Replacement admin: " + replacements.get(0).getName());
         }
     }
@@ -739,8 +736,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
                 ownerList += ", ";
             }
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(iter.next()));
-            //TODO:TL
-            ownerList += offlinePlayer != null ? offlinePlayer.getName() : "null player";
+            ownerList += offlinePlayer != null ? offlinePlayer.getName() : TL.GENERIC_NULLPLAYER.toString();
         }
         return ownerList;
     }

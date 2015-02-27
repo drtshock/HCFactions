@@ -491,8 +491,8 @@ public enum TL {
     LEAVE_NEGATIVEPOWER("<b>You cannot leave until your power is positive."),
     LEAVE_TOLEAVE("to leave your faction."),
     LEAVE_FORLEAVE("for leaving your faction."),
-    LEAVE_LEFT("%s<i> left faction %s<i>."),
-    LEAVE_DISBANDED("<i>%s<i> was disbanded."),
+    LEAVE_LEFT("%s <i>left %s."),
+    LEAVE_DISBANDED("<a>%s<i> was disbanded."),
     LEAVE_DISBANDEDLOG("The faction %s (%s) was disbanded due to the last player (%s) leaving."),
     LEAVE_DESCRIPTION("Leave your faction"),
 
@@ -524,6 +524,15 @@ public enum TL {
     CLAIM_TOOCLOSETOOTHERFACTION("<i>Your claim is too close to another Faction. Buffer required is %d"),
     CLAIM_OUTSIDEWORLDBORDER("<i>Your claim is outside the border."),
     CLAIM_OUTSIDEBORDERBUFFER("<i>Your claim is outside the border. %d chunks away world edge required."),
+    
+    /**
+     * Faction related translations
+     */
+    FACTION_ADMIN_CHANGE("<i>Faction admin <h>%s<i> has been removed. %s<i> has been promoted as the new faction admin."),
+    FACTION_DISBANDED("<b>The faction <i>%s <b>was disbanded."),
+    FACTION_UNREAD_ANNOUNCEMENT("&5--Unread Faction Announcements--"),
+    FACTION_UNSET("<b>Your faction home has been un-set since it is no longer in your territory."),   
+    
     /**
      * More generic, or less easily categorisable translations, which may apply to more than one class
      */
@@ -540,6 +549,7 @@ public enum TL {
     GENERIC_FACTIONLESS("factionless"),
     GENERIC_DECIMALFORMAT("#.###"),
     GENERIC_SERVERADMIN("A server admin"),
+    GENERIC_NULLPLAYER("null player"),
     GENERIC_DISABLED("disabled"),
     GENERIC_ENABLED("enabled"),
     GENERIC_CONSOLEONLY("This command cannot be run as a player."),
@@ -554,6 +564,7 @@ public enum TL {
     GENERIC_FACTIONTAG_TOOLONG("<i>The faction tag can't be longer than <h>%s<i> chars."),
     GENERIC_FACTIONTAG_ALPHANUMERIC("<i>Faction tag must be alphanumeric. \"<h>%s<i>\" is not allowed."),
     GENERIC_PLACEHOLDER("<This is a placeholder for a message you should not see>"),
+   
 
     /**
      * ASCII compass (for chat map)

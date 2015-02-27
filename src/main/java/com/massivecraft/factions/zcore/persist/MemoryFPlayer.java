@@ -587,7 +587,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             }
 
             if (Conf.logFactionLeave) {
-                P.p.log(TL.LEAVE_LEFT.format(this.getName(), myFaction.getTag()));
+                P.p.log(this.getName() + " left faction " + myFaction.getTag());
             }
         }
 
