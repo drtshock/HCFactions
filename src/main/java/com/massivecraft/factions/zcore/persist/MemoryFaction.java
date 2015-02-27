@@ -461,12 +461,14 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public boolean addFPlayer(FPlayer fplayer) {
         return !this.isPlayerFreeType() && fplayers.add(fplayer);
-
     }
 
     public boolean removeFPlayer(FPlayer fplayer) {
         return !this.isPlayerFreeType() && fplayers.remove(fplayer);
-
+    }
+    
+    public int getSize() {
+        return fplayers.size();
     }
 
     public Set<FPlayer> getFPlayers() {
@@ -477,7 +479,9 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public Set<FPlayer> getFPlayersWhereOnline(boolean online) {
         Set<FPlayer> ret = new HashSet<FPlayer>();
-
+        if(!this.isNormal()) {
+            return ret;
+        }
         for (FPlayer fplayer : fplayers) {
             if (fplayer.isOnline() == online) {
                 ret.add(fplayer);

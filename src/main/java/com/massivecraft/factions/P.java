@@ -13,10 +13,16 @@ import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.util.TextUtil;
+
+import net.milkbowl.vault.permission.Permission;
+
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
@@ -32,6 +38,7 @@ public class P extends MPlugin {
     // Our single plugin instance.
     // Single 4 life.
     public static P p;
+    public static Permission perms = null;
 
     // Persistence related
     private boolean locked = false;
@@ -86,7 +93,8 @@ public class P extends MPlugin {
         this.getBaseCommands().add(cmdBase);
 
         Econ.setup();
-
+        setupPermissions();
+        
         if (Conf.worldGuardChecking || Conf.worldGuardBuildPriority) {
             Worldguard.init(this);
         }
@@ -110,6 +118,21 @@ public class P extends MPlugin {
         this.loadSuccessful = true;
     }
 
+    private boolean setupPermissions() {
+        Class<?> perm = null;
+        try {
+            perm = Class.forName("net.milkbowl.vault.permission.Permission");
+        } catch (ClassNotFoundException e) {
+            // log error
+        }
+        if (perm != null) {
+            RegisteredServiceProvider<Permission> rsp = getServer().getServicesManager().getRegistration(Permission.class);
+            perms = rsp.getProvider();
+            return perms != null;
+        }
+        return perms == null;
+    }
+    
     @Override
     public GsonBuilder getGsonBuilder() {
         Type mapFLocToStringSetType = new TypeToken<Map<FLocation, Set<String>>>() {
@@ -296,6 +319,17 @@ public class P extends MPlugin {
         return players;
     }
 
+    public String getPrimaryGroup(OfflinePlayer player) {
+        if (perms == null) {
+            return " ";
+        }
+        String group = perms.getPrimaryGroup(Bukkit.getWorlds().get(0).getName(), player);
+        if (group == null) {
+            return " ";
+        }
+        return group;
+    }
+    
     public void debug(Level level, String s) {
         if (getConfig().getBoolean("debug", false)) {
             getLogger().log(level, s);
