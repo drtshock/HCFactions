@@ -19,7 +19,6 @@ public class CmdTop extends FCommand {
         this.aliases.add("top");
         this.aliases.add("t");
 
-        //this.requiredArgs.add("");
         this.requiredArgs.add("criteria");
         this.optionalArgs.put("page", "1");
 
@@ -100,7 +99,7 @@ public class CmdTop extends FCommand {
                     return 0;
                 }
             });
-        } else if (criteria.equalsIgnoreCase("money") || criteria.equalsIgnoreCase("balance") || criteria.equalsIgnoreCase("bal")) {
+        } else if (Econ.isSetup() && criteria.equalsIgnoreCase("money") || criteria.equalsIgnoreCase("balance") || criteria.equalsIgnoreCase("bal")) {
             Collections.sort(factionList, new Comparator<Faction>() {
                 @Override
                 public int compare(Faction f1, Faction f2) {
@@ -125,8 +124,7 @@ public class CmdTop extends FCommand {
             msg(TL.COMMAND_TOP_INVALID, criteria);
         }
 
-        ArrayList<String> lines = new ArrayList<String>();
-        factionList.add(0, Factions.getInstance().getNone());
+        ArrayList<String> lines = new ArrayList<>();
 
         final int pageheight = 9;
         int pagenumber = this.argAsInt(1, 1);
@@ -136,6 +134,7 @@ public class CmdTop extends FCommand {
         } else if (pagenumber < 1) {
             pagenumber = 1;
         }
+
         int start = (pagenumber - 1) * pageheight;
         int end = start + pageheight;
         if (end > factionList.size()) {
