@@ -167,7 +167,7 @@ public enum TL {
     COMMAND_DISBAND_BROADCAST_NOTYOURS("<h>%1$s<i> disbanded the faction %2$s."),
     COMMAND_DISBAND_HOLDINGS("<i>You have been given the disbanded faction's bank, totaling %1$s."),
     COMMAND_DISBAND_DESCRIPTION("Disband a faction"),
-    
+
     COMMAND_DTR_DESCRIPTION("Change the faction deaths-till-raidable value"),
     COMMAND_DTR_ERROR_MAX("<b>Cannot set DTR above this faction's max value of <i>%s"),
     COMMAND_DTR_ERROR_MIN("<b>Cannot set DTR below config's min value of <i>%s"),
@@ -521,15 +521,15 @@ public enum TL {
     CLAIM_TOOCLOSETOOTHERFACTION("<i>Your claim is too close to another Faction. Buffer required is %d"),
     CLAIM_OUTSIDEWORLDBORDER("<i>Your claim is outside the border."),
     CLAIM_OUTSIDEBORDERBUFFER("<i>Your claim is outside the border. %d chunks away world edge required."),
-    
+
     /**
      * Faction related translations
      */
     FACTION_ADMIN_CHANGE("<i>Faction admin <h>%s<i> has been removed. %s<i> has been promoted as the new faction admin."),
     FACTION_DISBANDED("<b>The faction <i>%s <b>was disbanded."),
     FACTION_UNREAD_ANNOUNCEMENT("&5--Unread Faction Announcements--"),
-    FACTION_UNSET("<b>Your faction home has been un-set since it is no longer in your territory."),   
-    
+    FACTION_UNSET("<b>Your faction home has been un-set since it is no longer in your territory."),
+
     /**
      * More generic, or less easily categorisable translations, which may apply to more than one class
      */
@@ -562,7 +562,7 @@ public enum TL {
     GENERIC_FACTIONTAG_TOOLONG("<i>The faction tag can't be longer than <h>%s<i> chars."),
     GENERIC_FACTIONTAG_ALPHANUMERIC("<i>Faction tag must be alphanumeric. \"<h>%s<i>\" is not allowed."),
     GENERIC_PLACEHOLDER("<This is a placeholder for a message you should not see>"),
-   
+
 
     /**
      * ASCII compass (for chat map)
@@ -625,14 +625,14 @@ public enum TL {
     PLAYER_COMMAND_NEUTRAL("<b>You can't use the command '%s' in neutral territory."),
     PLAYER_COMMAND_ENEMY("<b>You can't use the command '%s' in enemy territory."),
     PLAYER_COMMAND_PERMANENT("<b>You can't use the command '%s' because you are in a permanent faction."),
-    
+
     PLAYER_DTR_NOLOSS_PEACEFUL("<i>You didn't lose any dtr since you are in a peaceful faction."),
     PLAYER_DTR_NOLOSS_WORLD("<i>You didn't lose any dtr due to the world you died in."),
     PLAYER_DTR_NOLOSS_WILDERNESS("<i>You didn't lose any dtr since you were in the wilderness."),
     PLAYER_DTR_NOLOSS_WARZONE("<i>You didn't lose any dtr since you were in a war zone."),
     PLAYER_DTR_LOSS_WARZONE("<b>The world you are in has dtr loss normally disabled, but you still lost dtr since you were in a war zone.\n<i>Your faction dtr is now <h>%d / %d"),
     PLAYER_DTR_NOW("<i>Your faction dtr is now <h>%d / %d"),
-    
+
     PLAYER_PVP_LOGIN("<i>You can't hurt other players for %d seconds after logging in."),
     PLAYER_PVP_REQUIREFACTION("<i>You can't hurt other players until you join a faction."),
     PLAYER_PVP_FACTIONLESS("<i>You can't hurt players who are not currently in a faction."),

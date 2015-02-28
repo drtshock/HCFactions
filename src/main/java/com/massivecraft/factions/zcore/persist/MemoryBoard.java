@@ -105,11 +105,13 @@ public abstract class MemoryBoard extends Board {
     }
 
     /**
-     * Checks if there is another faction within a given radius other than Wilderness.
-     * Used for HCF feature that requires a 'buffer' between factions.
+     * Checks if there is another faction within a given radius other than Wilderness. Used for HCF feature that
+     * requires a 'buffer' between factions.
+     *
      * @param flocation - center location.
-     * @param faction - faction checking for.
-     * @param radius - chunk radius to check.
+     * @param faction   - faction checking for.
+     * @param radius    - chunk radius to check.
+     *
      * @return true if another Faction is within the radius, otherwise false.
      */
     public boolean hasFactionWithin(FLocation flocation, Faction faction, int radius) {

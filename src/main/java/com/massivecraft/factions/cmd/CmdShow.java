@@ -1,35 +1,29 @@
 package com.massivecraft.factions.cmd;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import mkremins.fanciful.FancyMessage;
-
-import org.apache.commons.lang.time.DurationFormatUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-
-import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
+import mkremins.fanciful.FancyMessage;
+import org.apache.commons.lang.time.DurationFormatUtils;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CmdShow extends FCommand {
 
     private static final int ARBITRARY_LIMIT = 25000;
     private DecimalFormat dc = new DecimalFormat(TL.GENERIC_DECIMALFORMAT.toString());
-    
+
     public CmdShow() {
         this.aliases.add("show");
         this.aliases.add("who");
-        
+
         this.optionalArgs.put("faction tag", "yours");
 
         this.permission = Permission.SHOW.node;
@@ -39,7 +33,7 @@ public class CmdShow extends FCommand {
         senderMustBeModerator = false;
         senderMustBeAdmin = false;
     }
-    
+
     @Override
     public void perform() {
         Faction faction = myFaction;
@@ -59,7 +53,7 @@ public class CmdShow extends FCommand {
         if (faction.isPeaceful()) {
             peaceStatus = "     " + Conf.colorNeutral + TL.COMMAND_SHOW_PEACEFUL.toString();
         }
-            
+
         List<FancyMessage> allies = new ArrayList<FancyMessage>();
         List<FancyMessage> enemies = new ArrayList<FancyMessage>();
         if (!faction.isNone()) {
@@ -152,26 +146,27 @@ public class CmdShow extends FCommand {
         }
         msg(TL.COMMAND_SHOW_JOINING.toString() + peaceStatus, (faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString()));
         msg(TL.COMMAND_SHOW_LAND, faction.getLand(), faction.getMaxLand());
-        
+
         boolean console = fme != null;
-        if(console) 
-            fme.updateDTR();         
-        
+        if (console) {
+            fme.updateDTR();
+        }
+
         String dtr = dc.format(faction.getDTR()).toString();
         String maxDtr = dc.format(faction.getMaxDTR()).toString();
         String raidable = faction.isRaidable() ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
         msg(TL.COMMAND_SHOW_DEATHS_TIL_RAIDABLE, dtr, maxDtr, raidable);
-        
+
         //Bug? Faction home will be invisible to console if hide-homes is enabled. 
-        if(!P.p.getConfig().getBoolean("hcf.dtr.hide-homes", false) || (console && fme.getRelationTo(faction).isMember())) {
-            if(faction.hasHome()) {
+        if (!P.p.getConfig().getBoolean("hcf.dtr.hide-homes", false) || (console && fme.getRelationTo(faction).isMember())) {
+            if (faction.hasHome()) {
                 Location home = faction.getHome();
                 msg(TL.COMMAND_SHOW_DTR_HOME_SET, home.getBlockX(), home.getBlockY(), home.getBlockZ());
             } else {
                 msg(TL.COMMAND_SHOW_DTR_HOME_UNSET);
-            } 
-        }           
-        if(faction.isFrozen()) {
+            }
+        }
+        if (faction.isFrozen()) {
             long left = faction.getFreezeLeft();
             String time = DurationFormatUtils.formatDuration(left, "mm:ss", true);
             msg(TL.COMMAND_SHOW_DTR_FROZEN, time);

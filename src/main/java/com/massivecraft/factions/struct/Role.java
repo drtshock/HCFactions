@@ -31,7 +31,7 @@ public enum Role {
         return this.nicename;
     }
 
-    public TL getTranslation(){
+    public TL getTranslation() {
         return translation;
     }
 
