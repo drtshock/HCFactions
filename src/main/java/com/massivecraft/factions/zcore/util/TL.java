@@ -552,6 +552,7 @@ public enum TL {
     GENERIC_NULLPLAYER("null player"),
     GENERIC_DISABLED("disabled"),
     GENERIC_ENABLED("enabled"),
+    GENERIC_UNDEFINED("undefined"),
     GENERIC_CONSOLEONLY("This command cannot be run as a player."),
     GENERIC_PLAYERONLY("<b>This command can only be used by ingame players."),
     GENERIC_ASKYOURLEADER("<i> Ask your leader to:"),

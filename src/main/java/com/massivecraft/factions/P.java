@@ -12,6 +12,7 @@ import com.massivecraft.factions.listeners.*;
 import com.massivecraft.factions.struct.ChatMode;
 import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.MPlugin;
+import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 
 import net.milkbowl.vault.permission.Permission;
@@ -320,7 +321,7 @@ public class P extends MPlugin {
     }
 
     public String getPrimaryGroup(OfflinePlayer player) {
-        return perms == null ? " " : perms.getPrimaryGroup(Bukkit.getWorlds().get(0).getName(), player);
+        return perms == null ? TL.GENERIC_UNDEFINED.toString() : perms.getPrimaryGroup(Bukkit.getWorlds().get(0).getName(), player);
     }
     
     public void debug(Level level, String s) {
