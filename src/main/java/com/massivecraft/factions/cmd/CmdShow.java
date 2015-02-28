@@ -24,12 +24,12 @@ import com.massivecraft.factions.zcore.util.TL;
 public class CmdShow extends FCommand {
 
     private static final int ARBITRARY_LIMIT = 25000;
-    private DecimalFormat dc;   
+    private DecimalFormat dc = new DecimalFormat(TL.GENERIC_DECIMALFORMAT.toString());
     
     public CmdShow() {
         this.aliases.add("show");
         this.aliases.add("who");
-        this.dc = new DecimalFormat(TL.GENERIC_DECIMALFORMAT.toString());
+        
         this.optionalArgs.put("faction tag", "yours");
 
         this.permission = Permission.SHOW.node;
@@ -45,9 +45,8 @@ public class CmdShow extends FCommand {
         Faction faction = myFaction;
         if (this.argIsSet(0)) {
             faction = this.argAsFaction(0);
-            if (faction == null) {
-                return;
-            }
+        } else if (faction == null) {
+            return;
         }
 
         // if economy is enabled, they're not on the bypass list, and this
@@ -60,8 +59,7 @@ public class CmdShow extends FCommand {
         if (faction.isPeaceful()) {
             peaceStatus = "     " + Conf.colorNeutral + TL.COMMAND_SHOW_PEACEFUL.toString();
         }
-     
-        String raidable = faction.isRaidable() ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
+            
         List<FancyMessage> allies = new ArrayList<FancyMessage>();
         List<FancyMessage> enemies = new ArrayList<FancyMessage>();
         if (!faction.isNone()) {
@@ -155,11 +153,17 @@ public class CmdShow extends FCommand {
         msg(TL.COMMAND_SHOW_JOINING.toString() + peaceStatus, (faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString()));
         msg(TL.COMMAND_SHOW_LAND, faction.getLand(), faction.getMaxLand());
         
-        fme.updateDTR(); 
+        boolean console = fme != null;
+        if(console) 
+            fme.updateDTR();         
+        
         String dtr = dc.format(faction.getDTR()).toString();
         String maxDtr = dc.format(faction.getMaxDTR()).toString();
+        String raidable = faction.isRaidable() ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
         msg(TL.COMMAND_SHOW_DEATHS_TIL_RAIDABLE, dtr, maxDtr, raidable);
-        if(!P.p.getConfig().getBoolean("hcf.dtr.hide-homes", false) || fme.getRelationTo(faction).isMember()) {
+        
+        //Bug? Faction home will be invisible to console if hide-homes is enabled. 
+        if(!P.p.getConfig().getBoolean("hcf.dtr.hide-homes", false) || (console && fme.getRelationTo(faction).isMember())) {
             if(faction.hasHome()) {
                 Location home = faction.getHome();
                 msg(TL.COMMAND_SHOW_DTR_HOME_SET, home.getBlockX(), home.getBlockY(), home.getBlockZ());
