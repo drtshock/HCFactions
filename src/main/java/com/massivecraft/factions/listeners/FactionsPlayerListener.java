@@ -429,7 +429,7 @@ public class FactionsPlayerListener implements Listener {
         if (Conf.homesEnabled &&
                     Conf.homesTeleportToOnDeath &&
                     home != null &&
-                    (Conf.homesRespawnFromNoPowerLossWorlds || !Conf.worldsNoPowerLoss.contains(event.getPlayer().getWorld().getName()))) {
+                    (Conf.homesRespawnFromNoDtrLossWorlds || !Conf.worldsNoDtrLoss.contains(event.getPlayer().getWorld().getName()))) {
             event.setRespawnLocation(home);
         }
     }

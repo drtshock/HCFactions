@@ -92,7 +92,7 @@ public class Conf {
     public static boolean homesEnabled = true;
     public static boolean homesMustBeInClaimedTerritory = true;
     public static boolean homesTeleportToOnDeath = true;
-    public static boolean homesRespawnFromNoPowerLossWorlds = true;
+    public static boolean homesRespawnFromNoDtrLossWorlds = true;
     public static boolean homesTeleportCommandEnabled = true;
     public static boolean homesTeleportCommandEssentialsIntegration = true;
     public static boolean homesTeleportCommandSmokeEffectEnabled = true;
@@ -110,7 +110,7 @@ public class Conf {
 
     public static boolean peacefulTerritoryDisablePVP = true;
     public static boolean peacefulTerritoryDisableMonsters = false;
-    public static boolean peacefulMembersDisablePowerLoss = true;
+    public static boolean peacefulMembersDisableDtrLoss = true;
 
     public static boolean permanentFactionsDisableLeaderPromotion = false;
 
@@ -178,7 +178,7 @@ public class Conf {
     public static boolean warZoneBlockCreepers = false;
     public static boolean warZoneBlockFireballs = false;
     public static boolean warZoneBlockTNT = true;
-    public static boolean warZonePowerLoss = true;
+    public static boolean warZoneDtrLoss = true;
     public static boolean warZoneFriendlyFire = false;
     public static boolean warZoneDenyEndermanBlocks = true;
 
@@ -187,7 +187,7 @@ public class Conf {
     public static boolean wildernessBlockCreepers = false;
     public static boolean wildernessBlockFireballs = false;
     public static boolean wildernessBlockTNT = false;
-    public static boolean wildernessPowerLoss = true;
+    public static boolean wildernessDtrLoss = true;
     public static boolean wildernessDenyEndermanBlocks = false;
 
     // for claimed areas where further faction-member ownership can be defined
@@ -233,7 +233,7 @@ public class Conf {
     public static double econCostTitle = 0.0;
     public static double econCostList = 0.0;
     public static double econCostMap = 0.0;
-    public static double econCostPower = 0.0;
+    public static double econCostDtr = 0.0;
     public static double econCostShow = 0.0;
     public static double econCostOpen = 0.0;
     public static double econCostAlly = 0.0;
@@ -331,7 +331,7 @@ public class Conf {
     public static Set<String> playersWhoBypassAllProtection = new LinkedHashSet<String>();
 
     public static Set<String> worldsNoClaiming = new LinkedHashSet<String>();
-    public static Set<String> worldsNoPowerLoss = new LinkedHashSet<String>();
+    public static Set<String> worldsNoDtrLoss = new LinkedHashSet<String>();
     public static Set<String> worldsIgnorePvP = new LinkedHashSet<String>();
     public static Set<String> worldsNoWildernessProtection = new LinkedHashSet<String>();
 

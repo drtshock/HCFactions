@@ -204,10 +204,10 @@ public enum TL {
     COMMAND_HELP_RELATIONS_7("<i>You can always hurt enemies and players without faction."),
     COMMAND_HELP_RELATIONS_8(""),
     COMMAND_HELP_RELATIONS_9("<i>Damage from enemies is reduced in your own territory."),
-    COMMAND_HELP_RELATIONS_10("<i>When you die you lose power. It is restored over time."),
-    COMMAND_HELP_RELATIONS_11("<i>The power of a faction is the sum of all member power."),
-    COMMAND_HELP_RELATIONS_12("<i>The power of a faction determines how much land it can hold."),
-    COMMAND_HELP_RELATIONS_13("<i>You can claim land from factions with too little power."),
+    COMMAND_HELP_RELATIONS_10("<i>When you die your faction loses dtr. It is restored over time."),
+    COMMAND_HELP_RELATIONS_11("<i>The more faction members online increases restoration speed"),
+    COMMAND_HELP_RELATIONS_12("<i>The dtr of a faction represents how many \"deaths until raidable\""),
+    COMMAND_HELP_RELATIONS_13("<i>Once a faction's dtr is below 0, they can be raided"),
     COMMAND_HELP_PERMISSIONS_1("<i>Only faction members can build and destroy in their own"),
     COMMAND_HELP_PERMISSIONS_2("<i>territory. Usage of the following items is also restricted:"),
     COMMAND_HELP_PERMISSIONS_3("<i>Door, Chest, Furnace, Dispenser, Diode."),
@@ -265,7 +265,6 @@ public enum TL {
     COMMAND_KICK_NONE("That player is not in a faction."),
     COMMAND_KICK_NOTMEMBER("%1$s<b> is not a member of %2$s"),
     COMMAND_KICK_INSUFFICIENTRANK("<b>Your rank is too low to kick this player."),
-    COMMAND_KICK_NEGATIVEPOWER("<b>You cannot kick that member until their power is positive."),
     COMMAND_KICK_TOKICK("to kick someone from the faction"),
     COMMAND_KICK_FORKICK("for kicking someone from the faction"),
     COMMAND_KICK_FACTION("%1$s<i> kicked %2$s<i> from the faction! :O"), //message given to faction members
@@ -456,7 +455,7 @@ public enum TL {
     COMMAND_TOP_DESCRIPTION("Sort Factions to see the top of some criteria."),
     COMMAND_TOP_TOP("Top Factions by %s. Page %d/%d"),
     COMMAND_TOP_LINE("%d. &6%s: &c%s"), // Rank. Faction: Value
-    COMMAND_TOP_INVALID("Could not sort by %s. Try balance, online, members, power or land."),
+    COMMAND_TOP_INVALID("Could not sort by %s. Try balance, online, members, dtr or land."),
 
     COMMAND_UNCLAIM_SAFEZONE_SUCCESS("<i>Safe zone was unclaimed."),
     COMMAND_UNCLAIM_SAFEZONE_NOPERM("<b>This is a safe zone. You lack permissions to unclaim."),
@@ -488,7 +487,6 @@ public enum TL {
      * Leaving - This is accessed through a command, and so it MAY need a COMMAND_* slug :s
      */
     LEAVE_PASSADMIN("<b>You must give the admin role to someone else first."),
-    LEAVE_NEGATIVEPOWER("<b>You cannot leave until your power is positive."),
     LEAVE_TOLEAVE("to leave your faction."),
     LEAVE_FORLEAVE("for leaving your faction."),
     LEAVE_LEFT("%s <i>left %s."),
@@ -507,7 +505,6 @@ public enum TL {
     CLAIM_MEMBERS("Factions must have at least <h>%s<b> members to claim land."),
     CLAIM_SAFEZONE("<b>You can not claim a Safe Zone."),
     CLAIM_WARZONE("<b>You can not claim a War Zone."),
-    CLAIM_POWER("<b>You can't claim more land! You need more power!"),
     CLAIM_LIMIT("<b>Limit reached. You can't claim more land!"),
     CLAIM_ALLY("<b>You can't claim the land of your allies."),
     CLAIM_CONTIGIOUS("<b>You can only claim additional land which is connected to your first claim or controlled by another faction!"),
@@ -628,14 +625,14 @@ public enum TL {
     PLAYER_COMMAND_NEUTRAL("<b>You can't use the command '%s' in neutral territory."),
     PLAYER_COMMAND_ENEMY("<b>You can't use the command '%s' in enemy territory."),
     PLAYER_COMMAND_PERMANENT("<b>You can't use the command '%s' because you are in a permanent faction."),
-
-    PLAYER_POWER_NOLOSS_PEACEFUL("<i>You didn't lose any power since you are in a peaceful faction."),
-    PLAYER_POWER_NOLOSS_WORLD("<i>You didn't lose any power due to the world you died in."),
-    PLAYER_POWER_NOLOSS_WILDERNESS("<i>You didn't lose any power since you were in the wilderness."),
-    PLAYER_POWER_NOLOSS_WARZONE("<i>You didn't lose any power since you were in a war zone."),
-    PLAYER_POWER_LOSS_WARZONE("<b>The world you are in has power loss normally disabled, but you still lost power since you were in a war zone.\n<i>Your power is now <h>%d / %d"),
-    PLAYER_POWER_NOW("<i>Your power is now <h>%d / %d"),
-
+    
+    PLAYER_DTR_NOLOSS_PEACEFUL("<i>You didn't lose any dtr since you are in a peaceful faction."),
+    PLAYER_DTR_NOLOSS_WORLD("<i>You didn't lose any dtr due to the world you died in."),
+    PLAYER_DTR_NOLOSS_WILDERNESS("<i>You didn't lose any dtr since you were in the wilderness."),
+    PLAYER_DTR_NOLOSS_WARZONE("<i>You didn't lose any dtr since you were in a war zone."),
+    PLAYER_DTR_LOSS_WARZONE("<b>The world you are in has dtr loss normally disabled, but you still lost dtr since you were in a war zone.\n<i>Your faction dtr is now <h>%d / %d"),
+    PLAYER_DTR_NOW("<i>Your faction dtr is now <h>%d / %d"),
+    
     PLAYER_PVP_LOGIN("<i>You can't hurt other players for %d seconds after logging in."),
     PLAYER_PVP_REQUIREFACTION("<i>You can't hurt other players until you join a faction."),
     PLAYER_PVP_FACTIONLESS("<i>You can't hurt players who are not currently in a faction."),
