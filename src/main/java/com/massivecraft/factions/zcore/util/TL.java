@@ -426,7 +426,7 @@ public enum TL {
     COMMAND_SHOW_MEMBERSONLINE("Members online: "),
     COMMAND_SHOW_MEMBERSOFFLINE("Members offline: "),
     COMMAND_SHOW_COMMANDDESCRIPTION("Show faction information"),
-    COMMAND_SHOW_DTR_HOME_SET("<a>Faction Home: <i>%1$s, %2$s, %3$s"),
+    COMMAND_SHOW_DTR_HOME_SET("<a>Faction Home: <i>%1$s, %2$s, %3$s, %4$s"),
     COMMAND_SHOW_DTR_HOME_UNSET("<a>Faction Home: <i>Not set"),
     COMMAND_SHOW_DTR_FROZEN("<a>DTR Freeze: <i>%s"),
     COMMAND_SHOW_DEATHS_TIL_RAIDABLE("<a>DTR: <i>%1$s / %2$s <a>Raidable: <i>%3$s"),

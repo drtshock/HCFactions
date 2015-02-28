@@ -161,7 +161,7 @@ public class CmdShow extends FCommand {
         if (!P.p.getConfig().getBoolean("hcf.dtr.hide-homes", false) || (console && fme.getRelationTo(faction).isMember())) {
             if (faction.hasHome()) {
                 Location home = faction.getHome();
-                msg(TL.COMMAND_SHOW_DTR_HOME_SET, home.getBlockX(), home.getBlockY(), home.getBlockZ());
+                msg(TL.COMMAND_SHOW_DTR_HOME_SET, home.getWorld().getName(), home.getBlockX(), home.getBlockY(), home.getBlockZ());
             } else {
                 msg(TL.COMMAND_SHOW_DTR_HOME_UNSET);
             }
