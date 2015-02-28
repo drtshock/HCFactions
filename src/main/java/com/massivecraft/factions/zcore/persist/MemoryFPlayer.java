@@ -643,7 +643,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             error = P.p.txt.parse(TL.CLAIM_SAFEZONE.toString());
         } else if (currentFaction.isWarZone()) {
             error = P.p.txt.parse(TL.CLAIM_WARZONE.toString());
-        } else if (Conf.claimedLandsMax != 0 && ownedLand >= Conf.claimedLandsMax && forFaction.isNormal()) {
+        } else if (ownedLand >= myFaction.getMaxLand() && forFaction.isNormal()) {
             error = P.p.txt.parse(TL.CLAIM_LIMIT.toString());
         } else if (currentFaction.getRelationTo(forFaction) == Relation.ALLY) {
             error = P.p.txt.parse(TL.CLAIM_ALLY.toString());
@@ -666,9 +666,6 @@ public abstract class MemoryFPlayer implements FPlayer {
                 error = P.p.txt.parse(TL.CLAIM_PEACEFUL.toString(), currentFaction.getTag(this));
             } else if (currentFaction.isPeaceful()) {
                 error = P.p.txt.parse(TL.CLAIM_PEACEFULTARGET.toString(), currentFaction.getTag(this));
-            } else if (currentFaction.isRaidable() && !P.p.getConfig().getBoolean("hcf.allow-overclaim", true)) {
-                // deny over claim when it normally would be allowed.
-                error = P.p.txt.parse(TL.CLAIM_OVERCLAIM_DISABLED.toString());
             } else if (!Board.getInstance().isBorderLocation(flocation)) {
                 error = P.p.txt.parse(TL.CLAIM_BORDER.toString());
             }
