@@ -84,6 +84,7 @@ public class Econ {
             P.p.log(Level.WARNING, "Vault does not appear to be hooked into an economy plugin.");
             return;
         }
+        //TODO: TL
         to.msg("<a>%s's<i> balance is <h>%s<i>.", about.describeTo(to, true), Econ.moneyString(econ.getBalance(about.getAccountId())));
     }
 
@@ -124,6 +125,7 @@ public class Econ {
         }
 
         // Otherwise you may not! ;,,;
+        //TODO: TL
         i.msg("<h>%s<i> lacks permission to control <h>%s's<i> money.", i.describeTo(i, true), you.describeTo(i));
         return false;
     }
@@ -176,6 +178,7 @@ public class Econ {
         if (!econ.has(fromAcc, amount)) {
             // There was not enough money to pay
             if (invoker != null && notify) {
+                //TODO: TL
                 invoker.msg("<h>%s<b> can't afford to transfer <h>%s<b> to %s<b>.", from.describeTo(invoker, true), moneyString(amount), to.describeTo(invoker));
             }
 
@@ -200,6 +203,7 @@ public class Econ {
 
         // if we get here something with the transaction failed
         if (notify) {
+            //TODO: TL
             invoker.msg("Unable to transfer %s<b> to <h>%s<b> from <h>%s<b>.", moneyString(amount), to.describeTo(invoker), from.describeTo(invoker, true));
         }
 
@@ -226,6 +230,7 @@ public class Econ {
         recipients.addAll(getFplayers(from));
         recipients.addAll(getFplayers(to));
 
+        //TODO: TL
         if (invoker == null) {
             for (FPlayer recipient : recipients) {
                 recipient.msg("<h>%s<i> was transferred from <h>%s<i> to <h>%s<i>.", moneyString(amount), from.describeTo(recipient), to.describeTo(recipient));
@@ -271,6 +276,7 @@ public class Econ {
 
         if (!affordable) {
             if (toDoThis != null && !toDoThis.isEmpty()) {
+                //TODO: TL
                 ep.msg("<h>%s<i> can't afford <h>%s<i> %s.", ep.describeTo(ep, true), moneyString(delta), toDoThis);
             }
             return false;
@@ -301,7 +307,7 @@ public class Econ {
 //			ep.msg("<h>%s<i> didn't have to pay anything %s.", You, forDoingThis);  // might be for gains, might be for losses
             return true;
         }
-
+        //TODO: TL
         if (delta > 0) {
             // The player should gain money
             // The account might not have enough space
