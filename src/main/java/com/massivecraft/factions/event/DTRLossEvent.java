@@ -6,14 +6,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
 /**
- * Event called when a player loses power.
+ * Event called when a faction loses dtr.
  */
-public class PowerLossEvent extends FactionPlayerEvent implements Cancellable {
+public class DTRLossEvent extends FactionPlayerEvent implements Cancellable {
 
     private boolean cancelled = false;
     private String message;
 
-    public PowerLossEvent(Faction f, FPlayer p) {
+    public DTRLossEvent(Faction f, FPlayer p) {
         super(f, p);
     }
 
