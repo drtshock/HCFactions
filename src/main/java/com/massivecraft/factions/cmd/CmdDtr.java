@@ -18,7 +18,7 @@ public class CmdDtr extends FCommand {
         this.aliases.add("dtr");
 
         this.requiredArgs.add("faction");
-        this.optionalArgs.put("dtr", "value");
+        this.requiredArgs.add("value");
 
         this.permission = Permission.DTR.node;
         this.disableOnLock = true;
@@ -40,7 +40,7 @@ public class CmdDtr extends FCommand {
         String change = "";
         double max = targetFaction.getMaxDTR();
         double min = targetFaction.getMinDTR();
-        
+
         if (targetDtr > max) {
             msg(TL.COMMAND_DTR_ERROR_MAX.format(dc.format(max).toString()));
             return;
