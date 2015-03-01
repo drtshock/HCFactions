@@ -387,14 +387,15 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
     
     public void updateDTR() {
+        this.dtr = 0;
         for (FPlayer fplayer : fplayers) {
-            dtr += fplayer.getDTR();
+            this.dtr += fplayer.getDTR();
         }
         double max = P.p.getConfig().getDouble("hcf.dtr.max-faction-dtr", 5.5);
-        if(max > 0 && dtr > max) {
-            dtr = max;
-        } else if(getMinDTR() < 0 && dtr < getMinDTR()) {
-            dtr = getMinDTR();
+        if (max > 0 && this.dtr > max) {
+            this.dtr = max;
+        } else if (getMinDTR() < 0 && this.dtr < getMinDTR()) {
+            this.dtr = getMinDTR();
         }
     }
     
@@ -417,7 +418,15 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
     
     public void setDTR(double dtr) {
-        this.dtr = dtr;
+        this.alterDTR(dtr - this.dtr);
+    }
+    
+    public void alterDTR(double delta) {
+        double del = delta / this.getSize();
+        for(FPlayer fPlayer : fplayers) {
+            fPlayer.alterDTR(del);
+        }
+        this.updateDTR();
     }
     
     public boolean isRaidable() {

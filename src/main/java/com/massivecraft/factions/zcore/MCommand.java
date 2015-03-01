@@ -303,6 +303,7 @@ public abstract class MCommand<T extends MPlugin> {
                         + humanized);
         String balance = Econ.isSetup() ? Econ.getFriendlyBalance(player) : "no balance";
         Faction faction = player.getFaction();
+        player.updateDTR(); // update DTR before fetch, always
         String dtr = faction.getDTR() + "/" + faction.getMaxDTR();
         String group = P.p.getPrimaryGroup(Bukkit.getOfflinePlayer(player.getName()));
         return s.replace("{balance}", balance).replace("{lastSeen}", lastSeen).replace("{dtr}", dtr).replace("{group}", group);
@@ -313,6 +314,7 @@ public abstract class MCommand<T extends MPlugin> {
         FPlayer fLeader = faction.getFPlayerAdmin();
         String online = String.valueOf(faction.getOnlinePlayers().size());
         String members = String.valueOf(faction.getSize());
+        faction.updateDTR(); // update DTR before fetch, always
         String leader = fLeader == null ? "Server" : fLeader.getName().substring(0,
                 fLeader.getName().length() > 14 ? 13 : fLeader.getName().length());
         return s.replace("{dtr}", String.valueOf(faction.getDTR())).replace("{maxDtr}", String.valueOf(faction.getMaxDTR()))

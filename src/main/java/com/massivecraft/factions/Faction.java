@@ -156,6 +156,8 @@ public interface Faction extends EconomyParticipator {
     
     public void setDTR(double dtr);
     
+    public void alterDTR(double delta);
+    
     public void updateDTR();
     
     // -------------------------------

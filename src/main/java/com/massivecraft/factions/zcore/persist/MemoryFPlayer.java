@@ -433,22 +433,11 @@ public abstract class MemoryFPlayer implements FPlayer {
     // DTR
     // ----------------------------------------------//
     public double getDTR() {
-        this.updateDTR();
         return this.dtr;
     }
 
     public void alterDTR(double delta) {
         this.dtr += delta;
-        Faction faction = this.getFaction();
-        double fdt = faction.getDTR();
-        fdt += delta;
-        if(fdt > faction.getMaxDTR()) {
-            faction.setDTR(faction.getMaxDTR());
-        } else if(fdt < faction.getMinDTR()){
-            faction.setDTR(faction.getMinDTR());
-        } else {
-            faction.setDTR(fdt);
-        }
     }
 
     public void updateDTR() {
@@ -473,6 +462,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         int millisPerMinute = 60 * 1000;
         double deltaDTr = P.p.getConfig().getDouble("hcf.dtr.minute-dtr", 0.01);
         this.alterDTR(millisPassed * deltaDTr / millisPerMinute);
+        this.getFaction().updateDTR();
     }
 
     public double getMaxDTR() {
