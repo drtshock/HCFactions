@@ -5,16 +5,10 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
-import java.text.DecimalFormat;
-
-
 public class CmdDtr extends FCommand {
-
-    private DecimalFormat dc;
 
     public CmdDtr() {
         super();
-        this.dc = new DecimalFormat(TL.GENERIC_DECIMALFORMAT.toString());
         this.aliases.add("dtr");
 
         this.requiredArgs.add("faction");

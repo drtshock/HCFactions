@@ -11,14 +11,12 @@ import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CmdShow extends FCommand {
 
     private static final int ARBITRARY_LIMIT = 25000;
-    private DecimalFormat dc = new DecimalFormat(TL.GENERIC_DECIMALFORMAT.toString());
 
     public CmdShow() {
         this.aliases.add("show");
@@ -149,7 +147,7 @@ public class CmdShow extends FCommand {
 
         boolean console = fme != null;
         if (console) {
-            fme.updateDTR();
+            fme.updateDTR(); // update DTR before fetch, always
         }
 
         String dtr = dc.format(faction.getDTR()).toString();
