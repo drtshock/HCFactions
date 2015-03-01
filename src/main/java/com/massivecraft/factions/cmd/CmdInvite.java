@@ -38,6 +38,11 @@ public class CmdInvite extends FCommand {
             msg(TL.GENERIC_YOUMAYWANT.toString() + p.cmdBase.cmdKick.getUseageTemplate(false));
             return;
         }
+        
+        if(myFaction.isFrozen()) {
+            msg(TL.COMMAND_INVITE_FROZEN.format(you.getName()));
+            return;
+        }
 
         // if economy is enabled, they're not on the bypass list, and this command has a cost set, make 'em pay
         if (!payForCommand(Conf.econCostInvite, TL.COMMAND_INVITE_TOINVITE.toString(), TL.COMMAND_INVITE_FORINVITE.toString())) {

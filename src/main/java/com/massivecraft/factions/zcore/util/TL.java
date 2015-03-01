@@ -237,6 +237,7 @@ public enum TL {
 
     COMMAND_INVITE_TOINVITE("to invite someone"),
     COMMAND_INVITE_FORINVITE("for inviting someone"),
+    COMMAND_INVITE_FROZEN("<b>Cannot invite <i>%1$s<b>, wait until DTR freeze ends!"),
     COMMAND_INVITE_CLICKTOJOIN("Click to join!"),
     COMMAND_INVITE_INVITEDYOU(" has invited you to join "),
     COMMAND_INVITE_INVITED("%1$s<i> invited %2$s<i> to your faction."),
@@ -245,6 +246,7 @@ public enum TL {
 
     COMMAND_JOIN_CANNOTFORCE("<b>You do not have permission to move other players into a faction."),
     COMMAND_JOIN_SYSTEMFACTION("<b>Players may only join normal factions. This is a system faction."),
+    COMMAND_JOIN_FROZEN("<b>The faction %1$s is frozen and cannot accept new players at this time."),
     COMMAND_JOIN_ALREADYMEMBER("<b>%1$s %2$s already a member of %3$s"),
     COMMAND_JOIN_ATLIMIT(" <b>!<white> The faction %1$s is at the limit of %2$d members, so %3$s cannot currently join."),
     COMMAND_JOIN_INOTHERFACTION("<b>%1$s must leave %2$s current faction first."),
