@@ -200,7 +200,7 @@ public class FactionsBlockListener implements Listener {
             return false;
         }
         // is faction raidable? 
-        if (P.p.getConfig().getBoolean("hcf.dtr.enabled", false) && otherFaction.isRaidable()) {
+        if (otherFaction.isRaidable()) {
             return true;
         }
 

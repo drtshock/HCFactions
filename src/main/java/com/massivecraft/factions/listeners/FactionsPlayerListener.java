@@ -277,7 +277,7 @@ public class FactionsPlayerListener implements Listener {
         FLocation loc = new FLocation(location);
         Faction otherFaction = Board.getInstance().getFactionAt(loc);
 
-        if (P.p.getConfig().getBoolean("hcf.dtr.enabled", false) && otherFaction.isRaidable()) {
+        if (otherFaction.isRaidable()) {
             return true;
         }
 
@@ -366,7 +366,7 @@ public class FactionsPlayerListener implements Listener {
             return true;
         }
 
-        if (P.p.getConfig().getBoolean("hcf.dtr.enabled", false) && otherFaction.isRaidable()) {
+        if (otherFaction.isRaidable()) {
             return true;
         }
 
