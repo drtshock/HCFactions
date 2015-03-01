@@ -268,6 +268,7 @@ public enum TL {
     COMMAND_KICK_NOTMEMBER("%1$s<b> is not a member of %2$s"),
     COMMAND_KICK_INSUFFICIENTRANK("<b>Your rank is too low to kick this player."),
     COMMAND_KICK_TOKICK("to kick someone from the faction"),
+    COMMAND_KICK_FINE("<b>Your faction was fined <i>%1$s <b>DTR for kicking <i>%2$s<b>."),
     COMMAND_KICK_FORKICK("for kicking someone from the faction"),
     COMMAND_KICK_FACTION("%1$s<i> kicked %2$s<i> from the faction! :O"), //message given to faction members
     COMMAND_KICK_KICKS("<i>You kicked %1$s<i> from the faction %2$s<i>!"), //kicker perspective
