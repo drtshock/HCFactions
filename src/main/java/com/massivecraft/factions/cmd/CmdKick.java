@@ -110,7 +110,7 @@ public class CmdKick extends FCommand {
         
         // Fine faction DTR for kicking player out
         double fine = P.p.getConfig().getDouble("hcf.dtr.kick-penalty", 1.0);
-        if(fine > 0) {
+        if(fine > 0 && toKickFaction.isFrozen()) {
             toKickFaction.alterDTR(fine);
             fme.msg(TL.COMMAND_KICK_FINE.format(dc.format(fine), toKick.getName()));
         }        
