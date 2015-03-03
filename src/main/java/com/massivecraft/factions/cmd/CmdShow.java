@@ -153,21 +153,21 @@ public class CmdShow extends FCommand {
         String dtr = dc.format(faction.getDTR()).toString();
         String maxDtr = dc.format(faction.getMaxDTR()).toString();
         String raidable = faction.isRaidable() ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
-        msg(TL.COMMAND_SHOW_DEATHS_TIL_RAIDABLE, dtr, maxDtr, raidable);
+        msg(TL.COMMAND_SHOW_DTR, dtr, maxDtr, raidable);
 
         //Bug? Faction home will be invisible to console if hide-homes is enabled. 
         if (!P.p.getConfig().getBoolean("hcf.dtr.hide-homes", false) || (console && fme.getRelationTo(faction).isMember())) {
             if (faction.hasHome()) {
                 Location home = faction.getHome();
-                msg(TL.COMMAND_SHOW_DTR_HOME_SET, home.getWorld().getName(), home.getBlockX(), home.getBlockY(), home.getBlockZ());
+                msg(TL.COMMAND_SHOW_HOME_SET, home.getWorld().getName(), home.getBlockX(), home.getBlockY(), home.getBlockZ());
             } else {
-                msg(TL.COMMAND_SHOW_DTR_HOME_UNSET);
+                msg(TL.COMMAND_SHOW_HOME_UNSET);
             }
         }
         if (faction.isFrozen()) {
             long left = faction.getFreezeLeft();
             String time = DurationFormatUtils.formatDuration(left, "mm:ss", true);
-            msg(TL.COMMAND_SHOW_DTR_FROZEN, time);
+            msg(TL.COMMAND_SHOW_FROZEN, time);
         }
         if (faction.isPermanent()) {
             msg(TL.COMMAND_SHOW_PERMANENT);
