@@ -732,10 +732,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public boolean shouldBeSaved() {
-        if (!this.hasFaction()) {
-            return false;
-        }
-        return true;
+        return this.hasFaction();
     }
 
     public void msg(String str, Object... args) {
