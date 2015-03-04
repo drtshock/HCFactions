@@ -52,8 +52,8 @@ public class CmdShow extends FCommand {
             peaceStatus = "     " + Conf.colorNeutral + TL.COMMAND_SHOW_PEACEFUL.toString();
         }
 
-        List<FancyMessage> allies = new ArrayList<FancyMessage>();
-        List<FancyMessage> enemies = new ArrayList<FancyMessage>();
+        List<FancyMessage> allies = new ArrayList<>();
+        List<FancyMessage> enemies = new ArrayList<>();
         if (!faction.isNone()) {
             FancyMessage currentAllies = new FancyMessage(TL.COMMAND_SHOW_ALLIES.toString()).color(ChatColor.GOLD);
             FancyMessage currentEnemies = new FancyMessage(TL.COMMAND_SHOW_ENEMIES.toString()).color(ChatColor.GOLD);
@@ -97,8 +97,8 @@ public class CmdShow extends FCommand {
             enemies.add(currentEnemies);
         }
 
-        List<FancyMessage> online = new ArrayList<FancyMessage>();
-        List<FancyMessage> offline = new ArrayList<FancyMessage>();
+        List<FancyMessage> online = new ArrayList<>();
+        List<FancyMessage> offline = new ArrayList<>();
         if (!faction.isNone()) {
             FancyMessage currentOnline = new FancyMessage(TL.COMMAND_SHOW_MEMBERSONLINE.toString()).color(ChatColor.GOLD);
             FancyMessage currentOffline = new FancyMessage(TL.COMMAND_SHOW_MEMBERSOFFLINE.toString()).color(ChatColor.GOLD);
