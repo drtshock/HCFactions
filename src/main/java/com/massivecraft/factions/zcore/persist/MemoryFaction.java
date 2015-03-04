@@ -435,10 +435,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     
     public boolean isFrozen() {
         long freezeSeconds = P.p.getConfig().getLong("hcf.dtr.dtr-freeze", 0);
-        if (freezeSeconds > 0) {
-            return System.currentTimeMillis() - lastDeath < freezeSeconds * 1000;
-        }
-        return false;
+        return freezeSeconds > 0 && System.currentTimeMillis() - lastDeath < freezeSeconds * 1000;
     }
     
     public long getFreezeLeft() {
