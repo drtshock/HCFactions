@@ -156,7 +156,30 @@ max-relations:
 # the border of the world and what can be claimed to factions
 world-border:
   buffer: 0
-  
+
+# Configurable f show output
+# Order in list does not matter, this does not let you re-arrange the output
+# Only allows you to disable certain messages you dont want
+# Each value for the most part outputs to it's own line (permanent doesnt)
+# Either home-set or home-unset is shown, both are here incase you dont want "Faction Home: Not set"
+# To change the actual text, visit the lang.yml file and find the corresponding keys
+fshow:
+  - description
+  - joining
+  - peaceful
+  - land
+  - dtr
+  - home-set
+  - home-unset
+  - dtr-freeze
+  - permanent
+  - land-value
+  - bank-contains
+  - allies
+  - enemies
+  - members-online
+  - members-offline
+
 # Raids
 # Allow a faction to be raided if their DTR is <= 0 
 # This will make claimed territory lose all protections

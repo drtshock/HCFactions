@@ -48,7 +48,7 @@ public class CmdShow extends FCommand {
         }
 
         String peaceStatus = "";
-        if (faction.isPeaceful()) {
+        if (faction.isPeaceful() && P.p.getConfig().getStringList("fshow").contains("peaceful")) {
             peaceStatus = "     " + Conf.colorNeutral + TL.COMMAND_SHOW_PEACEFUL.toString();
         }
 
@@ -138,42 +138,50 @@ public class CmdShow extends FCommand {
 
         // Send all at once ;D
         msg(p.txt.titleize(faction.getTag(fme)));
-        msg(TL.COMMAND_SHOW_DESCRIPTION, faction.getDescription());
+        if (P.p.getConfig().getStringList("fshow").contains("description")) {
+            msg(TL.COMMAND_SHOW_DESCRIPTION, faction.getDescription());
+        }
         if (!faction.isNormal()) {
             return;
         }
-        msg(TL.COMMAND_SHOW_JOINING.toString() + peaceStatus, (faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString()));
-        msg(TL.COMMAND_SHOW_LAND, faction.getLand(), faction.getMaxLand());
-
-        boolean console = fme != null;
-        if (console) {
-            fme.updateDTR(); // update DTR before fetch, always
+        if (P.p.getConfig().getStringList("fshow").contains("joining")) {
+            msg(TL.COMMAND_SHOW_JOINING.toString() + peaceStatus, (faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString()));
+        }
+        if (P.p.getConfig().getStringList("fshow").contains("land")) {
+            msg(TL.COMMAND_SHOW_LAND, faction.getLand(), faction.getMaxLand());
         }
 
-        String dtr = dc.format(faction.getDTR()).toString();
-        String maxDtr = dc.format(faction.getMaxDTR()).toString();
-        String raidable = faction.isRaidable() ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
-        msg(TL.COMMAND_SHOW_DTR, dtr, maxDtr, raidable);
+        boolean console = fme != null; // true when player, false when console
+
+        if (P.p.getConfig().getStringList("fshow").contains("dtr")) {
+            if (console) {
+                fme.updateDTR(); // update DTR before fetch, always
+            }
+            String dtr = dc.format(faction.getDTR());
+            String maxDtr = dc.format(faction.getMaxDTR());
+            String raidable = faction.isRaidable() ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
+            msg(TL.COMMAND_SHOW_DTR, dtr, maxDtr, raidable);
+        }
 
         //Bug? Faction home will be invisible to console if hide-homes is enabled. 
         if (!P.p.getConfig().getBoolean("hcf.dtr.hide-homes", false) || (console && fme.getRelationTo(faction).isMember())) {
-            if (faction.hasHome()) {
+            if (faction.hasHome() && P.p.getConfig().getStringList("fshow").contains("home-set")) {
                 Location home = faction.getHome();
                 msg(TL.COMMAND_SHOW_HOME_SET, home.getWorld().getName(), home.getBlockX(), home.getBlockY(), home.getBlockZ());
-            } else {
+            } else if (P.p.getConfig().getStringList("fshow").contains("home-unset")) {
                 msg(TL.COMMAND_SHOW_HOME_UNSET);
             }
         }
-        if (faction.isFrozen()) {
+        if (faction.isFrozen() && P.p.getConfig().getStringList("fshow").contains("dtr-freeze")) {
             long left = faction.getFreezeLeft();
             String time = DurationFormatUtils.formatDuration(left, "mm:ss", true);
             msg(TL.COMMAND_SHOW_FROZEN, time);
         }
-        if (faction.isPermanent()) {
+        if (faction.isPermanent() && P.p.getConfig().getStringList("fshow").contains("permanent")) {
             msg(TL.COMMAND_SHOW_PERMANENT);
         }
         // show the land value
-        if (Econ.shouldBeUsed()) {
+        if (Econ.shouldBeUsed() && P.p.getConfig().getStringList("fshow").contains("land-value")) {
             double value = Econ.calculateTotalLandValue(faction.getLand());
             double refund = value * Conf.econClaimRefundMultiplier;
             if (value > 0) {
@@ -183,15 +191,18 @@ public class CmdShow extends FCommand {
             }
 
             // Show bank contents
-            if (Conf.bankEnabled) {
+            if (Conf.bankEnabled && P.p.getConfig().getStringList("fshow").contains("bank-contains")) {
                 msg(TL.COMMAND_SHOW_BANKCONTAINS, Econ.moneyString(Econ.getBalance(faction.getAccountId())));
             }
         }
-
-        sendFancyMessage(allies);
-        sendFancyMessage(enemies);
-        sendFancyMessage(online);
-        sendFancyMessage(offline);
+        if (P.p.getConfig().getStringList("fshow").contains("allies"))
+            sendFancyMessage(allies);
+        if (P.p.getConfig().getStringList("fshow").contains("enemies"))
+            sendFancyMessage(enemies);
+        if (P.p.getConfig().getStringList("fshow").contains("members-online"))
+            sendFancyMessage(online);
+        if (P.p.getConfig().getStringList("fshow").contains("members-offline"))
+            sendFancyMessage(offline);
     }
 
     @Override
