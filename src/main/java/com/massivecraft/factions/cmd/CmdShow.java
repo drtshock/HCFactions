@@ -6,7 +6,9 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
+
 import mkremins.fanciful.FancyMessage;
+
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -17,8 +19,6 @@ import java.util.List;
 public class CmdShow extends FCommand {
 
     private static final int ARBITRARY_LIMIT = 25000;
-
-    private List<String> cache = new ArrayList<String>();
 
     public CmdShow() {
         this.aliases.add("show");
@@ -59,6 +59,7 @@ public class CmdShow extends FCommand {
         if (fme != null) {
             fme.updateDTR();
         }
+        faction.updateDTR();
 
         // we'll send title now, rest soon :)
         msg(p.txt.titleize(faction.getTag(fme)));
@@ -82,7 +83,7 @@ public class CmdShow extends FCommand {
                 raw = raw.replace("{z}", String.valueOf(home.getBlockZ()));
             } else {
                 // if no home exists, use home unset tl for "not set"
-                raw = raw.replace("{world}", TL.COMMAND_SHOW_HOME_UNSET.toString()).replace("{x}", "").replace("{y}", "").replace("{z}", "");
+                raw = raw.replace("{world},", TL.COMMAND_SHOW_HOME_UNSET.toString()).replace("{x},", "").replace("{y},", "").replace("{z}", "");
             }
 
             if (faction.isFrozen()) {
@@ -159,8 +160,6 @@ public class CmdShow extends FCommand {
 
     /**
      * Gets list of allies to this faction
-     * Also caches enemies to save cpu cycles
-     *
      * @param faction faction to analyze
      * @param pre     title of fancy message
      * @return list of fancy messages
@@ -187,9 +186,7 @@ public class CmdShow extends FCommand {
                     allies.add(currentAllies);
                     currentAllies = new FancyMessage();
                 }
-            } else {
-                cache.add(s);
-            }
+            } 
         }
         allies.add(currentAllies);
         return allies;
@@ -197,9 +194,6 @@ public class CmdShow extends FCommand {
 
     /**
      * Gets a list of enemies to this faction
-     * Uses cached data if it exists
-     * (Users: Show allies before enemies :p)
-     *
      * @param faction faction to analyze
      * @param pre     title of fancy message
      * @return list of fancy messages
@@ -208,25 +202,6 @@ public class CmdShow extends FCommand {
         List<FancyMessage> enemies = new ArrayList<FancyMessage>();
         FancyMessage currentEnemies = new FancyMessage(pre).color(ChatColor.GOLD);
         boolean firstEnemy = true;
-        if (!this.cache.isEmpty()) {
-            Factions instance = Factions.getInstance();
-            for (String cfaction : this.cache) {
-                Faction other = instance.getFactionById(cfaction);
-                if (firstEnemy) {
-                    currentEnemies.then(cfaction).tooltip(getToolTips(other));
-                } else {
-                    currentEnemies.then(", " + cfaction).tooltip(getToolTips(other));
-                }
-                firstEnemy = false;
-                if (currentEnemies.toJSONString().length() > 25000) {
-                    enemies.add(currentEnemies);
-                    currentEnemies = new FancyMessage();
-                }
-            }
-            this.cache.clear();
-            enemies.add(currentEnemies);
-            return enemies;
-        }
         for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
             if (otherFaction == faction) {
                 continue;
@@ -252,8 +227,6 @@ public class CmdShow extends FCommand {
 
     /**
      * Gets list of online faction members
-     * Also caches offline faction members to save cpu cycles
-     *
      * @param faction faction to analyze
      * @param pre     title of fancy message
      * @return list of fancy messages
@@ -275,9 +248,7 @@ public class CmdShow extends FCommand {
                     online.add(currentOnline);
                     currentOnline = new FancyMessage();
                 }
-            } else {
-                cache.add(name);
-            }
+            } 
         }
         online.add(currentOnline);
         return online;
@@ -285,9 +256,6 @@ public class CmdShow extends FCommand {
 
     /**
      * Gets offline faction members
-     * Uses cached data if it exists
-     * (Users: Show online members before offline :p)
-     *
      * @param faction faction to analyze
      * @param pre     title of fancy message
      * @return list of fancy messages
@@ -296,24 +264,6 @@ public class CmdShow extends FCommand {
         List<FancyMessage> offline = new ArrayList<FancyMessage>();
         FancyMessage currentOffline = new FancyMessage(pre).color(ChatColor.GOLD);
         boolean firstOffline = true;
-        if (!this.cache.isEmpty()) {
-            FPlayers players = FPlayers.getInstance();
-            for (String player : this.cache) {
-                if (firstOffline) {
-                    currentOffline.then(player).tooltip(getToolTips(players.getById(player)));
-                } else {
-                    currentOffline.then(", " + player).tooltip(getToolTips(players.getById(player)));
-                }
-                firstOffline = false;
-                if (currentOffline.toJSONString().length() > 25000) {
-                    offline.add(currentOffline);
-                    currentOffline = new FancyMessage();
-                }
-            }
-            this.cache.clear();
-            offline.add(currentOffline);
-            return offline;
-        }
         for (FPlayer p : MiscUtil.rankOrder(faction.getFPlayers())) {
             String name = p.getNameAndTitle();
             if (!p.isOnline()) {
