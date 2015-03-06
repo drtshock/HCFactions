@@ -412,6 +412,7 @@ public enum TL {
     COMMAND_SHOW_FORSHOW("for showing faction information"),
     COMMAND_SHOW_INVITATION("invitation is required"),
     COMMAND_SHOW_UNINVITED("no invitation is needed"),
+    COMMAND_SHOW_PEACEFUL("This faction is Peaceful"),
     COMMAND_SHOW_HOME_UNSET("Not set"),
     COMMAND_SHOW_DEPRECIATED("(%1$s depreciated)"), //This is spelled correctly.
     COMMAND_SHOW_COMMANDDESCRIPTION("Show faction information"),
