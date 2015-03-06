@@ -75,7 +75,8 @@ public class CmdShow extends FCommand {
             raw = raw.replace("{dtr}", dtr).replace("{maxdtr}", maxDtr).replace("{raidable}", raidable);
 
             if (!faction.hasHome()) {
-                raw = raw.replace("{world}", "Not set").replace("{x}", "").replace("{y}", "").replace("{z}", "");
+                // if no home exists, use home unset tl for "not set"
+                raw = raw.replace("{world}", TL.COMMAND_SHOW_HOME_UNSET.toString()).replace("{x}", "").replace("{y}", "").replace("{z}", "");
             } else {
                 Location home = faction.getHome();
                 raw = raw.replace("{world}", home.getWorld().getName());
@@ -85,6 +86,7 @@ public class CmdShow extends FCommand {
             }
 
             if (!faction.isFrozen()) {
+                // faction is not frozen, so we ignore this raw line
                 if (raw.contains("{timeleft}")) {
                     continue;
                 }
@@ -93,13 +95,15 @@ public class CmdShow extends FCommand {
                 raw = raw.replace("{timeleft}", DurationFormatUtils.formatDuration(left, "mm:ss", true));
             }
 
-            if (raw.contains("permanent")) {
-                if (!faction.isPeaceful()) {
+            if (!faction.isPermanent()) {
+                // faction is not permanent, so we ignore this raw line
+                if (raw.contains("permanent")) {
                     continue;
                 }
             }
 
             if (raw.contains("{value}") || raw.contains("{refund}") || raw.contains("{balance}")) {
+                // if line involves economy variables, check if we economy should be used
                 if (Econ.shouldBeUsed()) {
                     double value = Econ.calculateTotalLandValue(faction.getLand());
                     double refund = value * Conf.econClaimRefundMultiplier;
@@ -112,6 +116,7 @@ public class CmdShow extends FCommand {
                         raw = raw.replace("{balance}", Econ.moneyString(Econ.getBalance(faction.getAccountId())));
                     }
                 } else {
+                    // line involves economy, but economy is disabled, so we ignore this raw line
                     continue;
                 }
             }
@@ -133,6 +138,7 @@ public class CmdShow extends FCommand {
                 refined.add(getOffline(faction, raw));
                 continue;
             }
+            // finally, we add the send-able message to our output list
             refined.add(p.txt.parse(raw));
         }
 
@@ -150,7 +156,14 @@ public class CmdShow extends FCommand {
         return TL.COMMAND_SHOW_COMMANDDESCRIPTION;
     }
 
-    public List<FancyMessage> getAllies(Faction faction, String pre) {
+    /**
+     * Gets list of allies to this faction
+     * Also caches enemies to save cpu cycles
+     * @param faction faction to analyze
+     * @param pre title of fancy message
+     * @return list of fancy messages
+     */
+    private List<FancyMessage> getAllies(Faction faction, String pre) {
         List<FancyMessage> allies = new ArrayList<FancyMessage>();
         FancyMessage currentAllies = new FancyMessage(pre).color(ChatColor.GOLD);
         boolean firstAlly = true;
@@ -180,7 +193,15 @@ public class CmdShow extends FCommand {
         return allies;
     }
 
-    public List<FancyMessage> getEnemies(Faction faction, String pre) {
+    /**
+     * Gets a list of enemies to this faction
+     * Uses cached data if it exists
+     * (Users: Show allies before enemies :p)
+     * @param faction faction to analyze
+     * @param pre title of fancy message
+     * @return list of fancy messages
+     */
+    private List<FancyMessage> getEnemies(Faction faction, String pre) {
         List<FancyMessage> enemies = new ArrayList<FancyMessage>();
         FancyMessage currentEnemies = new FancyMessage(pre).color(ChatColor.GOLD);
         boolean firstEnemy = true;
@@ -226,7 +247,14 @@ public class CmdShow extends FCommand {
         return enemies;
     }
 
-    public List<FancyMessage> getOnline(Faction faction, String pre) {
+    /**
+     * Gets list of online faction members
+     * Also caches offline faction members to save cpu cycles
+     * @param faction faction to analyze
+     * @param pre title of fancy message
+     * @return list of fancy messages
+     */
+    private List<FancyMessage> getOnline(Faction faction, String pre) {
         List<FancyMessage> online = new ArrayList<FancyMessage>();
         FancyMessage currentOnline = new FancyMessage(pre).color(ChatColor.GOLD);
         boolean firstOnline = true;
@@ -251,7 +279,15 @@ public class CmdShow extends FCommand {
         return online;
     }
 
-    public List<FancyMessage> getOffline(Faction faction, String pre) {
+    /**
+     * Gets offline faction members
+     * Uses cached data if it exists
+     * (Users: Show online members before offline :p)
+     * @param faction faction to analyze
+     * @param pre title of fancy message
+     * @return list of fancy messages
+     */
+    private List<FancyMessage> getOffline(Faction faction, String pre) {
         List<FancyMessage> offline = new ArrayList<FancyMessage>();
         FancyMessage currentOffline = new FancyMessage(pre).color(ChatColor.GOLD);
         boolean firstOffline = true;
