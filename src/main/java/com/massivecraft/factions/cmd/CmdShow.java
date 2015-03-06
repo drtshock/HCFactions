@@ -6,9 +6,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
-
 import mkremins.fanciful.FancyMessage;
-
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -19,7 +17,7 @@ import java.util.List;
 public class CmdShow extends FCommand {
 
     private static final int ARBITRARY_LIMIT = 25000;
-    
+
     private List<String> cache = new ArrayList<String>();
 
     public CmdShow() {
@@ -85,7 +83,7 @@ public class CmdShow extends FCommand {
                 raw = raw.replace("{y}", String.valueOf(home.getBlockY()));
                 raw = raw.replace("{z}", String.valueOf(home.getBlockZ()));
             }
-            
+
             if (!faction.isFrozen()) {
                 if (raw.contains("{timeleft}")) {
                     continue;
@@ -100,9 +98,9 @@ public class CmdShow extends FCommand {
                     continue;
                 }
             }
-            
+
             if (raw.contains("{value}") || raw.contains("{refund}") || raw.contains("{balance}")) {
-                if(Econ.shouldBeUsed()) {
+                if (Econ.shouldBeUsed()) {
                     double value = Econ.calculateTotalLandValue(faction.getLand());
                     double refund = value * Conf.econClaimRefundMultiplier;
                     if (value > 0) {
@@ -112,12 +110,12 @@ public class CmdShow extends FCommand {
                     }
                     if (Conf.bankEnabled) {
                         raw = raw.replace("{balance}", Econ.moneyString(Econ.getBalance(faction.getAccountId())));
-                    } 
+                    }
                 } else {
                     continue;
-                }                
-            } 
-            
+                }
+            }
+
             if (raw.contains("{allies}")) {
                 raw = raw.replace("{allies}", "");
                 refined.add(getAllies(faction, raw));
@@ -138,11 +136,11 @@ public class CmdShow extends FCommand {
             refined.add(p.txt.parse(raw));
         }
 
-        for (Object out : refined) { 
-            if(out instanceof String) {
-                msg((String)out);
-            } else if(out instanceof List<?>) {
-                sendFancyMessage((List<FancyMessage>)out);
+        for (Object out : refined) {
+            if (out instanceof String) {
+                msg((String) out);
+            } else if (out instanceof List<?>) {
+                sendFancyMessage((List<FancyMessage>) out);
             }
         }
     }
