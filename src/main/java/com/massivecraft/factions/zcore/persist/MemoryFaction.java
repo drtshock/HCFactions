@@ -392,7 +392,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             this.dtr += fplayer.getDTR();
         }
         double max = P.p.getConfig().getDouble("hcf.dtr.max-faction-dtr", 5.5);
-        if (max > 0 && this.dtr > max) {
+        if (max > 0 && this.dtr > getMaxDTR()) {
             this.dtr = max;
         } else if (getMinDTR() < 0 && this.dtr < getMinDTR()) {
             this.dtr = getMinDTR();
