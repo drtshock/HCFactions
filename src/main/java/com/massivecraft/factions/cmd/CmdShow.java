@@ -6,7 +6,9 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
+
 import mkremins.fanciful.FancyMessage;
+
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -17,6 +19,8 @@ import java.util.List;
 public class CmdShow extends FCommand {
 
     private static final int ARBITRARY_LIMIT = 25000;
+    
+    private List<String> cache = new ArrayList<String>();
 
     public CmdShow() {
         this.aliases.add("show");
@@ -47,166 +51,246 @@ public class CmdShow extends FCommand {
             return;
         }
 
-        String peaceStatus = "";
-        if (faction.isPeaceful() && P.p.getConfig().getStringList("fshow").contains("peaceful")) {
-            peaceStatus = "     " + Conf.colorNeutral + TL.COMMAND_SHOW_PEACEFUL.toString();
+        List<Object> refined = new ArrayList<Object>();
+
+        String joining = (faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString());
+        String dtr = dc.format(faction.getDTR());
+        String maxDtr = dc.format(faction.getMaxDTR());
+        String raidable = faction.isRaidable() ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
+
+        if (fme != null) {
+            fme.updateDTR();
         }
 
-        List<FancyMessage> allies = new ArrayList<>();
-        List<FancyMessage> enemies = new ArrayList<>();
-        if (!faction.isNone()) {
-            FancyMessage currentAllies = new FancyMessage(TL.COMMAND_SHOW_ALLIES.toString()).color(ChatColor.GOLD);
-            FancyMessage currentEnemies = new FancyMessage(TL.COMMAND_SHOW_ENEMIES.toString()).color(ChatColor.GOLD);
-
-            boolean firstAlly = true;
-            boolean firstEnemy = true;
-            for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
-                if (otherFaction == faction) {
-                    continue;
-                }
-
-                Relation rel = otherFaction.getRelationTo(faction);
-                String s = otherFaction.getTag(fme);
-                if (rel.isAlly()) {
-                    if (firstAlly) {
-                        currentAllies.then(s).tooltip(getToolTips(otherFaction));
-                    } else {
-                        currentAllies.then(", " + s).tooltip(getToolTips(otherFaction));
-                    }
-                    firstAlly = false;
-
-                    if (currentAllies.toJSONString().length() > ARBITRARY_LIMIT) {
-                        allies.add(currentAllies);
-                        currentAllies = new FancyMessage();
-                    }
-                } else if (rel.isEnemy()) {
-                    if (firstEnemy) {
-                        currentEnemies.then(s).tooltip(getToolTips(otherFaction));
-                    } else {
-                        currentEnemies.then(", " + s).tooltip(getToolTips(otherFaction));
-                    }
-                    firstEnemy = false;
-
-                    if (currentEnemies.toJSONString().length() > ARBITRARY_LIMIT) {
-                        enemies.add(currentEnemies);
-                        currentEnemies = new FancyMessage();
-                    }
-                }
-            }
-            allies.add(currentAllies);
-            enemies.add(currentEnemies);
-        }
-
-        List<FancyMessage> online = new ArrayList<>();
-        List<FancyMessage> offline = new ArrayList<>();
-        if (!faction.isNone()) {
-            FancyMessage currentOnline = new FancyMessage(TL.COMMAND_SHOW_MEMBERSONLINE.toString()).color(ChatColor.GOLD);
-            FancyMessage currentOffline = new FancyMessage(TL.COMMAND_SHOW_MEMBERSOFFLINE.toString()).color(ChatColor.GOLD);
-            boolean firstOnline = true;
-            boolean firstOffline = true;
-            for (FPlayer p : MiscUtil.rankOrder(faction.getFPlayers())) {
-                String name = p.getNameAndTitle();
-                if (p.isOnline()) {
-                    if (firstOnline) {
-                        currentOnline.then(name).tooltip(getToolTips(p));
-                    } else {
-                        currentOnline.then(", " + name).tooltip(getToolTips(p));
-                    }
-                    firstOnline = false;
-
-                    if (currentOnline.toJSONString().length() > ARBITRARY_LIMIT) {
-                        online.add(currentOnline);
-                        currentOnline = new FancyMessage();
-                    }
-                } else {
-                    if (firstOffline) {
-                        currentOffline.then(name).tooltip(getToolTips(p));
-                    } else {
-                        currentOffline.then(", " + name).tooltip(getToolTips(p));
-                    }
-                    firstOffline = false;
-
-                    if (currentOffline.toJSONString().length() > ARBITRARY_LIMIT) {
-                        offline.add(currentOffline);
-                        currentOffline = new FancyMessage();
-                    }
-                }
-            }
-            online.add(currentOnline);
-            offline.add(currentOffline);
-        }
-
-        // Send all at once ;D
+        // we'll send title now, rest soon :)
         msg(p.txt.titleize(faction.getTag(fme)));
-        if (P.p.getConfig().getStringList("fshow").contains("description")) {
-            msg(TL.COMMAND_SHOW_DESCRIPTION, faction.getDescription());
-        }
+
         if (!faction.isNormal()) {
             return;
         }
-        if (P.p.getConfig().getStringList("fshow").contains("joining")) {
-            msg(TL.COMMAND_SHOW_JOINING.toString() + peaceStatus, (faction.getOpen() ? TL.COMMAND_SHOW_UNINVITED.toString() : TL.COMMAND_SHOW_INVITATION.toString()));
-        }
-        if (P.p.getConfig().getStringList("fshow").contains("land")) {
-            msg(TL.COMMAND_SHOW_LAND, faction.getLand(), faction.getMaxLand());
-        }
 
-        boolean console = fme != null; // true when player, false when console
+        for (String raw : P.p.getConfig().getStringList("fshow")) {
+            raw = raw.replace("{description}", faction.getDescription());
+            raw = raw.replace("{joining}", joining);
+            raw = raw.replace("{peaceful?}", faction.isPeaceful() ? Conf.colorNeutral + TL.COMMAND_SHOW_PEACEFUL.toString() : "");
+            raw = raw.replace("{land}", String.valueOf(faction.getLand())).replace("{maxland}", String.valueOf(faction.getMaxLand()));
+            raw = raw.replace("{dtr}", dtr).replace("{maxdtr}", maxDtr).replace("{raidable}", raidable);
 
-        if (P.p.getConfig().getStringList("fshow").contains("dtr")) {
-            if (console) {
-                fme.updateDTR(); // update DTR before fetch, always
-            }
-            String dtr = dc.format(faction.getDTR());
-            String maxDtr = dc.format(faction.getMaxDTR());
-            String raidable = faction.isRaidable() ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
-            msg(TL.COMMAND_SHOW_DTR, dtr, maxDtr, raidable);
-        }
-
-        //Bug? Faction home will be invisible to console if hide-homes is enabled. 
-        if (!P.p.getConfig().getBoolean("hcf.dtr.hide-homes", false) || (console && fme.getRelationTo(faction).isMember())) {
-            if (faction.hasHome() && P.p.getConfig().getStringList("fshow").contains("home-set")) {
+            if (!faction.hasHome()) {
+                raw = raw.replace("{world}", "Not set").replace("{x}", "").replace("{y}", "").replace("{z}", "");
+            } else {
                 Location home = faction.getHome();
-                msg(TL.COMMAND_SHOW_HOME_SET, home.getWorld().getName(), home.getBlockX(), home.getBlockY(), home.getBlockZ());
-            } else if (P.p.getConfig().getStringList("fshow").contains("home-unset")) {
-                msg(TL.COMMAND_SHOW_HOME_UNSET);
+                raw = raw.replace("{world}", home.getWorld().getName());
+                raw = raw.replace("{x}", String.valueOf(home.getBlockX()));
+                raw = raw.replace("{y}", String.valueOf(home.getBlockY()));
+                raw = raw.replace("{z}", String.valueOf(home.getBlockZ()));
             }
-        }
-        if (faction.isFrozen() && P.p.getConfig().getStringList("fshow").contains("dtr-freeze")) {
-            long left = faction.getFreezeLeft();
-            String time = DurationFormatUtils.formatDuration(left, "mm:ss", true);
-            msg(TL.COMMAND_SHOW_FROZEN, time);
-        }
-        if (faction.isPermanent() && P.p.getConfig().getStringList("fshow").contains("permanent")) {
-            msg(TL.COMMAND_SHOW_PERMANENT);
-        }
-        // show the land value
-        if (Econ.shouldBeUsed() && P.p.getConfig().getStringList("fshow").contains("land-value")) {
-            double value = Econ.calculateTotalLandValue(faction.getLand());
-            double refund = value * Conf.econClaimRefundMultiplier;
-            if (value > 0) {
-                String stringValue = Econ.moneyString(value);
-                String stringRefund = (refund > 0.0) ? (TL.COMMAND_SHOW_DEPRECIATED.format(Econ.moneyString(refund))) : "";
-                msg(TL.COMMAND_SHOW_LANDVALUE, stringValue, stringRefund);
+            
+            if (!faction.isFrozen()) {
+                if (raw.contains("{timeleft}")) {
+                    continue;
+                }
+            } else {
+                long left = faction.getFreezeLeft();
+                raw = raw.replace("{timeleft}", DurationFormatUtils.formatDuration(left, "mm:ss", true));
             }
 
-            // Show bank contents
-            if (Conf.bankEnabled && P.p.getConfig().getStringList("fshow").contains("bank-contains")) {
-                msg(TL.COMMAND_SHOW_BANKCONTAINS, Econ.moneyString(Econ.getBalance(faction.getAccountId())));
+            if (raw.contains("permanent")) {
+                if (!faction.isPeaceful()) {
+                    continue;
+                }
+            }
+            
+            if (raw.contains("{value}") || raw.contains("{refund}") || raw.contains("{balance}")) {
+                if(Econ.shouldBeUsed()) {
+                    double value = Econ.calculateTotalLandValue(faction.getLand());
+                    double refund = value * Conf.econClaimRefundMultiplier;
+                    if (value > 0) {
+                        String stringValue = Econ.moneyString(value);
+                        String stringRefund = (refund > 0.0) ? (TL.COMMAND_SHOW_DEPRECIATED.format(Econ.moneyString(refund))) : "";
+                        raw = raw.replace("{value}", stringValue).replace("{refund}", stringRefund);
+                    }
+                    if (Conf.bankEnabled) {
+                        raw = raw.replace("{balance}", Econ.moneyString(Econ.getBalance(faction.getAccountId())));
+                    } 
+                } else {
+                    continue;
+                }                
+            } 
+            
+            if (raw.contains("{allies}")) {
+                raw = raw.replace("{allies}", "");
+                refined.add(getAllies(faction, raw));
+                continue;
+            } else if (raw.contains("{enemies}")) {
+                raw = raw.replace("{enemies}", "");
+                refined.add(getEnemies(faction, raw));
+                continue;
+            } else if (raw.contains("{online}")) {
+                raw = raw.replace("{online}", "");
+                refined.add(getOnline(faction, raw));
+                continue;
+            } else if (raw.contains("{offline}")) {
+                raw = raw.replace("{offline}", "");
+                refined.add(getOffline(faction, raw));
+                continue;
+            }
+            refined.add(p.txt.parse(raw));
+        }
+
+        for (Object out : refined) { 
+            if(out instanceof String) {
+                msg((String)out);
+            } else if(out instanceof List<?>) {
+                sendFancyMessage((List<FancyMessage>)out);
             }
         }
-        if (P.p.getConfig().getStringList("fshow").contains("allies"))
-            sendFancyMessage(allies);
-        if (P.p.getConfig().getStringList("fshow").contains("enemies"))
-            sendFancyMessage(enemies);
-        if (P.p.getConfig().getStringList("fshow").contains("members-online"))
-            sendFancyMessage(online);
-        if (P.p.getConfig().getStringList("fshow").contains("members-offline"))
-            sendFancyMessage(offline);
     }
 
     @Override
     public TL getUsageTranslation() {
         return TL.COMMAND_SHOW_COMMANDDESCRIPTION;
+    }
+
+    public List<FancyMessage> getAllies(Faction faction, String pre) {
+        List<FancyMessage> allies = new ArrayList<FancyMessage>();
+        FancyMessage currentAllies = new FancyMessage(pre).color(ChatColor.GOLD);
+        boolean firstAlly = true;
+        for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
+            if (otherFaction == faction) {
+                continue;
+            }
+
+            Relation rel = otherFaction.getRelationTo(faction);
+            String s = otherFaction.getTag(fme);
+            if (rel.isAlly()) {
+                if (firstAlly) {
+                    currentAllies.then(s).tooltip(getToolTips(otherFaction));
+                } else {
+                    currentAllies.then(", " + s).tooltip(getToolTips(otherFaction));
+                }
+                firstAlly = false;
+                if (currentAllies.toJSONString().length() > ARBITRARY_LIMIT) {
+                    allies.add(currentAllies);
+                    currentAllies = new FancyMessage();
+                }
+            } else {
+                cache.add(s);
+            }
+        }
+        allies.add(currentAllies);
+        return allies;
+    }
+
+    public List<FancyMessage> getEnemies(Faction faction, String pre) {
+        List<FancyMessage> enemies = new ArrayList<FancyMessage>();
+        FancyMessage currentEnemies = new FancyMessage(pre).color(ChatColor.GOLD);
+        boolean firstEnemy = true;
+        if (!this.cache.isEmpty()) {
+            Factions instance = Factions.getInstance();
+            for (String cfaction : this.cache) {
+                Faction other = instance.getFactionById(cfaction);
+                if (firstEnemy) {
+                    currentEnemies.then(cfaction).tooltip(getToolTips(other));
+                } else {
+                    currentEnemies.then(", " + cfaction).tooltip(getToolTips(other));
+                }
+                firstEnemy = false;
+                if (currentEnemies.toJSONString().length() > 25000) {
+                    enemies.add(currentEnemies);
+                    currentEnemies = new FancyMessage();
+                }
+            }
+            this.cache.clear();
+            enemies.add(currentEnemies);
+            return enemies;
+        }
+        for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
+            if (otherFaction == faction) {
+                continue;
+            }
+            Relation rel = otherFaction.getRelationTo(faction);
+            String s = otherFaction.getTag(fme);
+            if (rel.isEnemy()) {
+                if (firstEnemy) {
+                    currentEnemies.then(s).tooltip(getToolTips(otherFaction));
+                } else {
+                    currentEnemies.then(", " + s).tooltip(getToolTips(otherFaction));
+                }
+                firstEnemy = false;
+                if (currentEnemies.toJSONString().length() > ARBITRARY_LIMIT) {
+                    enemies.add(currentEnemies);
+                    currentEnemies = new FancyMessage();
+                }
+            }
+        }
+        enemies.add(currentEnemies);
+        return enemies;
+    }
+
+    public List<FancyMessage> getOnline(Faction faction, String pre) {
+        List<FancyMessage> online = new ArrayList<FancyMessage>();
+        FancyMessage currentOnline = new FancyMessage(pre).color(ChatColor.GOLD);
+        boolean firstOnline = true;
+        for (FPlayer p : MiscUtil.rankOrder(faction.getFPlayers())) {
+            String name = p.getNameAndTitle();
+            if (p.isOnline()) {
+                if (firstOnline) {
+                    currentOnline.then(name).tooltip(getToolTips(p));
+                } else {
+                    currentOnline.then(", " + name).tooltip(getToolTips(p));
+                }
+                firstOnline = false;
+                if (currentOnline.toJSONString().length() > ARBITRARY_LIMIT) {
+                    online.add(currentOnline);
+                    currentOnline = new FancyMessage();
+                }
+            } else {
+                cache.add(name);
+            }
+        }
+        online.add(currentOnline);
+        return online;
+    }
+
+    public List<FancyMessage> getOffline(Faction faction, String pre) {
+        List<FancyMessage> offline = new ArrayList<FancyMessage>();
+        FancyMessage currentOffline = new FancyMessage(pre).color(ChatColor.GOLD);
+        boolean firstOffline = true;
+        if (!this.cache.isEmpty()) {
+            FPlayers players = FPlayers.getInstance();
+            for (String player : this.cache) {
+                if (firstOffline) {
+                    currentOffline.then(player).tooltip(getToolTips(players.getById(player)));
+                } else {
+                    currentOffline.then(", " + player).tooltip(getToolTips(players.getById(player)));
+                }
+                firstOffline = false;
+                if (currentOffline.toJSONString().length() > 25000) {
+                    offline.add(currentOffline);
+                    currentOffline = new FancyMessage();
+                }
+            }
+            this.cache.clear();
+            offline.add(currentOffline);
+            return offline;
+        }
+        for (FPlayer p : MiscUtil.rankOrder(faction.getFPlayers())) {
+            String name = p.getNameAndTitle();
+            if (!p.isOnline()) {
+                if (firstOffline) {
+                    currentOffline.then(name).tooltip(getToolTips(p));
+                } else {
+                    currentOffline.then(", " + name).tooltip(getToolTips(p));
+                }
+                firstOffline = false;
+                if (currentOffline.toJSONString().length() > ARBITRARY_LIMIT) {
+                    offline.add(currentOffline);
+                    currentOffline = new FancyMessage();
+                }
+            }
+        }
+        offline.add(currentOffline);
+        return offline;
     }
 }

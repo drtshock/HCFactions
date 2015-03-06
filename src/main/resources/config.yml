@@ -160,25 +160,27 @@ world-border:
 # Configurable f show output
 # Order in list does not matter, this does not let you re-arrange the output
 # Only allows you to disable certain messages you dont want
-# Each value for the most part outputs to it's own line (permanent doesnt)
-# Either home-set or home-unset is shown, both are here incase you dont want "Faction Home: Not set"
 # To change the actual text, visit the lang.yml file and find the corresponding keys
+# Variables: 
+#   {description}, {joining}, {peaceful?}, {land}, {maxland}, {dtr}, {maxdtr}, 
+#   {raidable}, {world}, {x}, {y}, {z}, {timeleft}, {value}, {refund}, {balance}, {allies},
+#   {enemies}, {membersonline}, {membersoffline}
+#
+# 
 fshow:
-  - description
-  - joining
-  - peaceful
-  - land
-  - dtr
-  - home-set
-  - home-unset
-  - dtr-freeze
-  - permanent
-  - land-value
-  - bank-contains
-  - allies
-  - enemies
-  - members-online
-  - members-offline
+  - '<a>Description: <i>{description}'
+  - '<a>Joining: <i>{joining}    {peaceful?}'
+  - '<a>Land / Max: <i> {land} / {maxland}'
+  - '<a>DTR: <i>{dtr} / {maxdtr} <a>Raidable: <i>{raidable}'
+  - '<a>Faction Home: <i>{world}, {x}, {y}, {z}'
+  - '<a>DTR Freeze: <i>{timeleft}'
+  - '<a>This faction is permanent, remaining even with no members.'
+  - '<a>Total land value: <i>{value} {refund}'
+  - '<a>Bank contains: <i>{balance}'
+  - 'Allies: {allies} '
+  - 'Enemies: {enemies} '
+  - 'Members online: {online}'
+  - 'Members offline: {offline}'
 
 # Raids
 # Allow a faction to be raided if their DTR is <= 0 
@@ -189,10 +191,6 @@ hcf:
   # When DTR is below 0, the faction is considered raidable
   # DTR is the sum of all faction member's DTR value, or MaxFactionDTR if it's larger
   dtr:
-    # Should we hide faction homes in /f show ?
-    # Anyone will be able to find the home of a faction if set to false
-    # However, a faction could hide by not just not setting a home :p
-    hide-homes: false
     # Maximum DTR a faction can have 
     max-faction-dtr: 5.5
     # How much DTR should we charge a faction for kicking a player when they are frozen
