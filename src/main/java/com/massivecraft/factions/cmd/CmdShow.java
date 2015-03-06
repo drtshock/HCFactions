@@ -74,25 +74,25 @@ public class CmdShow extends FCommand {
             raw = raw.replace("{land}", String.valueOf(faction.getLand())).replace("{maxland}", String.valueOf(faction.getMaxLand()));
             raw = raw.replace("{dtr}", dtr).replace("{maxdtr}", maxDtr).replace("{raidable}", raidable);
 
-            if (!faction.hasHome()) {
-                // if no home exists, use home unset tl for "not set"
-                raw = raw.replace("{world}", TL.COMMAND_SHOW_HOME_UNSET.toString()).replace("{x}", "").replace("{y}", "").replace("{z}", "");
-            } else {
+            if (faction.hasHome()) {
                 Location home = faction.getHome();
                 raw = raw.replace("{world}", home.getWorld().getName());
                 raw = raw.replace("{x}", String.valueOf(home.getBlockX()));
                 raw = raw.replace("{y}", String.valueOf(home.getBlockY()));
                 raw = raw.replace("{z}", String.valueOf(home.getBlockZ()));
+            } else {
+                // if no home exists, use home unset tl for "not set"
+                raw = raw.replace("{world}", TL.COMMAND_SHOW_HOME_UNSET.toString()).replace("{x}", "").replace("{y}", "").replace("{z}", "");
             }
 
-            if (!faction.isFrozen()) {
+            if (faction.isFrozen()) {
+                long left = faction.getFreezeLeft();
+                raw = raw.replace("{timeleft}", DurationFormatUtils.formatDuration(left, "mm:ss", true));
+            } else {
                 // faction is not frozen, so we ignore this raw line
                 if (raw.contains("{timeleft}")) {
                     continue;
                 }
-            } else {
-                long left = faction.getFreezeLeft();
-                raw = raw.replace("{timeleft}", DurationFormatUtils.formatDuration(left, "mm:ss", true));
             }
 
             if (!faction.isPermanent()) {
@@ -102,8 +102,9 @@ public class CmdShow extends FCommand {
                 }
             }
 
+
+            // if line involves economy variables, check if we economy should be used
             if (raw.contains("{value}") || raw.contains("{refund}") || raw.contains("{balance}")) {
-                // if line involves economy variables, check if we economy should be used
                 if (Econ.shouldBeUsed()) {
                     double value = Econ.calculateTotalLandValue(faction.getLand());
                     double refund = value * Conf.econClaimRefundMultiplier;
@@ -159,8 +160,9 @@ public class CmdShow extends FCommand {
     /**
      * Gets list of allies to this faction
      * Also caches enemies to save cpu cycles
+     *
      * @param faction faction to analyze
-     * @param pre title of fancy message
+     * @param pre     title of fancy message
      * @return list of fancy messages
      */
     private List<FancyMessage> getAllies(Faction faction, String pre) {
@@ -197,8 +199,9 @@ public class CmdShow extends FCommand {
      * Gets a list of enemies to this faction
      * Uses cached data if it exists
      * (Users: Show allies before enemies :p)
+     *
      * @param faction faction to analyze
-     * @param pre title of fancy message
+     * @param pre     title of fancy message
      * @return list of fancy messages
      */
     private List<FancyMessage> getEnemies(Faction faction, String pre) {
@@ -250,8 +253,9 @@ public class CmdShow extends FCommand {
     /**
      * Gets list of online faction members
      * Also caches offline faction members to save cpu cycles
+     *
      * @param faction faction to analyze
-     * @param pre title of fancy message
+     * @param pre     title of fancy message
      * @return list of fancy messages
      */
     private List<FancyMessage> getOnline(Faction faction, String pre) {
@@ -283,8 +287,9 @@ public class CmdShow extends FCommand {
      * Gets offline faction members
      * Uses cached data if it exists
      * (Users: Show online members before offline :p)
+     *
      * @param faction faction to analyze
-     * @param pre title of fancy message
+     * @param pre     title of fancy message
      * @return list of fancy messages
      */
     private List<FancyMessage> getOffline(Faction faction, String pre) {
