@@ -249,7 +249,7 @@ public abstract class MemoryFPlayer implements FPlayer {
                 currentFaction.clearClaimOwnership(this);
             }
         }
-
+        this.dtr = 0.0; // reset DTR 
         this.factionId = "0"; // The default neutral faction
         this.chatMode = ChatMode.PUBLIC;
         this.role = Role.NORMAL;
