@@ -438,6 +438,8 @@ public enum TL {
     COMMAND_TITLE_CHANGED("%1$s<i> changed a title: %2$s"),
     COMMAND_TITLE_DESCRIPTION("Set or remove a players title"),
 
+    COMMAND_TOGGLESB_DISABLED("You can't toggle scoreboards while they are disabled"),
+
     COMMAND_TOP_DESCRIPTION("Sort Factions to see the top of some criteria."),
     COMMAND_TOP_TOP("Top Factions by %s. Page %d/%d"),
     COMMAND_TOP_LINE("%d. &6%s: &c%s"), // Rank. Faction: Value
