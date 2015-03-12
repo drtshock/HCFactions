@@ -16,7 +16,7 @@ permissions:
       factions.lock: true
       factions.reload: true
       factions.save: true
-      factions.modifypower: true
+      factions.dtr: true
   factions.*:
     description: This is just an alias for factions.kit.admin
     children:
@@ -28,8 +28,7 @@ permissions:
       factions.disband.any: true
       factions.setpeaceful: true
       factions.setpermanent: true
-      factions.setpermanentpower: true
-      factions.powerboost: true
+      factions.dtr: true
       factions.sethome.any: true
       factions.money.*: true
       factions.join.any: true
@@ -78,8 +77,6 @@ permissions:
       factions.open: true
       factions.owner: true
       factions.ownerlist: true
-      factions.power: true
-      factions.power.any: true
       factions.relation: true
       factions.sethome: true
       factions.show: true
@@ -202,14 +199,8 @@ permissions:
     description: designate a faction as peaceful
   factions.setpermanent:
     description: designate a faction as permanent
-  factions.setpermanentpower:
-    description: set permanent power for a faction
-  factions.power:
-    description: show player power info
-  factions.power.any:
-    description: view an other players power level
-  factions.powerboost:
-    description: apply permanent power bonus/penalty to specified player or faction
+  factions.dtr:
+    description: set faction dtr value
   factions.relation:
     description: set relation wish to another faction
   factions.reload:
@@ -242,8 +233,6 @@ permissions:
     description: set a warp for your faction
   factions.warp:
     description: access your faction warps
-  factions.modifypower:
-    description: modify other player's power
   factions.monitorlogins:
     description: monitor join and leaves of faction members
   factions.claim.line:
