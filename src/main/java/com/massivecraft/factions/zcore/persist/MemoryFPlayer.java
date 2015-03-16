@@ -48,10 +48,8 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected Role role;
     // FIELD: title
     protected String title;
-    
     // FIELD: dtr
     protected double dtr;
-    
     // FIELD: lastDtrUpdateTime
     protected long lastDtrUpdateTime;
 
@@ -473,8 +471,8 @@ public abstract class MemoryFPlayer implements FPlayer {
         // Only update DTR if player is in a faction
         if (hasFaction()) {
             getFaction().setLastDeath(System.currentTimeMillis());
-            this.updateDTR();
             this.alterDTR(-P.p.getConfig().getDouble("hcf.dtr.death-dtr", 1.0));
+            this.updateDTR();
         }
     }
 
@@ -520,7 +518,6 @@ public abstract class MemoryFPlayer implements FPlayer {
      * Check if the scoreboard should be shown. Simple method to be used by above method.
      *
      * @param toShow Faction to be shown.
-     *
      * @return true if should show, otherwise false.
      */
     public boolean shouldShowScoreboard(Faction toShow) {
@@ -549,6 +546,12 @@ public abstract class MemoryFPlayer implements FPlayer {
 
         // if economy is enabled and they're not on the bypass list, make sure they can pay
         if (makePay && !Econ.hasAtLeast(this, Conf.econCostLeave, TL.LEAVE_TOLEAVE.toString())) {
+            return;
+        }
+        
+        // prevent player from leaving a frozen faction
+        if(myFaction.isFrozen()) {
+            msg(TL.LEAVE_DENY_FROZEN);
             return;
         }
 
@@ -646,10 +649,10 @@ public abstract class MemoryFPlayer implements FPlayer {
         } else if (factionBuffer > 0 && Board.getInstance().hasFactionWithin(flocation, myFaction, factionBuffer)) {
             error = P.p.txt.parse(TL.CLAIM_TOOCLOSETOOTHERFACTION.format(factionBuffer));
         } else if (flocation.isOutsideWorldBorder(worldBuffer)) {
-            if(worldBuffer > 0) {
-                error = P.p.txt.parse(TL.CLAIM_OUTSIDEBORDERBUFFER.format(worldBuffer));                 
+            if (worldBuffer > 0) {
+                error = P.p.txt.parse(TL.CLAIM_OUTSIDEBORDERBUFFER.format(worldBuffer));
             } else {
-                error = P.p.txt.parse(TL.CLAIM_OUTSIDEWORLDBORDER.toString()); 
+                error = P.p.txt.parse(TL.CLAIM_OUTSIDEWORLDBORDER.toString());
             }
         } else if (currentFaction.isNormal()) {
             if (myFaction.isPeaceful()) {
