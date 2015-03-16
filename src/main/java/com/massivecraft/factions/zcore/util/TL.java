@@ -413,6 +413,7 @@ public enum TL {
     COMMAND_SHOW_INVITATION("invitation is required"),
     COMMAND_SHOW_UNINVITED("no invitation is needed"),
     COMMAND_SHOW_PEACEFUL("This faction is Peaceful"),
+    COMMAND_SHOW_FREEZEFORMAT("m 'minutes', s 'seconds'"),
     COMMAND_SHOW_HOME_UNSET("Not set"),
     COMMAND_SHOW_DEPRECIATED("(%1$s depreciated)"), //This is spelled correctly.
     COMMAND_SHOW_COMMANDDESCRIPTION("Show faction information"),
@@ -477,6 +478,7 @@ public enum TL {
     LEAVE_PASSADMIN("<b>You must give the admin role to someone else first."),
     LEAVE_TOLEAVE("to leave your faction."),
     LEAVE_FORLEAVE("for leaving your faction."),
+    LEAVE_DENY_FROZEN("<b>You aren't allowed to leave a frozen faction!"),
     LEAVE_LEFT("%s <i>left %s."),
     LEAVE_DISBANDED("<a>%s<i> was disbanded."),
     LEAVE_DISBANDEDLOG("The faction %s (%s) was disbanded due to the last player (%s) leaving."),

@@ -88,7 +88,7 @@ public class CmdShow extends FCommand {
 
             if (faction.isFrozen()) {
                 long left = faction.getFreezeLeft();
-                raw = raw.replace("{timeleft}", DurationFormatUtils.formatDuration(left, "mm:ss", true));
+                raw = raw.replace("{timeleft}", DurationFormatUtils.formatDuration(left, TL.COMMAND_SHOW_FREEZEFORMAT.toString(), true));
             } else {
                 // faction is not frozen, so we ignore this raw line
                 if (raw.contains("{timeleft}")) {
