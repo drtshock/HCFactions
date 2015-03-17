@@ -1,6 +1,7 @@
 package com.massivecraft.factions.zcore.persist;
 
 import com.massivecraft.factions.*;
+import com.massivecraft.factions.event.DTRChangeEvent;
 import com.massivecraft.factions.iface.EconomyParticipator;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.integration.Econ;
@@ -29,7 +30,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected transient Set<FPlayer> fplayers = new HashSet<FPlayer>();
     protected Set<String> invites = new HashSet<String>();
     protected String id = null;
-    protected transient long lastPlayerLoggedOffTime;    
+    protected transient long lastPlayerLoggedOffTime;
     protected boolean peacefulExplosionsEnabled;
     protected String description;
     protected LazyLocation home;
@@ -41,7 +42,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected String tag;
     protected double dtr;
     protected int land;
-    
+
     public HashMap<String, List<String>> getAnnouncements() {
         return this.announcements;
     }
@@ -232,7 +233,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public long getLastDeath() {
-    	return this.lastDeath;
+        return this.lastDeath;
     }
 
     // -------------------------------------------- //
@@ -359,85 +360,91 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         }
         return count;
     }
-    
+
     // -------------------------------
     // Land
     // -------------------------------
-    
+
     public int getLand() {
         return Board.getInstance().getFactionCoordCount(this);
     }
-    
+
     public int getMaxLand() {
         int landPerPlayer = P.p.getConfig().getInt("hcf.land-per-player", 5);
         int maxFactionLand = P.p.getConfig().getInt("hcf.faction-land-max", 40);
         return Math.min(this.getSize() * landPerPlayer, maxFactionLand);
     }
-    
+
     public int getLandInWorld(String worldName) {
         return Board.getInstance().getFactionCoordCountInWorld(this, worldName);
     }
- 
+
     // -------------------------------
     // DTR
     // -------------------------------
-    
+
     public double getDTR() {
         return dtr;
     }
-    
+
     public void updateDTR() {
-        this.dtr = 0;
+        double toDtr = 0;
         for (FPlayer fplayer : fplayers) {
-            this.dtr += fplayer.getDTR();
+            toDtr += fplayer.getDTR();
         }
         double maxDtr = getMaxDTR();
-        if (this.dtr > maxDtr) {
-            this.dtr = maxDtr;
-        } else if (this.dtr < getMinDTR()) {
-            this.dtr = getMinDTR();
+        if (toDtr > maxDtr) {
+            toDtr = maxDtr;
+        } else if (toDtr < getMinDTR()) {
+            toDtr = getMinDTR();
         }
+        DTRChangeEvent changeEvent = new DTRChangeEvent(this, this.dtr, toDtr);
+        Bukkit.getServer().getPluginManager().callEvent(changeEvent);
+        if (changeEvent.isCancelled()) {
+            return;
+        }
+        this.dtr = changeEvent.getTo();
     }
-    
+
     public double getMaxDTR() {
         double ret = 0;
         for (FPlayer fplayer : fplayers) {
             ret += fplayer.getMaxDTR();
         }
         double max = P.p.getConfig().getDouble("hcf.dtr.max-faction-dtr", 5.5);
-        if(max > 0 && ret > max) {
+        if (max > 0 && ret > max) {
             ret = max;
-        } else if(getMinDTR() < 0 && ret < getMinDTR()) {
+        } else if (getMinDTR() < 0 && ret < getMinDTR()) {
             ret = getMinDTR();
         }
-        return ret; 
+        return ret;
     }
-    
+
     public double getMinDTR() {
         return P.p.getConfig().getDouble("hcf.dtr.min-faction-dtr", -6.0);
     }
-    
+
     public void setDTR(double dtr) {
         this.alterDTR(dtr - this.dtr);
     }
-    
+
     public void alterDTR(double delta) {
         double del = delta / this.getSize();
-        for(FPlayer fPlayer : fplayers) {
+        for (FPlayer fPlayer : fplayers) {
             fPlayer.alterDTR(del);
         }
         this.updateDTR();
     }
-    
+
     public boolean isRaidable() {
         return this.getDTR() <= 0;
     }
-    
+
     public boolean isFrozen() {
         long freezeSeconds = P.p.getConfig().getLong("hcf.dtr.dtr-freeze", 0);
         return freezeSeconds > 0 && System.currentTimeMillis() - lastDeath < freezeSeconds * 1000;
     }
-    
+
     public long getFreezeLeft() {
         if (isFrozen()) {
             long freezeSeconds = P.p.getConfig().getLong("hcf.dtr.dtr-freeze", 0);
@@ -445,7 +452,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         }
         return 0;
     }
-    
+
     // -------------------------------
     // FPlayers
     // -------------------------------
@@ -471,7 +478,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public boolean removeFPlayer(FPlayer fplayer) {
         return !this.isPlayerFreeType() && fplayers.remove(fplayer);
     }
-    
+
     public int getSize() {
         return fplayers.size();
     }
@@ -484,7 +491,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public Set<FPlayer> getFPlayersWhereOnline(boolean online) {
         Set<FPlayer> ret = new HashSet<FPlayer>();
-        if(!this.isNormal()) {
+        if (!this.isNormal()) {
             return ret;
         }
         for (FPlayer fplayer : fplayers) {

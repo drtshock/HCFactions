@@ -1,7 +1,7 @@
 package com.massivecraft.factions.listeners;
 
 import com.massivecraft.factions.*;
-import com.massivecraft.factions.event.DTRLossEvent;
+import com.massivecraft.factions.event.DTRChangeEvent;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
@@ -46,35 +46,35 @@ public class FactionsEntityListener implements Listener {
         FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
         Faction faction = Board.getInstance().getFactionAt(new FLocation(player.getLocation()));
 
-        DTRLossEvent dtrLostEvent = new DTRLossEvent(faction, fplayer);
-        // Check for no power loss conditions
+        DTRChangeEvent dtrEvent = new DTRChangeEvent(faction, faction.getDTR());
+        // Check for no dtr loss conditions
         if (faction.isWarZone()) {
-            // war zones always override worldsNoPowerLoss either way, thus this layout
+            // war zones always override worldsNoDtrLoss either way, thus this layout
             if (!Conf.warZoneDtrLoss) {
-                dtrLostEvent.setMessage(TL.PLAYER_DTR_NOLOSS_WARZONE.toString());
-                dtrLostEvent.setCancelled(true);
+                dtrEvent.setMessage(TL.PLAYER_DTR_NOLOSS_WARZONE.toString());
+                dtrEvent.setCancelled(true);
             }
             if (Conf.worldsNoDtrLoss.contains(player.getWorld().getName())) {
-                dtrLostEvent.setMessage(TL.PLAYER_DTR_LOSS_WARZONE.toString());
+                dtrEvent.setMessage(TL.PLAYER_DTR_LOSS_WARZONE.toString());
             }
         } else if (faction.isNone() && !Conf.wildernessDtrLoss && !Conf.worldsNoWildernessProtection.contains(player.getWorld().getName())) {
-            dtrLostEvent.setMessage(TL.PLAYER_DTR_NOLOSS_WILDERNESS.toString());
-            dtrLostEvent.setCancelled(true);
+            dtrEvent.setMessage(TL.PLAYER_DTR_NOLOSS_WILDERNESS.toString());
+            dtrEvent.setCancelled(true);
         } else if (Conf.worldsNoDtrLoss.contains(player.getWorld().getName())) {
-            dtrLostEvent.setMessage(TL.PLAYER_DTR_NOLOSS_WORLD.toString());
-            dtrLostEvent.setCancelled(true);
+            dtrEvent.setMessage(TL.PLAYER_DTR_NOLOSS_WORLD.toString());
+            dtrEvent.setCancelled(true);
         } else if (Conf.peacefulMembersDisableDtrLoss && fplayer.hasFaction() && fplayer.getFaction().isPeaceful()) {
-            dtrLostEvent.setMessage(TL.PLAYER_DTR_NOLOSS_PEACEFUL.toString());
-            dtrLostEvent.setCancelled(true);
+            dtrEvent.setMessage(TL.PLAYER_DTR_NOLOSS_PEACEFUL.toString());
+            dtrEvent.setCancelled(true);
         } else {
-            dtrLostEvent.setMessage(TL.PLAYER_DTR_NOW.toString());
+            dtrEvent.setMessage(TL.PLAYER_DTR_NOW.toString());
         }
 
         // call Event
-        Bukkit.getPluginManager().callEvent(dtrLostEvent);
+        Bukkit.getPluginManager().callEvent(dtrEvent);
 
         // Call player onDeath if the event is not cancelled
-        if (!dtrLostEvent.isCancelled()) {
+        if (!dtrEvent.isCancelled()) {
             fplayer.onDeath();
         }
         // Send the message from the powerLossEvent

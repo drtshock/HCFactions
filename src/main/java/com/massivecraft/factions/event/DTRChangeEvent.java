@@ -1,20 +1,39 @@
 package com.massivecraft.factions.event;
 
-import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
 /**
- * Event called when a faction loses dtr.
+ * Event called when a factions dtr changes.
  */
-public class DTRLossEvent extends FactionPlayerEvent implements Cancellable {
+public class DTRChangeEvent extends FactionEvent implements Cancellable {
 
     private boolean cancelled = false;
+    private double from, to;
     private String message;
 
-    public DTRLossEvent(Faction f, FPlayer p) {
-        super(f, p);
+    public DTRChangeEvent(Faction f, double from, double to) {
+        super(f);
+        this.from = from;
+        this.to = to;
+    }
+
+    public DTRChangeEvent(Faction f, double from) {
+        super(f);
+        this.from = from;
+        this.to = from; // change of 0 ;p
+    }
+
+    public double getFrom() {
+        return from;
+    }
+
+    public double getTo() {
+        return to;
+    }
+
+    public void setTo(double to) {
+        this.to = to;
     }
 
     /**
@@ -39,28 +58,18 @@ public class DTRLossEvent extends FactionPlayerEvent implements Cancellable {
         return getFaction().getTag();
     }
 
-    /**
-     * Get the Player involved in the event.
-     *
-     * @return Player from FPlayer.
-     * @deprecated use getfPlayer().getPlayer() instead.
-     */
-    @Deprecated
-    public Player getPlayer() {
-        return getfPlayer().getPlayer();
-    }
 
     /**
-     * Get the power loss message.
+     * Get the dtr change message.
      *
-     * @return power loss message as String.
+     * @return dtr change message as String.
      */
     public String getMessage() {
         return message;
     }
 
     /**
-     * Set the power loss message.
+     * Set the dtr change message.
      *
      * @param message
      */

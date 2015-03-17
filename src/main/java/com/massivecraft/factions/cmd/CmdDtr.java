@@ -2,8 +2,10 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.event.DTRChangeEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.Bukkit;
 
 public class CmdDtr extends FCommand {
 
@@ -42,7 +44,13 @@ public class CmdDtr extends FCommand {
             msg(TL.COMMAND_DTR_ERROR_MIN.format(dc.format(min).toString()));
             return;
         } else {
-            targetFaction.setDTR(targetDtr);
+            // needs own event call
+            DTRChangeEvent changeEvent = new DTRChangeEvent(targetFaction, targetFaction.getDTR(), targetDtr);
+            Bukkit.getServer().getPluginManager().callEvent(changeEvent);
+            if (changeEvent.isCancelled()) {
+                return;
+            }
+            targetFaction.setDTR(changeEvent.getTo());
             change = TL.COMMAND_DTR_SET.format(targetDtr);
             msg(TL.COMMAND_DTR_SUCCESS, change, targetFaction.describeTo(fme));
         }
