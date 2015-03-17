@@ -93,8 +93,9 @@ scoreboard:
 # FInfo scoreboard is displayed when a player walks into a new Faction's territory.
 # Scoreboard disappears after <expiration> seconds.
 # Things to be replaced in this:
-# {chunks} - total claimed chunks. {members} - total members.
-# {online} - online members. {leader} - faction's leader. {open} - shows either true or false if open.
+# {dtr} - Factions current DTR. {maxdtr} - Max DTR that faction can have
+# {land} - total claimed land (in chunks). {maxland} - how much land a faction can claim
+# {members} - total members. {online} - online members. {leader} - faction's leader.
 # {raidable} - true if the faction can be claimed over, otherwise false.
 # {warps} - the number of warps that a faction has set.
 # The title of the scoreboard will be the Faction's tag and colored according to the relation with the player's Faction.
