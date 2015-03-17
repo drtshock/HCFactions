@@ -39,7 +39,8 @@ public class CmdShow extends FCommand {
         Faction faction = myFaction;
         if (this.argIsSet(0)) {
             faction = this.argAsFaction(0);
-        } else if (faction == null) {
+        } 
+        if (faction == null) {
             return;
         }
 
