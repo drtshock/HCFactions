@@ -16,7 +16,6 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.zcore.util.TL;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -205,7 +204,6 @@ public abstract class MemoryFPlayer implements FPlayer {
     public MemoryFPlayer(String id) {
         this.id = id;
         this.resetFactionData(false);
-        // start at 0?
         this.dtr = 0.0;
         this.lastDtrUpdateTime = System.currentTimeMillis();
         this.lastLoginTime = System.currentTimeMillis();
@@ -466,7 +464,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     public double getMaxDTR() {
         return P.p.getConfig().getDouble("hcf.dtr.max-player-dtr", 0.51);
     }
-    
+
     public void onDeath() {
         // Only update DTR if player is in a faction
         if (hasFaction()) {
@@ -548,9 +546,9 @@ public abstract class MemoryFPlayer implements FPlayer {
         if (makePay && !Econ.hasAtLeast(this, Conf.econCostLeave, TL.LEAVE_TOLEAVE.toString())) {
             return;
         }
-        
+
         // prevent player from leaving a frozen faction
-        if(myFaction.isFrozen()) {
+        if (myFaction.isFrozen()) {
             msg(TL.LEAVE_DENY_FROZEN);
             return;
         }

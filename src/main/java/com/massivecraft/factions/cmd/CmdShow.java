@@ -6,9 +6,7 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
-
 import mkremins.fanciful.FancyMessage;
-
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -161,6 +159,7 @@ public class CmdShow extends FCommand {
 
     /**
      * Gets list of allies to this faction
+     *
      * @param faction faction to analyze
      * @param pre     title of fancy message
      * @return list of fancy messages
@@ -187,7 +186,7 @@ public class CmdShow extends FCommand {
                     allies.add(currentAllies);
                     currentAllies = new FancyMessage();
                 }
-            } 
+            }
         }
         allies.add(currentAllies);
         return allies;
@@ -195,6 +194,7 @@ public class CmdShow extends FCommand {
 
     /**
      * Gets a list of enemies to this faction
+     *
      * @param faction faction to analyze
      * @param pre     title of fancy message
      * @return list of fancy messages
@@ -228,6 +228,7 @@ public class CmdShow extends FCommand {
 
     /**
      * Gets list of online faction members
+     *
      * @param faction faction to analyze
      * @param pre     title of fancy message
      * @return list of fancy messages
@@ -249,7 +250,7 @@ public class CmdShow extends FCommand {
                     online.add(currentOnline);
                     currentOnline = new FancyMessage();
                 }
-            } 
+            }
         }
         online.add(currentOnline);
         return online;
@@ -257,6 +258,7 @@ public class CmdShow extends FCommand {
 
     /**
      * Gets offline faction members
+     *
      * @param faction faction to analyze
      * @param pre     title of fancy message
      * @return list of fancy messages

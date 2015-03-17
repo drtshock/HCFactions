@@ -62,7 +62,7 @@ public class CmdKick extends FCommand {
             sender.sendMessage(TL.COMMAND_KICK_NONE.toString());
             return;
         }
-        
+
         // players with admin-level "disband" permission can bypass these requirements
         if (!Permission.KICK_ANY.has(sender)) {
             if (toKickFaction != myFaction) {
@@ -107,13 +107,13 @@ public class CmdKick extends FCommand {
         if (toKick.getRole() == Role.ADMIN) {
             toKickFaction.promoteNewLeader();
         }
-        
+
         // Fine faction DTR for kicking player out
         double fine = P.p.getConfig().getDouble("hcf.dtr.kick-penalty", 1.0);
-        if(fine > 0 && toKickFaction.isFrozen()) {
+        if (fine > 0 && toKickFaction.isFrozen()) {
             toKickFaction.alterDTR(-fine);
             fme.msg(TL.COMMAND_KICK_FINE.format(dc.format(fine), toKick.getName()));
-        }        
+        }
         toKickFaction.deinvite(toKick);
         toKick.resetFactionData();
     }

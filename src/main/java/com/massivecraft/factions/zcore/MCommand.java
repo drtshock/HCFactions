@@ -6,9 +6,7 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
-
 import mkremins.fanciful.FancyMessage;
-
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -279,7 +277,7 @@ public abstract class MCommand<T extends MPlugin> {
             sendFancyMessage(m);
         }
     }
-    
+
     public List<String> getToolTips(FPlayer player) {
         List<String> lines = new ArrayList<String>();
         for (String s : p.getConfig().getStringList("tooltips.show")) {
@@ -300,7 +298,7 @@ public abstract class MCommand<T extends MPlugin> {
         String humanized = DurationFormatUtils.formatDurationWords(System.currentTimeMillis() - player.getLastLoginTime(), true, true) + " ago";
         String lastSeen = player.isOnline() ? ChatColor.GREEN + "Online"
                 : (System.currentTimeMillis() - player.getLastLoginTime() < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED
-                        + humanized);
+                + humanized);
         String balance = Econ.isSetup() ? Econ.getFriendlyBalance(player) : "no balance";
         Faction faction = player.getFaction();
         player.updateDTR(); // update DTR before fetch, always

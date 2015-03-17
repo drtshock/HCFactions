@@ -13,7 +13,6 @@ import com.massivecraft.factions.util.VisualizeUtil;
 import com.massivecraft.factions.zcore.persist.MemoryFPlayer;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -427,9 +426,9 @@ public class FactionsPlayerListener implements Listener {
 
         Location home = me.getFaction().getHome();
         if (Conf.homesEnabled &&
-                    Conf.homesTeleportToOnDeath &&
-                    home != null &&
-                    (Conf.homesRespawnFromNoDtrLossWorlds || !Conf.worldsNoDtrLoss.contains(event.getPlayer().getWorld().getName()))) {
+                Conf.homesTeleportToOnDeath &&
+                home != null &&
+                (Conf.homesRespawnFromNoDtrLossWorlds || !Conf.worldsNoDtrLoss.contains(event.getPlayer().getWorld().getName()))) {
             event.setRespawnLocation(home);
         }
     }
@@ -476,10 +475,10 @@ public class FactionsPlayerListener implements Listener {
         }
 
         if (me.hasFaction() &&
-                    !me.isAdminBypassing() &&
-                    !Conf.permanentFactionMemberDenyCommands.isEmpty() &&
-                    me.getFaction().isPermanent() &&
-                    isCommandInList(fullCmd, shortCmd, Conf.permanentFactionMemberDenyCommands.iterator())) {
+                !me.isAdminBypassing() &&
+                !Conf.permanentFactionMemberDenyCommands.isEmpty() &&
+                me.getFaction().isPermanent() &&
+                isCommandInList(fullCmd, shortCmd, Conf.permanentFactionMemberDenyCommands.iterator())) {
             me.msg(TL.PLAYER_COMMAND_PERMANENT, fullCmd);
             return true;
         }

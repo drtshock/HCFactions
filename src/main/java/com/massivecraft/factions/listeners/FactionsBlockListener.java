@@ -166,6 +166,7 @@ public class FactionsBlockListener implements Listener {
             }
 
             if (!justCheck) {
+                //TODO: TL
                 me.msg("<b>You can't " + action + " in the wilderness.");
             }
 
@@ -215,6 +216,7 @@ public class FactionsBlockListener implements Listener {
             player.damage(Conf.actionDeniedPainAmount);
 
             if (!deny) {
+                //TODO: TL
                 me.msg("<b>It is painful to try to " + action + " in the territory of " + otherFaction.getTag(myFaction));
             }
         }
@@ -222,6 +224,7 @@ public class FactionsBlockListener implements Listener {
         // cancel building/destroying in other territory?
         if (deny) {
             if (!justCheck) {
+                //TODO: TL
                 me.msg("<b>You can't " + action + " in the territory of " + otherFaction.getTag(myFaction));
             }
 
@@ -234,11 +237,13 @@ public class FactionsBlockListener implements Listener {
                 player.damage(Conf.actionDeniedPainAmount);
 
                 if (!Conf.ownedAreaDenyBuild) {
+                    //TODO: TL
                     me.msg("<b>It is painful to try to " + action + " in this territory, it is owned by: " + otherFaction.getOwnerListString(loc));
                 }
             }
             if (Conf.ownedAreaDenyBuild) {
                 if (!justCheck) {
+                    //TODO: TL
                     me.msg("<b>You can't " + action + " in this territory, it is owned by: " + otherFaction.getOwnerListString(loc));
                 }
 

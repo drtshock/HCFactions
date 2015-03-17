@@ -6,7 +6,6 @@ import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.WarmUpUtil;
 import com.massivecraft.factions.zcore.MCommand;
 import com.massivecraft.factions.zcore.util.TL;
-
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -15,9 +14,9 @@ import java.util.List;
 
 
 public abstract class FCommand extends MCommand<P> {
-   
+
     public DecimalFormat dc = new DecimalFormat(TL.GENERIC_DECIMALFORMAT.toString());
-    
+
     public boolean disableOnLock;
 
     public FPlayer fme;

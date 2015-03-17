@@ -43,8 +43,8 @@ public class CmdJoin extends FCommand {
             msg(TL.COMMAND_JOIN_SYSTEMFACTION);
             return;
         }
-        
-        if(faction.isFrozen()) {
+
+        if (faction.isFrozen()) {
             msg(TL.COMMAND_JOIN_FROZEN.format(faction.getTag(fme)));
             return;
         }

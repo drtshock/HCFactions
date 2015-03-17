@@ -20,11 +20,7 @@ public abstract class MemoryBoard extends Board {
     // Get and Set
     //----------------------------------------------//
     public String getIdAt(FLocation flocation) {
-        if (!flocationIds.containsKey(flocation)) {
-            return "0";
-        }
-
-        return flocationIds.get(flocation);
+        return !flocationIds.containsKey(flocation) ? "0" : flocationIds.get(flocation);
     }
 
     public Faction getFactionAt(FLocation flocation) {

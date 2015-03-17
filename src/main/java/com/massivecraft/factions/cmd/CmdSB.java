@@ -39,7 +39,7 @@ public class CmdSB extends FCommand {
     public void perform() {
         boolean toggle = toggle(me.getPlayer().getUniqueId());
         FScoreboard board = FScoreboard.get(fme);
-        if(board == null) {
+        if (board == null) {
             me.sendMessage(TL.COMMAND_TOGGLESB_DISABLED.toString());
         } else {
             me.sendMessage(TL.TOGGLE_SB.toString().replace("{value}", String.valueOf(toggle)));
@@ -51,7 +51,6 @@ public class CmdSB extends FCommand {
      * Toggle a player seeing scoreboards or not.
      *
      * @param uuid - uuid of player.
-     *
      * @return - true if now set to seeing scoreboards, otherwise false.
      */
     public boolean toggle(UUID uuid) {
@@ -78,7 +77,6 @@ public class CmdSB extends FCommand {
      * Determines whether or not to show the player a scoreboard.
      *
      * @param player - FPlayer in question.
-     *
      * @return - true if should show, otherwise false.
      */
     public boolean showBoard(FPlayer player) {
@@ -89,7 +87,6 @@ public class CmdSB extends FCommand {
      * Determines whether or not to show the player a scoreboard.
      *
      * @param player - Player in question.
-     *
      * @return - true if should show, otherwise false.
      */
     public boolean showBoard(Player player) {
@@ -100,7 +97,6 @@ public class CmdSB extends FCommand {
      * Determines whether or not to show the player a scoreboard.
      *
      * @param uuid - UUID of player in question.
-     *
      * @return - true if should show, otherwise false.
      */
     public boolean showBoard(UUID uuid) {

@@ -131,35 +131,35 @@ public interface Faction extends EconomyParticipator {
     // ----------------------------------------------//
     // Land
     // ----------------------------------------------//
-    
+
     public int getLand();
-    
+
     public int getLandInWorld(String worldName);
-    
+
     public int getMaxLand();
-    
+
     // ----------------------------------------------//
     // DTR
     // ----------------------------------------------//
-    
+
     public double getDTR();
-    
+
     public double getMaxDTR();
-    
+
     public double getMinDTR();
-    
+
     public boolean isFrozen();
-    
+
     public boolean isRaidable();
-    
+
     public long getFreezeLeft();
-    
+
     public void setDTR(double dtr);
-    
+
     public void alterDTR(double delta);
-    
+
     public void updateDTR();
-    
+
     // -------------------------------
     // FPlayers
     // -------------------------------
@@ -170,7 +170,7 @@ public interface Faction extends EconomyParticipator {
     public boolean addFPlayer(FPlayer fplayer);
 
     public boolean removeFPlayer(FPlayer fplayer);
-    
+
     public int getSize();
 
     public Set<FPlayer> getFPlayers();

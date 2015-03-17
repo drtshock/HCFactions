@@ -38,8 +38,8 @@ public class CmdInvite extends FCommand {
             msg(TL.GENERIC_YOUMAYWANT.toString() + p.cmdBase.cmdKick.getUseageTemplate(false));
             return;
         }
-        
-        if(myFaction.isFrozen()) {
+
+        if (myFaction.isFrozen()) {
             msg(TL.COMMAND_INVITE_FROZEN.format(you.getName()));
             return;
         }

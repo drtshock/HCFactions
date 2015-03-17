@@ -171,7 +171,6 @@ public class FLocation implements Serializable {
      * Checks if the chunk represented by this FLocation is outside the world border
      *
      * @param buffer the number of chunks from the border that will be treated as "outside"
-     *
      * @return whether this location is outside of the border
      */
     public boolean isOutsideWorldBorder(int buffer) {

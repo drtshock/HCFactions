@@ -14,9 +14,7 @@ import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
-
 import net.milkbowl.vault.permission.Permission;
-
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -95,7 +93,7 @@ public class P extends MPlugin {
 
         Econ.setup();
         setupPermissions();
-        
+
         if (Conf.worldGuardChecking || Conf.worldGuardBuildPriority) {
             Worldguard.init(this);
         }
@@ -133,7 +131,7 @@ public class P extends MPlugin {
         }
         return perms == null;
     }
-    
+
     @Override
     public GsonBuilder getGsonBuilder() {
         Type mapFLocToStringSetType = new TypeToken<Map<FLocation, Set<String>>>() {
@@ -323,7 +321,7 @@ public class P extends MPlugin {
     public String getPrimaryGroup(OfflinePlayer player) {
         return perms == null ? TL.GENERIC_UNDEFINED.toString() : perms.getPrimaryGroup(Bukkit.getWorlds().get(0).getName(), player);
     }
-    
+
     public void debug(Level level, String s) {
         if (getConfig().getBoolean("debug", false)) {
             getLogger().log(level, s);

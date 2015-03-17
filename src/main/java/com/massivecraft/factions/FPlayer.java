@@ -178,7 +178,6 @@ public interface FPlayer extends EconomyParticipator {
      * Check if the scoreboard should be shown. Simple method to be used by above method.
      *
      * @param toShow Faction to be shown.
-     *
      * @return true if should show, otherwise false.
      */
     public boolean shouldShowScoreboard(Faction toShow);
