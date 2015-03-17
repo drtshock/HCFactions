@@ -38,6 +38,10 @@ public class FInfoSidebar extends FSidebarProvider {
         FPlayer fLeader = faction.getFPlayerAdmin();
         faction.updateDTR(); // update DTR before fetch, always
         String leader = fLeader == null ? "Server" : fLeader.getName().substring(0, fLeader.getName().length() > 14 ? 13 : fLeader.getName().length());
-        return ChatColor.translateAlternateColorCodes('&', s.replace("{dtr}", String.valueOf(faction.getDTR())).replace("{online}", String.valueOf(faction.getOnlinePlayers().size())).replace("{members}", String.valueOf(faction.getFPlayers().size())).replace("{leader}", leader).replace("{chunks}", String.valueOf(faction.getLand())).replace("{raidable}", String.valueOf(raidable)).replace("{warps}", String.valueOf(faction.getWarps().size())));
+        s = s.replace("{dtr}", String.valueOf(faction.getDTR())).replace("{maxdtr}", String.valueOf(faction.getMaxDTR()));
+        s = s.replace("{online}", String.valueOf(faction.getOnlinePlayers().size())).replace("{members}", String.valueOf(faction.getFPlayers().size()));
+        s = s.replace("{leader}", String.valueOf(leader)).replace("{land}", String.valueOf(faction.getLand())).replace("{maxland}", String.valueOf(faction.getMaxLand()));
+        s = s.replace("{raidable}", String.valueOf(raidable)).replace("{warps}", String.valueOf(faction.getWarps().size()));
+        return ChatColor.translateAlternateColorCodes('&', s);
     }
 }
