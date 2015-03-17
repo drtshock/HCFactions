@@ -164,7 +164,7 @@ world-border:
 # Variables: 
 #   {description}, {joining}, {peaceful?}, {land}, {maxland}, {dtr}, {maxdtr}, 
 #   {raidable}, {world}, {x}, {y}, {z}, {timeleft}, {value}, {refund}, {balance}, {allies},
-#   {enemies}, {membersonline}, {membersoffline}
+#   {enemies}, {online}, {offline}
 #
 # 
 fshow:
