@@ -15,7 +15,7 @@ public class FDefaultSidebar extends FSidebarProvider {
 
     @Override
     public String getTitle(FPlayer fplayer) {
-        return replace(fplayer, P.p.getConfig().getString("scoreboard.default-title", "i love drt"));
+        return replaceTags(fplayer, P.p.getConfig().getString("scoreboard.default-title", "i love drt"));
     }
 
     @Override
@@ -24,14 +24,8 @@ public class FDefaultSidebar extends FSidebarProvider {
 
         ListIterator<String> it = lines.listIterator();
         while (it.hasNext()) {
-            it.set(replace(fplayer, it.next()));
+            it.set(replaceTags(fplayer, it.next()));
         }
         return lines;
-    }
-
-    private String replace(FPlayer fplayer, String s) {
-        String faction = !fplayer.getFaction().isNone() ? fplayer.getFaction().getTag() : TL.GENERIC_FACTIONLESS.toString();
-        s = s.replace("{name}", fplayer.getName()).replace("{land}", String.valueOf(fplayer.getFaction().getLand())).replace("{balance}", String.valueOf(Econ.getFriendlyBalance(fplayer.getPlayer().getUniqueId()))).replace("{faction}", faction).replace("{maxLand}", String.valueOf(fplayer.getFaction().getMaxLand())).replace("{totalOnline}", String.valueOf(Bukkit.getServer().getOnlinePlayers().size()));
-        return ChatColor.translateAlternateColorCodes('&', s);
     }
 }
