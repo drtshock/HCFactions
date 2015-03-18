@@ -5,6 +5,7 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.zcore.util.TL;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 import java.text.DecimalFormat;
@@ -30,7 +31,7 @@ public abstract class FSidebarProvider {
         s = s.replace("{online}", String.valueOf(faction.getOnlinePlayers().size())).replace("{members}", String.valueOf(faction.getFPlayers().size()));
         s = s.replace("{leader}", String.valueOf(leader)).replace("{land}", String.valueOf(faction.getLand())).replace("{maxland}", String.valueOf(faction.getMaxLand()));
         s = s.replace("{raidable}", raidable ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString());
-        s = s.replace("{warps}", String.valueOf(faction.getWarps().size()));
+        s = s.replace("{warps}", String.valueOf(faction.getWarps().size())).replace("{totalOnline}", String.valueOf(Bukkit.getServer().getOnlinePlayers().size()));
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 }

@@ -98,7 +98,7 @@ scoreboard:
 # {land} - total claimed land (in chunks). {maxland} - how much land a faction can claim
 # {members} - total members. {online} - online members. {leader} - faction's leader.
 # {raidable} - true if the faction can be claimed over, otherwise false.
-# {warps} - the number of warps that a faction has set.
+# {warps} - the number of warps that a faction has set. {totalOnline} - # of online players
 # The title of the scoreboard will be the Faction's tag and colored according to the relation with the player's Faction.
 # Commenting this section out will cause the info to appear in chat as the plugin originally did.
   finfo-enabled: false # Default to false to keep original functionality.
@@ -118,7 +118,7 @@ scoreboard:
 # {land} - total claimed land (in chunks). {maxland} - how much land a faction can claim
 # {members} - total members. {online} - online members. {leader} - faction's leader.
 # {raidable} - true if the faction can be claimed over, otherwise false.
-# {warps} - the number of warps that a faction has set.
+# {warps} - the number of warps that a faction has set. {totalOnline} - # of online players
 
   default-enabled: false # Default to false to keep original functionality.
   default-title: "i love drt" # Can use any of the values from above but this won't update once it's set (so don't set {balance}).
