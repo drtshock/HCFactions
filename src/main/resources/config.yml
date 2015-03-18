@@ -93,6 +93,7 @@ scoreboard:
 # FInfo scoreboard is displayed when a player walks into a new Faction's territory.
 # Scoreboard disappears after <expiration> seconds.
 # Things to be replaced in this:
+# {name} - viewer name. {balance} - viewer balance. {faction} faction tag (FYI: title of board is already faction tag)
 # {dtr} - Factions current DTR. {maxdtr} - Max DTR that faction can have
 # {land} - total claimed land (in chunks). {maxland} - how much land a faction can claim
 # {members} - total members. {online} - online members. {leader} - faction's leader.
@@ -104,17 +105,20 @@ scoreboard:
   finfo:
     - "&3Members"
     - "{online}/{members}"
-    - "&4Leader"
-    - "{leader}"
-    - "&bTerritory"
-    - "{chunks}"
+    - "&4DTR"
+    - "{dtr}/{maxdtr}"
+    - "&9Raidable: {raidable}"
+    - "&bLand"
+    - "{land}/{maxland}"
 
 # Default board that will always show up if a player wants it to.
 # This can show any arbitrary text or you can use a lot of variables to replace things.
-# Replace {name} - player's name. {faction} - player's faction title, factionless if none.
-# {totalOnline} - total players on the server. {balance} - player's balance.
-# {maxPower} - player's max power.
-# {powerBoost} - player's powerboost.
+# {name} - viewer name. {balance} - viewer balance. {faction} - faction tag
+# {dtr} - Factions current DTR. {maxdtr} - Max DTR that faction can have
+# {land} - total claimed land (in chunks). {maxland} - how much land a faction can claim
+# {members} - total members. {online} - online members. {leader} - faction's leader.
+# {raidable} - true if the faction can be claimed over, otherwise false.
+# {warps} - the number of warps that a faction has set.
 
   default-enabled: false # Default to false to keep original functionality.
   default-title: "i love drt" # Can use any of the values from above but this won't update once it's set (so don't set {balance}).
@@ -127,6 +131,8 @@ scoreboard:
   default:
     - "&6Your Faction"
     - "{faction}"
+    - "&4Faction DTR"
+    - "{dtr}/{maxdtr}"
     - "&aBalance"
     - "${balance}"
 
