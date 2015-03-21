@@ -653,12 +653,10 @@ public abstract class MemoryFPlayer implements FPlayer {
                 error = P.p.txt.parse(TL.CLAIM_OUTSIDEWORLDBORDER.toString());
             }
         } else if (currentFaction.isNormal()) {
-            if (myFaction.isPeaceful()) {
-                error = P.p.txt.parse(TL.CLAIM_PEACEFUL.toString(), currentFaction.getTag(this));
-            } else if (currentFaction.isPeaceful()) {
-                error = P.p.txt.parse(TL.CLAIM_PEACEFULTARGET.toString(), currentFaction.getTag(this));
-            } else if (!Board.getInstance().isBorderLocation(flocation)) {
+             if (!Board.getInstance().isBorderLocation(flocation)) {
                 error = P.p.txt.parse(TL.CLAIM_BORDER.toString());
+            } else {
+                error = P.p.txt.parse(TL.CLAIM_NOOVERCLAIM.toString());
             }
         }
         // TODO: Add more else if statements.
