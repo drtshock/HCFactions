@@ -211,6 +211,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.autoClaimFor = null;
         this.autoSafeZoneEnabled = false;
         this.autoWarZoneEnabled = false;
+        this.monitorJoins = true;
         this.loginPvpDisabled = Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0;
 
         if (!Conf.newPlayerStartingFactionID.equals("0") && Factions.getInstance().isValidFactionId(Conf.newPlayerStartingFactionID)) {
@@ -227,6 +228,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.autoClaimFor = other.autoClaimFor;
         this.autoSafeZoneEnabled = other.autoSafeZoneEnabled;
         this.autoWarZoneEnabled = other.autoWarZoneEnabled;
+        this.monitorJoins = other.monitorJoins;
         this.loginPvpDisabled = other.loginPvpDisabled;
         this.role = other.role;
         this.title = other.title;
