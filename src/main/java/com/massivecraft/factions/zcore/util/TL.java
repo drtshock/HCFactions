@@ -499,7 +499,7 @@ public enum TL {
     CLAIM_ALLY("<b>You can't claim the land of your allies."),
     CLAIM_CONTIGIOUS("<b>You can only claim additional land which is connected to your first claim or controlled by another faction!"),
     CLAIM_FACTIONCONTIGUOUS("<b>You can only claim additional land which is connected to your first claim!"),
-    CLAIM_NOOVERCLAIM("%s<i> owns this land."),
+    CLAIM_NOOVERCLAIM("<b>Land is claimed by <i>%s."),
     CLAIM_BORDER("<b>You must start claiming land at the border of the territory."),
     CLAIM_TOCLAIM("to claim this land"),
     CLAIM_FORCLAIM("for claiming this land"),

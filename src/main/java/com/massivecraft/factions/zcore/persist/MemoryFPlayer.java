@@ -658,7 +658,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             if (!Board.getInstance().isBorderLocation(flocation)) {
                 error = P.p.txt.parse(TL.CLAIM_BORDER.toString());
             } else {
-                error = P.p.txt.parse(TL.CLAIM_NOOVERCLAIM.toString());
+                error = P.p.txt.parse(TL.CLAIM_NOOVERCLAIM.format(currentFaction.getTag()));
             }
         }
         // TODO: Add more else if statements.
