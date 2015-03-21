@@ -519,7 +519,7 @@ public abstract class MemoryFPlayer implements FPlayer {
      * @return true if should show, otherwise false.
      */
     public boolean shouldShowScoreboard(Faction toShow) {
-        return !toShow.isWarZone() && !toShow.isNone() && !toShow.isSafeZone() && P.p.getConfig().contains("scoreboard.finfo") && P.p.getConfig().getBoolean("scoreboard.finfo-enabled", false) && P.p.cmdBase.cmdSB.showBoard(this);
+        return !toShow.isWarZone() && !toShow.isNone() && !toShow.isSafeZone() && P.p.getConfig().contains("scoreboard.finfo") && P.p.getConfig().getBoolean("scoreboard.finfo-enabled", false) && P.p.cmdBase.cmdSB.showBoard(this) && FScoreboard.get(this) != null;
     }
 
     // -------------------------------
@@ -653,7 +653,7 @@ public abstract class MemoryFPlayer implements FPlayer {
                 error = P.p.txt.parse(TL.CLAIM_OUTSIDEWORLDBORDER.toString());
             }
         } else if (currentFaction.isNormal()) {
-             if (!Board.getInstance().isBorderLocation(flocation)) {
+            if (!Board.getInstance().isBorderLocation(flocation)) {
                 error = P.p.txt.parse(TL.CLAIM_BORDER.toString());
             } else {
                 error = P.p.txt.parse(TL.CLAIM_NOOVERCLAIM.toString());
