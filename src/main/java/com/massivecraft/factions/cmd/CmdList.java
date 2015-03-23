@@ -3,6 +3,7 @@ package com.massivecraft.factions.cmd;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -89,18 +90,29 @@ public class CmdList extends FCommand {
         if (end > factionList.size()) {
             end = factionList.size();
         }
-
-        lines.add(p.txt.titleize("Faction List " + pagenumber + "/" + pagecount));
+        String header = p.getConfig().getString("flist.header").replace("{pagenumber}", String.valueOf(pagenumber)).replace("{pagecount}", String.valueOf(pagecount));
+        lines.add(p.txt.titleize(header));
 
         for (Faction faction : factionList.subList(start, end)) {
             if (faction.isNone()) {
-                lines.add(p.txt.parse("<i>Factionless<i> %d online", Factions.getInstance().getNone().getFPlayersWhereOnline(true).size()));
+                lines.add(p.txt.parse(replace(p.getConfig().getString("flist.factionless"), faction)));
                 continue;
             }
-            lines.add(p.txt.parse("<a>%s <i>%d/%d online, <a>Land: <i>%d / %d", faction.getTag(fme), faction.getFPlayersWhereOnline(true).size(), faction.getFPlayers().size(), faction.getLand(), faction.getMaxLand()));
+            faction.updateDTR(); // make sure we have fresh DTR values
+            lines.add((p.txt.parse(replace(p.getConfig().getString("flist.entry"), faction))));
         }
-
         sendMessage(lines);
+    }
+
+    private String replace(String format, Faction faction) {
+        format = format.replace("{tag}", faction.getTag(fme));
+        format = format.replace("{count}", String.valueOf(Factions.getInstance().getNone().getFPlayersWhereOnline(true).size()));
+        format = format.replace("{online}", String.valueOf(faction.getFPlayersWhereOnline(true).size()));
+        format = format.replace("{factionsize}", String.valueOf(faction.getFPlayers().size()));
+        format = format.replace("{dtr}", dc.format(faction.getDTR())).replace("{maxdtr}", dc.format(faction.getMaxDTR()));
+        format = format.replace("{land}", String.valueOf(faction.getLand())).replace("{maxland}", String.valueOf(faction.getMaxLand()));
+        format = format.replace("{raidable}", faction.isRaidable() ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString());
+        return format;
     }
 
     @Override

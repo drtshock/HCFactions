@@ -165,19 +165,17 @@ world-border:
   buffer: 0
 
 # Configurable f show output
-# Order in list does not matter, this does not let you re-arrange the output
-# Only allows you to disable certain messages you dont want
-# To change the actual text, visit the lang.yml file and find the corresponding keys
+#
 # Variables: 
-#    {description} - faction description. {joining} - joining instructions. {peaceful?} - only shows if peaceful.
-#    {land} - how many chunks faction claimed. {maxland} - how many chunks faction can claim.
-#    {dtr} - current deaths to raidable value. {maxdtr} - max deaths to raidable value.
-#    {raidable} - raidable status. {world} - world of faction home. {x} - x coord. {y} - y coord. {z} - z coord.
-#    {timeleft} - time remaining on DTR freeze. {value} - total land value.
-#    {refund} - land refund value. {balance} - factions bank balance. {allies} - list of faction allies.
-#    {enemies} - list of faction enemies. {online} - list of online members. {offline} - list of offline members.
-#    {onlinecount} - # of online faction members, {offlinecount} - # of offline faction members.
-#    {factionsize} - total size of faction
+# {description} - faction description. {joining} - joining instructions. {peaceful?} - only shows if peaceful.
+# {land} - how many chunks faction claimed. {maxland} - how many chunks faction can claim.
+# {dtr} - current deaths to raidable value. {maxdtr} - max deaths to raidable value.
+# {raidable} - raidable status. {world} - world of faction home. {x} - x coord. {y} - y coord. {z} - z coord.
+# {timeleft} - time remaining on DTR freeze. {value} - total land value.
+# {refund} - land refund value. {balance} - factions bank balance. {allies} - list of faction allies.
+# {enemies} - list of faction enemies. {online} - list of online members. {offline} - list of offline members.
+# {onlinecount} - # of online faction members, {offlinecount} - # of offline faction members.
+# {factionsize} - total size of faction
 #
 fshow:
   - '<a>Description: <i>{description}'
@@ -191,6 +189,19 @@ fshow:
   - '<a>Bank contains: <i>{balance}'
   - 'Allies: {allies} '
   - '<a>Members: (<i>{factionSize}<a> total)(<i>{onlinecount} <a>online)'
+
+# Configurable f list output
+#
+# Variables:
+# {pagenumber} - current page number. {pagecount} - number of pages.
+# {tag} - faction tag. {online} - # of members online. {factionsize} - total # of members in faction.
+# {land} - how many chunks faction claimed. {maxland} - how many chunks faction can claim.
+# {dtr} - current deaths to raidable value. {maxdtr} - max deaths to raidable value.
+# {raidable} - raidable status. {count} - how many factionless players are online.
+flist:
+  header: 'Faction List {pagenumber}/{pagecount}'
+  factionless: '<i>Factionless<i> {count} online'
+  entry: '<a>{tag} <i>{online}/{factionsize} online, <a>Land: <i>{land} / {maxland}, <a>Raidable: {raidable}'
 
 # Raids
 # Allow a faction to be raided if their DTR is <= 0 
