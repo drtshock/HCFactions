@@ -399,9 +399,12 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             toDtr = getMinDTR();
         }
         DTRChangeEvent changeEvent = new DTRChangeEvent(this, this.dtr, toDtr);
-        Bukkit.getServer().getPluginManager().callEvent(changeEvent);
-        if (changeEvent.isCancelled()) {
-            return;
+        // only call a change event if DTR actually changes
+        if(changeEvent.getFrom() != changeEvent.getTo()) {
+            Bukkit.getServer().getPluginManager().callEvent(changeEvent);
+            if (changeEvent.isCancelled()) {
+                return;
+            }
         }
         this.dtr = changeEvent.getTo();
     }
