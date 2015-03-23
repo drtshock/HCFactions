@@ -50,10 +50,6 @@ public class FTeamWrapper {
             return;
         }
 
-        if (faction.isNone()) {
-            return;
-        }
-
         if (!P.p.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
             return;
         }
@@ -84,14 +80,21 @@ public class FTeamWrapper {
                 wrapper.removePlayer(player);
             }
         }
-
-        for (FPlayer fmember : factionMembers) {
-            if (!fmember.isOnline()) {
-                continue;
+        if (faction.isNone()) {
+            // add faction-less players so we can format them in scoreboard
+            for (FPlayer player : FPlayers.getInstance().getOnlinePlayers()) {
+                if (!player.hasFaction()) {
+                    wrapper.addPlayer(player.getPlayer());
+                }
             }
-
-            // Scoreboard might not have player; add him/her
-            wrapper.addPlayer(fmember.getPlayer());
+        } else {
+            for (FPlayer fmember : factionMembers) {
+                if (!fmember.isOnline()) {
+                    continue;
+                }
+                // Scoreboard might not have player; add him/her
+                wrapper.addPlayer(fmember.getPlayer());
+            }
         }
 
         wrapper.updatePrefixes();

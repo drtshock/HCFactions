@@ -3,6 +3,7 @@ package com.massivecraft.factions.util;
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.iface.RelationParticipator;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.util.TL;
@@ -66,7 +67,7 @@ public class RelationUtil {
         }
 
         if (!fthat.isNormal() || !fme.isNormal()) {
-            return Relation.NEUTRAL;
+            return Relation.fromString(P.p.getConfig().getString("default-relation", "neutral"));
         }
 
         if (fthat.equals(fme)) {

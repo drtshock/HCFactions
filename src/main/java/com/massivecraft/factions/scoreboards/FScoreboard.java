@@ -33,9 +33,7 @@ public class FScoreboard {
         FScoreboard fboard = new FScoreboard(fplayer);
         fscoreboards.put(fplayer, fboard);
 
-        if (fplayer.hasFaction()) {
-            FTeamWrapper.applyUpdates(fplayer.getFaction());
-        }
+        FTeamWrapper.applyUpdates(fplayer.getFaction());
         FTeamWrapper.track(fboard);
     }
 
