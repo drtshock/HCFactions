@@ -648,7 +648,7 @@ public enum TL {
     SAFEZONE("safezone", "&6Safezone"),
     SAFEZONE_DESCRIPTION("safezone-description", "Free from pvp and monsters."),
     TOGGLE_SB("toggle-sb", "You now have scoreboards set to {value}"),
-    DEFAULT_PREFIX("default-prefix", "{relationcolor}[{faction}] &r"),
+    DEFAULT_PREFIX("default-prefix", "[&3{faction}&r]{relationcolor}"),
     FACTION_LOGIN("faction-login", "&e%1$s &9logged in."),
     FACTION_LOGOUT("faction-logout", "&e%1$s &9logged out.."),
 
