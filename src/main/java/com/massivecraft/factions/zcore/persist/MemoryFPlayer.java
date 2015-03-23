@@ -470,9 +470,10 @@ public abstract class MemoryFPlayer implements FPlayer {
     public void onDeath() {
         // Only update DTR if player is in a faction
         if (hasFaction()) {
-            getFaction().setLastDeath(System.currentTimeMillis());
-            this.alterDTR(-P.p.getConfig().getDouble("hcf.dtr.death-dtr", 1.0));
-            this.updateDTR();
+            // updates DTR of each faction member so net effect is death-dtr
+            this.getFaction().alterDTR(-P.p.getConfig().getDouble("hcf.dtr.death-dtr", 1.0));
+            this.getFaction().updateDTR();
+            this.getFaction().setLastDeath(System.currentTimeMillis());
         }
     }
 
