@@ -163,7 +163,7 @@ public class CmdTop extends FCommand {
         } else if (criteria.equalsIgnoreCase("land")) {
             return String.valueOf(faction.getLand());
         } else if (criteria.equalsIgnoreCase("dtr")) {
-            return String.valueOf(faction.getDTR());
+            return dc.format(faction.getDTR());
         } else { // Last one is balance, and it has 3 different things it could be.
             double balance = Econ.getBalance(faction.getAccountId());
             for (FPlayer fp : faction.getFPlayers()) {
