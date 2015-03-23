@@ -37,7 +37,7 @@ public class CmdShow extends FCommand {
         Faction faction = myFaction;
         if (this.argIsSet(0)) {
             faction = this.argAsFaction(0);
-        } 
+        }
         if (faction == null) {
             return;
         }
@@ -73,6 +73,9 @@ public class CmdShow extends FCommand {
             raw = raw.replace("{peaceful?}", faction.isPeaceful() ? Conf.colorNeutral + TL.COMMAND_SHOW_PEACEFUL.toString() : "");
             raw = raw.replace("{land}", String.valueOf(faction.getLand())).replace("{maxland}", String.valueOf(faction.getMaxLand()));
             raw = raw.replace("{dtr}", dtr).replace("{maxdtr}", maxDtr).replace("{raidable}", raidable);
+            raw = raw.replace("{onlinecount}", String.valueOf(faction.getOnlinePlayers().size()));
+            raw = raw.replace("{offlinecount}", String.valueOf(faction.getFPlayers().size() - faction.getOnlinePlayers().size()));
+            raw = raw.replace("{factionSize}", String.valueOf(faction.getFPlayers().size()));
 
             if (faction.hasHome()) {
                 Location home = faction.getHome();

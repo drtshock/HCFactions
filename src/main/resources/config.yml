@@ -169,11 +169,16 @@ world-border:
 # Only allows you to disable certain messages you dont want
 # To change the actual text, visit the lang.yml file and find the corresponding keys
 # Variables: 
-#   {description}, {joining}, {peaceful?}, {land}, {maxland}, {dtr}, {maxdtr}, 
-#   {raidable}, {world}, {x}, {y}, {z}, {timeleft}, {value}, {refund}, {balance}, {allies},
-#   {enemies}, {online}, {offline}
+#    {description} - faction description. {joining} - joining instructions. {peaceful?} - only shows if peaceful.
+#    {land} - how many chunks faction claimed. {maxland} - how many chunks faction can claim.
+#    {dtr} - current deaths to raidable value. {maxdtr} - max deaths to raidable value.
+#    {raidable} - raidable status. {world} - world of faction home. {x} - x coord. {y} - y coord. {z} - z coord.
+#    {timeleft} - time remaining on DTR freeze. {value} - total land value.
+#    {refund} - land refund value. {balance} - factions bank balance. {allies} - list of faction allies.
+#    {enemies} - list of faction enemies. {online} - list of online members. {offline} - list of offline members.
+#    {onlinecount} - # of online faction members, {offlinecount} - # of offline faction members.
+#    {factionsize} - total size of faction
 #
-# 
 fshow:
   - '<a>Description: <i>{description}'
   - '<a>Joining: <i>{joining}    {peaceful?}'
@@ -185,9 +190,7 @@ fshow:
   - '<a>Total land value: <i>{value} {refund}'
   - '<a>Bank contains: <i>{balance}'
   - 'Allies: {allies} '
-  - 'Enemies: {enemies} '
-  - 'Members online: {online}'
-  - 'Members offline: {offline}'
+  - '<a>Members: (<i>{factionSize}<a> total)(<i>{onlinecount} <a>online)'
 
 # Raids
 # Allow a faction to be raided if their DTR is <= 0 
