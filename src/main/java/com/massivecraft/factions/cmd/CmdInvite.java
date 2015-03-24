@@ -2,6 +2,7 @@ package com.massivecraft.factions.cmd;
 
 import com.massivecraft.factions.Conf;
 import com.massivecraft.factions.FPlayer;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
@@ -39,7 +40,8 @@ public class CmdInvite extends FCommand {
             return;
         }
 
-        if (myFaction.isFrozen()) {
+        // prevent inviting players to faction if enabled
+        if (!P.p.getConfig().getBoolean("hcf.dtr.freeze-join", true) && myFaction.isFrozen()) {
             msg(TL.COMMAND_INVITE_FROZEN.format(you.getName()));
             return;
         }

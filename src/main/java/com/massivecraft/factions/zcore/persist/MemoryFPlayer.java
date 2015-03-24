@@ -551,8 +551,8 @@ public abstract class MemoryFPlayer implements FPlayer {
             return;
         }
 
-        // prevent player from leaving a frozen faction
-        if (myFaction.isFrozen()) {
+        // prevent player from leaving a frozen faction if enabled
+        if (!P.p.getConfig().getBoolean("hcf.dtr.freeze-leave", false) && myFaction.isFrozen()) {
             msg(TL.LEAVE_DENY_FROZEN);
             return;
         }

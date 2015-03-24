@@ -44,7 +44,8 @@ public class CmdJoin extends FCommand {
             return;
         }
 
-        if (faction.isFrozen()) {
+        // prevent joining frozen faction if enabled
+        if (!P.p.getConfig().getBoolean("hcf.dtr.freeze-join", true) && faction.isFrozen()) {
             msg(TL.COMMAND_JOIN_FROZEN.format(faction.getTag(fme)));
             return;
         }

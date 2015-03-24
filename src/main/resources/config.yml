@@ -243,6 +243,11 @@ hcf:
     # If set to false, then the DTR the faction would have generated during the 
     #   DTR freeze period is simply ignored, so therefore a more harsh penalty :p
     allow-background-regen: false
+    # DTR Freeze restrictions
+    # Should we let players leave a frozen faction?
+    freeze-leave: false
+    # Should we let players join a frozen faction?
+    freeze-join: true
   
   # Max land a faction can have claimed
   faction-land-max: 40 
