@@ -25,7 +25,10 @@ public abstract class FSidebarProvider {
         FPlayer fLeader = faction.getFPlayerAdmin();
         faction.updateDTR(); // update DTR before fetch, always
         String leader = fLeader == null ? "Server" : fLeader.getName().substring(0, fLeader.getName().length() > 14 ? 13 : fLeader.getName().length());
-        s = s.replace("{name}", fplayer.getName()).replace("{balance}", String.valueOf(Econ.getFriendlyBalance(fplayer.getPlayer().getUniqueId())));
+        if(Econ.isSetup()) {
+            s = s.replace("{balance}", String.valueOf(Econ.getFriendlyBalance(fplayer.getPlayer().getUniqueId())));
+        }
+        s = s.replace("{name}", fplayer.getName());
         s = s.replace("{faction}", !faction.isNone() ? faction.getTag() : TL.GENERIC_FACTIONLESS.toString());
         s = s.replace("{dtr}", dc.format(faction.getDTR())).replace("{maxdtr}", dc.format(faction.getMaxDTR()));
         s = s.replace("{online}", String.valueOf(faction.getOnlinePlayers().size())).replace("{members}", String.valueOf(faction.getFPlayers().size()));
