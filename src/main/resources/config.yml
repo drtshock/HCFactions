@@ -99,6 +99,8 @@ scoreboard:
 # {members} - total members. {online} - online members. {leader} - faction's leader.
 # {raidable} - true if the faction can be claimed over, otherwise false.
 # {warps} - the number of warps that a faction has set. {totalOnline} - # of online players
+# {alliescount} - # of allies faction has. {maxenemies} - max # of enemies faction can have.
+# {maxallies} - max # of allies faction can have. {enemiescount} - how many enemies faction has.
 # The title of the scoreboard will be the Faction's tag and colored according to the relation with the player's Faction.
 # Commenting this section out will cause the info to appear in chat as the plugin originally did.
   finfo-enabled: false # Default to false to keep original functionality.
@@ -119,6 +121,8 @@ scoreboard:
 # {members} - total members. {online} - online members. {leader} - faction's leader.
 # {raidable} - true if the faction can be claimed over, otherwise false.
 # {warps} - the number of warps that a faction has set. {totalOnline} - # of online players
+# {alliescount} - # of allies faction has. {maxenemies} - max # of enemies faction can have.
+# {maxallies} - max # of allies faction can have. {enemiescount} - how many enemies faction has.
 
   default-enabled: false # Default to false to keep original functionality.
   default-title: "i love drt" # Can use any of the values from above but this won't update once it's set (so don't set {balance}).
@@ -175,7 +179,9 @@ world-border:
 # {refund} - land refund value. {balance} - factions bank balance. {allies} - list of faction allies.
 # {enemies} - list of faction enemies. {online} - list of online members. {offline} - list of offline members.
 # {onlinecount} - # of online faction members, {offlinecount} - # of offline faction members.
-# {factionsize} - total size of faction
+# {factionsize} - total size of faction. {alliescount} - # of allies faction has.
+# {maxallies} - max # of allies faction can have. {enemiescount} - how many enemies faction has.
+# {maxenemies} - max # of enemies faction can have.
 #
 fshow:
   - '<a>Description: <i>{description}'
