@@ -8,7 +8,6 @@ import com.massivecraft.factions.util.MiscUtil;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
 import org.apache.commons.lang.time.DurationFormatUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
 import java.util.ArrayList;
@@ -124,28 +123,28 @@ public class CmdShow extends FCommand {
                     continue;
                 }
             }
-            int maxAlly = P.p.getConfig().getBoolean("max-relations.enabled", false) ? P.p.getConfig().getInt("max-relations." + Relation.ALLY.toString(), -1) : -1;
-            int maxEnemy = P.p.getConfig().getBoolean("max-relations.enabled", false) ? P.p.getConfig().getInt("max-relations." + Relation.ENEMY.toString(), -1) : -1;
+            int maxAlly = p.getConfig().getBoolean("max-relations.enabled", false) ? p.getConfig().getInt("max-relations." + Relation.ALLY.toString(), -1) : -1;
+            int maxEnemy = p.getConfig().getBoolean("max-relations.enabled", false) ? p.getConfig().getInt("max-relations." + Relation.ENEMY.toString(), -1) : -1;
 
             if (raw.contains("{allies}")) {
                 raw = raw.replace("{alliescount}", String.valueOf(faction.getRelationCount(Relation.ALLY)));
                 raw = raw.replace("{maxallies}", maxAlly < 0 ? TL.GENERIC_INFINITY.toString() : String.valueOf(maxAlly));
                 raw = raw.replace("{allies}", "");
-                refined.add(getAllies(faction, raw));
+                refined.add(getAllies(faction, p.txt.parse(raw)));
                 continue;
             } else if (raw.contains("{enemies}")) {
                 raw = raw.replace("{enemiescount}", String.valueOf(faction.getRelationCount(Relation.ENEMY)));
                 raw = raw.replace("{maxenemies}", maxEnemy < 0 ? TL.GENERIC_INFINITY.toString() : String.valueOf(maxEnemy));
                 raw = raw.replace("{enemies}", "");
-                refined.add(getEnemies(faction, raw));
+                refined.add(getEnemies(faction, p.txt.parse(raw)));
                 continue;
             } else if (raw.contains("{online}")) {
                 raw = raw.replace("{online}", "");
-                refined.add(getOnline(faction, raw));
+                refined.add(getOnline(faction, p.txt.parse(raw)));
                 continue;
             } else if (raw.contains("{offline}")) {
                 raw = raw.replace("{offline}", "");
-                refined.add(getOffline(faction, raw));
+                refined.add(getOffline(faction, p.txt.parse(raw)));
                 continue;
             }
             // finally, we add the send-able message to our output list
@@ -175,7 +174,7 @@ public class CmdShow extends FCommand {
      */
     private List<FancyMessage> getAllies(Faction faction, String pre) {
         List<FancyMessage> allies = new ArrayList<FancyMessage>();
-        FancyMessage currentAllies = new FancyMessage(pre).color(ChatColor.GOLD);
+        FancyMessage currentAllies = new FancyMessage(pre);
         boolean firstAlly = true;
         for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
             if (otherFaction == faction) {
@@ -210,7 +209,7 @@ public class CmdShow extends FCommand {
      */
     private List<FancyMessage> getEnemies(Faction faction, String pre) {
         List<FancyMessage> enemies = new ArrayList<FancyMessage>();
-        FancyMessage currentEnemies = new FancyMessage(pre).color(ChatColor.GOLD);
+        FancyMessage currentEnemies = new FancyMessage(pre);
         boolean firstEnemy = true;
         for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
             if (otherFaction == faction) {
@@ -244,7 +243,7 @@ public class CmdShow extends FCommand {
      */
     private List<FancyMessage> getOnline(Faction faction, String pre) {
         List<FancyMessage> online = new ArrayList<FancyMessage>();
-        FancyMessage currentOnline = new FancyMessage(pre).color(ChatColor.GOLD);
+        FancyMessage currentOnline = new FancyMessage(pre);
         boolean firstOnline = true;
         for (FPlayer p : MiscUtil.rankOrder(faction.getFPlayers())) {
             String name = p.getNameAndTitle();
@@ -274,7 +273,7 @@ public class CmdShow extends FCommand {
      */
     private List<FancyMessage> getOffline(Faction faction, String pre) {
         List<FancyMessage> offline = new ArrayList<FancyMessage>();
-        FancyMessage currentOffline = new FancyMessage(pre).color(ChatColor.GOLD);
+        FancyMessage currentOffline = new FancyMessage(pre);
         boolean firstOffline = true;
         for (FPlayer p : MiscUtil.rankOrder(faction.getFPlayers())) {
             String name = p.getNameAndTitle();
