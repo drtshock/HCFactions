@@ -124,12 +124,18 @@ public class CmdShow extends FCommand {
                     continue;
                 }
             }
+            int maxAlly = P.p.getConfig().getBoolean("max-relations.enabled", false) ? P.p.getConfig().getInt("max-relations." + Relation.ALLY.toString(), -1) : -1;
+            int maxEnemy = P.p.getConfig().getBoolean("max-relations.enabled", false) ? P.p.getConfig().getInt("max-relations." + Relation.ENEMY.toString(), -1) : -1;
 
             if (raw.contains("{allies}")) {
+                raw = raw.replace("{alliescount}", String.valueOf(faction.getRelationCount(Relation.ALLY)));
+                raw = raw.replace("{maxallies}", maxAlly < 0 ? TL.GENERIC_INFINITY.toString() : String.valueOf(maxAlly));
                 raw = raw.replace("{allies}", "");
                 refined.add(getAllies(faction, raw));
                 continue;
             } else if (raw.contains("{enemies}")) {
+                raw = raw.replace("{enemiescount}", String.valueOf(faction.getRelationCount(Relation.ENEMY)));
+                raw = raw.replace("{maxenemies}", maxEnemy < 0 ? TL.GENERIC_INFINITY.toString() : String.valueOf(maxEnemy));
                 raw = raw.replace("{enemies}", "");
                 refined.add(getEnemies(faction, raw));
                 continue;

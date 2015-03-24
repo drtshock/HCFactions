@@ -187,7 +187,7 @@ fshow:
   - '<a>This faction is permanent, remaining even with no members.'
   - '<a>Total land value: <i>{value} {refund}'
   - '<a>Bank contains: <i>{balance}'
-  - 'Allies: {allies} '
+  - 'Allies({alliescount}/{maxallies}): {allies} '
   - '<a>Members: (<i>{factionSize}<a> total)(<i>{onlinecount} <a>online)'
 
 # Configurable f list output

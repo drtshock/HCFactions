@@ -2,7 +2,9 @@ package com.massivecraft.factions.scoreboards;
 
 import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
+import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.util.TL;
 
 import org.bukkit.Bukkit;
@@ -23,6 +25,8 @@ public abstract class FSidebarProvider {
         Faction faction = fplayer.getFaction();
         boolean raidable = faction.isRaidable();
         FPlayer fLeader = faction.getFPlayerAdmin();
+        int maxAlly = P.p.getConfig().getBoolean("max-relations.enabled", false) ? P.p.getConfig().getInt("max-relations." + Relation.ALLY.toString(), -1) : -1;
+        int maxEnemy = P.p.getConfig().getBoolean("max-relations.enabled", false) ? P.p.getConfig().getInt("max-relations." + Relation.ENEMY.toString(), -1) : -1;
         faction.updateDTR(); // update DTR before fetch, always
         String leader = fLeader == null ? "Server" : fLeader.getName().substring(0, fLeader.getName().length() > 14 ? 13 : fLeader.getName().length());
         if(Econ.isSetup()) {
@@ -30,6 +34,11 @@ public abstract class FSidebarProvider {
         }
         s = s.replace("{name}", fplayer.getName());
         s = s.replace("{faction}", !faction.isNone() ? faction.getTag() : TL.GENERIC_FACTIONLESS.toString());
+
+        s = s.replace("{alliescount}", String.valueOf(faction.getRelationCount(Relation.ALLY)));
+        s = s.replace("{maxallies}", maxAlly < 0 ? TL.GENERIC_INFINITY.toString() : String.valueOf(maxAlly));
+        s = s.replace("{enemiescount}", String.valueOf(faction.getRelationCount(Relation.ENEMY)));
+        s = s.replace("{maxenemies}", maxEnemy < 0 ? TL.GENERIC_INFINITY.toString() : String.valueOf(maxEnemy));
         s = s.replace("{dtr}", dc.format(faction.getDTR())).replace("{maxdtr}", dc.format(faction.getMaxDTR()));
         s = s.replace("{online}", String.valueOf(faction.getOnlinePlayers().size())).replace("{members}", String.valueOf(faction.getFPlayers().size()));
         s = s.replace("{leader}", String.valueOf(leader)).replace("{land}", String.valueOf(faction.getLand())).replace("{maxland}", String.valueOf(faction.getMaxLand()));
