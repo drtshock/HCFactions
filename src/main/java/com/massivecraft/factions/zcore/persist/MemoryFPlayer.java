@@ -435,7 +435,13 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void alterDTR(double delta) {
+        P.p.debug("DTR Change: player=[" + this.getName() + "] DTR: [" + this.getDTR() + "] change=[" + delta + "]");
         this.dtr += delta;
+        if (this.dtr >= this.getMaxDTR()) {
+            P.p.debug("DTR set to max=[" + this.getMaxDTR() + "]");
+            this.dtr = this.getMaxDTR();
+        }
+        P.p.debug("DTR is now: " + this.dtr);
     }
 
     public void updateDTR() {
