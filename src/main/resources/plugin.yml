@@ -80,6 +80,7 @@ permissions:
       factions.relation: true
       factions.sethome: true
       factions.show: true
+      factions.stuck: true
       factions.tag: true
       factions.title: true
       factions.version: true
@@ -201,6 +202,8 @@ permissions:
     description: designate a faction as peaceful
   factions.setpermanent:
     description: designate a faction as permanent
+  factions.stuck:
+    description: teleports player outside of a trap
   factions.relation:
     description: set relation wish to another faction
   factions.reload:

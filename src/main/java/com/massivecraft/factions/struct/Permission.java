@@ -54,6 +54,7 @@ public enum Permission {
     SET_PEACEFUL("setpeaceful"),
     SET_PERMANENT("setpermanent"),
     SHOW_INVITES("showinvites"),
+    STUCK("stuck"),
     RELATION("relation"),
     RELOAD("reload"),
     SAVE("save"),

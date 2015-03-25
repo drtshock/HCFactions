@@ -94,6 +94,13 @@ public class FactionsPlayerListener implements Listener {
         // and update their last login time to point to when the logged off, for auto-remove routine
         me.setLastLoginTime(System.currentTimeMillis());
 
+        // if player is waiting for fstuck teleport but leaves, remove
+        if(P.p.getStuckMap().containsKey(me.getPlayer().getUniqueId())) {
+            FPlayers.getInstance().getByPlayer(me.getPlayer()).msg(TL.COMMAND_STUCK_CANCELLED);
+            P.p.getStuckMap().remove(me.getPlayer().getUniqueId());
+            P.p.getTimers().remove(me.getPlayer().getUniqueId());
+        }
+
         Faction myFaction = me.getFaction();
         if (!myFaction.isNone()) {
             myFaction.memberLoggedOff();
@@ -532,6 +539,13 @@ public class FactionsPlayerListener implements Listener {
         FPlayer badGuy = FPlayers.getInstance().getByPlayer(event.getPlayer());
         if (badGuy == null) {
             return;
+        }
+
+        // guy was kicked, remove him from fstuck list
+        if(P.p.getStuckMap().containsKey(badGuy.getPlayer().getUniqueId())) {
+            FPlayers.getInstance().getByPlayer(badGuy.getPlayer()).msg(TL.COMMAND_STUCK_CANCELLED);
+            P.p.getStuckMap().remove(badGuy.getPlayer().getUniqueId());
+            P.p.getTimers().remove(badGuy.getPlayer().getUniqueId());
         }
 
         // if player was banned (not just kicked), get rid of their stored info

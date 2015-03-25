@@ -45,8 +45,10 @@ public class FCmdRoot extends FCommand {
     public CmdSethome cmdSethome = new CmdSethome();
     public CmdShow cmdShow = new CmdShow();
     public CmdStatus cmdStatus = new CmdStatus();
+    public CmdStuck cmdStuck = new CmdStuck();
     public CmdTag cmdTag = new CmdTag();
     public CmdThaw cmdThaw = new CmdThaw();
+    public CmdTop cmdTop = new CmdTop();
     public CmdTitle cmdTitle = new CmdTitle();
     public CmdUnclaim cmdUnclaim = new CmdUnclaim();
     public CmdUnclaimall cmdUnclaimall = new CmdUnclaimall();
@@ -62,7 +64,7 @@ public class FCmdRoot extends FCommand {
     public CmdDelFWarp cmdDelFWarp = new CmdDelFWarp();
     public CmdLogins cmdLogins = new CmdLogins();
     public CmdClaimLine cmdClaimLine = new CmdClaimLine();
-    public CmdTop cmdTop = new CmdTop();
+
 
     public FCmdRoot() {
         super();
@@ -123,6 +125,7 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdSethome);
         this.addSubCommand(this.cmdShow);
         this.addSubCommand(this.cmdStatus);
+        this.addSubCommand(this.cmdStuck);
         this.addSubCommand(this.cmdTag);
         this.addSubCommand(this.cmdThaw);
         this.addSubCommand(this.cmdTitle);

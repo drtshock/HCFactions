@@ -95,9 +95,33 @@ public class FactionsEntityListener implements Listener {
             if (!this.canDamagerHurtDamagee(sub, true)) {
                 event.setCancelled(true);
             }
+            // event is not cancelled by factions
+
+            Entity damagee = sub.getEntity();
+            Entity damager = sub.getDamager();
+
+            if(damagee instanceof Player) {
+                cancelFStuckTeleport((Player)damagee);
+            }
+            if(damager instanceof Player) {
+                cancelFStuckTeleport((Player)damagee);
+            }
         } else if (Conf.safeZonePreventAllDamageToPlayers && isPlayerInSafeZone(event.getEntity())) {
             // Players can not take any damage in a Safe Zone
             event.setCancelled(true);
+        }
+
+        // entity took generic damage?
+        Entity entity = event.getEntity();
+        if(entity instanceof Player) {
+            cancelFStuckTeleport((Player)event.getEntity());
+        }
+    }
+
+    public void cancelFStuckTeleport(Player player) {
+        if(P.p.getStuckMap().containsKey(player.getUniqueId())) {
+            FPlayers.getInstance().getByPlayer(player).msg(TL.COMMAND_STUCK_CANCELLED);
+            P.p.getStuckMap().remove(player.getUniqueId());
         }
     }
 
