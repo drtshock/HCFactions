@@ -388,6 +388,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void updateDTR() {
+        if (this.isFrozen()) return;
 
         double toDtr = 0;
         for (FPlayer fplayer : fplayers) {
@@ -434,9 +435,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void alterDTR(double delta) {
-        if (delta == 0) return;
         if (delta == 0) {
+            return;
+        } else if (this.dtr + delta < getMinDTR()) {
             // set delta to diff between min and current dtr
+            delta = getMinDTR() - this.dtr;
         }
         double del = delta / this.getSize();
         for (FPlayer fPlayer : fplayers) {
