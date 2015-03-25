@@ -67,7 +67,7 @@ public class RelationUtil {
         }
 
         if (!fthat.isNormal() || !fme.isNormal()) {
-            return Relation.fromString(P.p.getConfig().getString("default-relation", "neutral"));
+            return Relation.fromString(P.p.getConfig().getString("default-relation", "enemy"));
         }
 
         if (fthat.equals(fme)) {

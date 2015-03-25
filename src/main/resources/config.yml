@@ -23,7 +23,7 @@ findfactionsexploit:
 # Example usage would be so people can't leave then make a new Faction while Raiding
 #   in order to be able to execute commands if the default relation is neutral.
 # This has always been neutral.
-default-relation: "neutral"
+default-relation: "enemy"
 
 # Portal Creation
 # Do you want to limit portal creation?
@@ -125,7 +125,7 @@ scoreboard:
 # {maxallies} - max # of allies faction can have. {enemiescount} - how many enemies faction has.
 
   default-enabled: false # Default to false to keep original functionality.
-  default-title: "i love drt" # Can use any of the values from above but this won't update once it's set (so don't set {balance}).
+  default-title: "{name}" # Can use any of the values from above but this won't update once it's set (so don't set {balance}).
   default-update-interval: 2 # in seconds.
 
   # This will show faction prefixes colored based on relation on nametags and in the tab.
@@ -155,8 +155,8 @@ warmups:
 # It is advised that you set the default relation to -1 so they can always go back to that.
 # Otherwise Factions could be stuck with not being able to unenemy other Factions.
 max-relations:
-  enabled: false
-  ally: 10
+  enabled: true
+  ally: 2
   truce: 10
   neutral: -1
   enemy: 10
@@ -193,7 +193,7 @@ fshow:
   - '<a>This faction is permanent, remaining even with no members.'
   - '<a>Total land value: <i>{value} {refund}'
   - '<a>Bank contains: <i>{balance}'
-  - 'Allies({alliescount}/{maxallies}): {allies} '
+  - '<a>Allies(<i>{alliescount}<a>/<i>{maxallies}<a>): {allies} '
   - '<a>Members: (<i>{factionSize}<a> total)(<i>{onlinecount} <a>online)'
 
 # Configurable f list output
@@ -250,10 +250,10 @@ hcf:
     freeze-join: true
   
   # Max land a faction can have claimed
-  faction-land-max: 40 
+  faction-land-max: 36
   
   # How much land a faction gets per member
-  land-per-player: 5
+  land-per-player: 6
   
   # Buffer Zone
   # Buffer Zone is an chunk area required between claims of different Factions.

@@ -370,8 +370,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public int getMaxLand() {
-        int landPerPlayer = P.p.getConfig().getInt("hcf.land-per-player", 5);
-        int maxFactionLand = P.p.getConfig().getInt("hcf.faction-land-max", 40);
+        int landPerPlayer = P.p.getConfig().getInt("hcf.land-per-player", 6);
+        int maxFactionLand = P.p.getConfig().getInt("hcf.faction-land-max", 36);
         return Math.min(this.getSize() * landPerPlayer, maxFactionLand);
     }
 
