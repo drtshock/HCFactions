@@ -36,7 +36,7 @@ public class CmdThaw extends FCommand {
         }
 
         if(!faction.isFrozen()) {
-            msg(TL.COMMAND_THAW_NOTFROZEN.toString());
+            msg(TL.COMMAND_THAW_NOTFROZEN, faction.getTag());
             return;
         }
 
