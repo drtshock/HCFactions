@@ -16,7 +16,6 @@ permissions:
       factions.lock: true
       factions.reload: true
       factions.save: true
-      factions.dtr: true
   factions.*:
     description: This is just an alias for factions.kit.admin
     children:
@@ -29,6 +28,7 @@ permissions:
       factions.setpeaceful: true
       factions.setpermanent: true
       factions.dtr: true
+      factions.thaw: true
       factions.sethome.any: true
       factions.money.*: true
       factions.join.any: true
@@ -118,6 +118,8 @@ permissions:
     description: disband a faction
   factions.disband.any:
     description: disband another faction
+  factions.dtr:
+    description: set a factions dtr
   factions.help:
     description: display a help page
   factions.home:
@@ -199,8 +201,6 @@ permissions:
     description: designate a faction as peaceful
   factions.setpermanent:
     description: designate a faction as permanent
-  factions.dtr:
-    description: set faction dtr value
   factions.relation:
     description: set relation wish to another faction
   factions.reload:
@@ -215,6 +215,8 @@ permissions:
     description: show faction information
   factions.tag:
     description: change the faction tag
+  factions.thaw:
+    description: thaw a dtr frozen faction
   factions.title:
     description: set or remove a players title
   factions.version:

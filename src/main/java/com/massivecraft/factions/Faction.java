@@ -156,6 +156,8 @@ public interface Faction extends EconomyParticipator {
 
     public long getFreezeLeft();
 
+    public void thaw();
+
     public void setDTR(double dtr);
 
     public void alterDTR(double delta);

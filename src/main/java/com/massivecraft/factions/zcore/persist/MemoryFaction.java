@@ -441,6 +441,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.updateDTR();
     }
 
+    public void thaw() {
+        // move lastDeath to the past so we unfreeze
+        this.lastDeath -= (P.p.getConfig().getLong("hcf.dtr.dtr-freeze", 0) * 1000);
+    }
+
     public boolean isRaidable() {
         this.updateDTR();
         return this.getDTR() <= 0;

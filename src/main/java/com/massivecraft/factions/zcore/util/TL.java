@@ -434,6 +434,12 @@ public enum TL {
     COMMAND_TAG_CHANGED("<i>The faction %1$s<i> changed their name to %2$s."),
     COMMAND_TAG_DESCRIPTION("Change the faction tag"),
 
+    COMMAND_THAW_NOTFROZEN("<a>%s <b>is not frozen!"),
+    COMMAND_THAW_SUCCESS("<a>You thawed <i>%s"),
+    COMMAND_THAW_FAILURE("<b>%s is still frozen! Error!"),
+    COMMAND_THAW_FACTION("%s<i> thawed your faction!"),
+    COMMAND_THAW_DESCRIPTION("Disable factions DTR freeze"),
+
     COMMAND_TITLE_TOCHANGE("to change a players title"),
     COMMAND_TITLE_FORCHANGE("for changing a players title"),
     COMMAND_TITLE_CHANGED("%1$s<i> changed a title: %2$s"),

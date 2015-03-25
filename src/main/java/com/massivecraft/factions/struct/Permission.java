@@ -62,6 +62,7 @@ public enum Permission {
     SHOW("show"),
     STATUS("status"),
     TAG("tag"),
+    THAW("thaw"),
     TITLE("title"),
     UNCLAIM("unclaim"),
     UNCLAIM_ALL("unclaimall"),
