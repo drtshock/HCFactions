@@ -435,14 +435,12 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public void alterDTR(double delta) {
-        P.p.debug("DTR Change: player=[" + this.getName() + "] DTR: [" + this.getDTR() + "] change=[" + delta + "]");
+        if (delta == 0) return;
         this.dtr += delta;
-        double max = this.getMaxDTR();
+        double max = this.getFaction().getMaxPlayerDTR();
         if (this.dtr >= max) {
-            P.p.debug("DTR set to max=[" + max + "]");
             this.dtr = max;
         }
-        P.p.debug("DTR is now: " + this.dtr);
     }
 
     public void updateDTR() {
@@ -467,13 +465,6 @@ public abstract class MemoryFPlayer implements FPlayer {
         int millisPerMinute = 60 * 1000;
         double deltaDTr = P.p.getConfig().getDouble("hcf.dtr.minute-dtr", 0.01);
         this.alterDTR(millisPassed * deltaDTr / millisPerMinute);
-        this.getFaction().updateDTR();
-    }
-
-    public double getMaxDTR() {
-        // max faction dtr / faction size
-        double maxCalc = P.p.getConfig().getDouble("hcf.dtr.max-faction-dtr", 5.5) / this.getFaction().getFPlayers().size();
-        return Math.min(P.p.getConfig().getDouble("hcf.dtr.max-player-dtr", 0.51), maxCalc);
     }
 
     public void onDeath() {

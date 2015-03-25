@@ -146,6 +146,8 @@ public interface Faction extends EconomyParticipator {
 
     public double getMaxDTR();
 
+    public double getMaxPlayerDTR();
+
     public double getMinDTR();
 
     public boolean isFrozen();

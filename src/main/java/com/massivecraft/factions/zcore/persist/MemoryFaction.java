@@ -390,41 +390,42 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public void updateDTR() {
         double toDtr = 0;
         for (FPlayer fplayer : fplayers) {
+            fplayer.updateDTR();
             toDtr += fplayer.getDTR();
         }
         double maxDtr = getMaxDTR();
         if (toDtr > maxDtr) {
+            P.p.debug("DTR [" + toDtr + "] exceeded max of [" + maxDtr + "]");
             toDtr = maxDtr;
         } else if (toDtr < getMinDTR()) {
+            P.p.debug("DTR [" + toDtr + "] exceeded min of [" + getMinDTR() + "]");
             toDtr = getMinDTR();
         }
         DTRChangeEvent changeEvent = new DTRChangeEvent(this, this.dtr, toDtr);
         // only call a change event if DTR actually changes
-        if(changeEvent.getFrom() != changeEvent.getTo()) {
+        if (changeEvent.getFrom() != changeEvent.getTo()) {
             Bukkit.getServer().getPluginManager().callEvent(changeEvent);
             if (changeEvent.isCancelled()) {
                 return;
             }
+            P.p.debug("Faction=[" + this.getTag() + "]");
+            P.p.debug("From=[" + changeEvent.getFrom() + "] To=[" + changeEvent.getTo() + "]");
+            P.p.debug("Change=[" + (changeEvent.getTo() - changeEvent.getFrom()) + "]");
+            this.dtr = changeEvent.getTo();
         }
-        this.dtr = changeEvent.getTo();
     }
 
     public double getMaxDTR() {
-        double ret = 0;
-        for (FPlayer fplayer : fplayers) {
-            ret += fplayer.getMaxDTR();
-        }
-        double max = P.p.getConfig().getDouble("hcf.dtr.max-faction-dtr", 5.5);
-        if (max > 0 && ret > max) {
-            ret = max;
-        } else if (getMinDTR() < 0 && ret < getMinDTR()) {
-            ret = getMinDTR();
-        }
-        return ret;
+        return getMaxPlayerDTR() * fplayers.size();
     }
 
     public double getMinDTR() {
         return P.p.getConfig().getDouble("hcf.dtr.min-faction-dtr", -6.0);
+    }
+
+    public double getMaxPlayerDTR() {
+        double maxCalc = P.p.getConfig().getDouble("hcf.dtr.max-faction-dtr", 5.5) / this.fplayers.size();
+        return Math.min(P.p.getConfig().getDouble("hcf.dtr.max-player-dtr", 0.51), maxCalc);
     }
 
     public void setDTR(double dtr) {
@@ -432,6 +433,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void alterDTR(double delta) {
+        if (delta == 0) return;
         double del = delta / this.getSize();
         for (FPlayer fPlayer : fplayers) {
             fPlayer.alterDTR(del);

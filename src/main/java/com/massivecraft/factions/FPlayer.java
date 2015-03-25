@@ -151,8 +151,6 @@ public interface FPlayer extends EconomyParticipator {
     //----------------------------------------------//
     public double getDTR();
 
-    public double getMaxDTR();
-
     public void alterDTR(double delta);
 
     public void updateDTR();
