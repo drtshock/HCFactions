@@ -104,7 +104,7 @@ public class FactionsEntityListener implements Listener {
                 cancelFStuckTeleport((Player)damagee);
             }
             if(damager instanceof Player) {
-                cancelFStuckTeleport((Player)damagee);
+                cancelFStuckTeleport((Player)damager);
             }
         } else if (Conf.safeZonePreventAllDamageToPlayers && isPlayerInSafeZone(event.getEntity())) {
             // Players can not take any damage in a Safe Zone
