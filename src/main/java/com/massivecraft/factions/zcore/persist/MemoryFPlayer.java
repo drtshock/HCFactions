@@ -47,10 +47,6 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected Role role;
     // FIELD: title
     protected String title;
-    // FIELD: dtr
-    protected double dtr;
-    // FIELD: lastDtrUpdateTime
-    protected long lastDtrUpdateTime;
 
     // FIELD: lastLoginTime
     protected long lastLoginTime;
@@ -204,8 +200,6 @@ public abstract class MemoryFPlayer implements FPlayer {
     public MemoryFPlayer(String id) {
         this.id = id;
         this.resetFactionData(false);
-        this.dtr = 0.0;
-        this.lastDtrUpdateTime = System.currentTimeMillis();
         this.lastLoginTime = System.currentTimeMillis();
         this.mapAutoUpdating = false;
         this.autoClaimFor = null;
@@ -222,7 +216,6 @@ public abstract class MemoryFPlayer implements FPlayer {
     public MemoryFPlayer(MemoryFPlayer other) {
         this.factionId = other.factionId;
         this.id = other.id;
-        this.dtr = other.dtr;
         this.lastLoginTime = other.lastLoginTime;
         this.mapAutoUpdating = other.mapAutoUpdating;
         this.autoClaimFor = other.autoClaimFor;
@@ -247,7 +240,6 @@ public abstract class MemoryFPlayer implements FPlayer {
                 currentFaction.clearClaimOwnership(this);
             }
         }
-        this.dtr = 0.0; // reset DTR 
         this.factionId = "0"; // The default neutral faction
         this.chatMode = ChatMode.PUBLIC;
         this.role = Role.NORMAL;
@@ -271,7 +263,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void setLastLoginTime(long lastLoginTime) {
         this.lastLoginTime = lastLoginTime;
-        this.lastDtrUpdateTime = lastLoginTime;
         if (Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0) {
             this.loginPvpDisabled = true;
         }
@@ -425,46 +416,6 @@ public abstract class MemoryFPlayer implements FPlayer {
             return;
         }
         player.setHealth(player.getHealth() + amnt);
-    }
-
-    // ----------------------------------------------//
-    // DTR
-    // ----------------------------------------------//
-    public double getDTR() {
-        return this.dtr;
-    }
-
-    public void alterDTR(double delta) {
-        if (delta == 0) return;
-        this.dtr += delta;
-        double max = this.getFaction().getMaxPlayerDTR();
-        if (this.dtr >= max) {
-            this.dtr = max;
-        }
-    }
-
-    public void updateDTR() {
-        if (this.isOffline()) {
-            return;
-        } else if ((hasFaction() && getFaction().isFrozen())) {
-            if (!P.p.getConfig().getBoolean("hcf.dtr.allow-background-regen", false)) {
-                // if we're blocking background regen, then fake a dtr update
-                this.lastDtrUpdateTime = System.currentTimeMillis();
-            }
-            return;
-        }
-        long now = System.currentTimeMillis();
-        long millisPassed = now - this.lastDtrUpdateTime;
-        this.lastDtrUpdateTime = now;
-
-        Player thisPlayer = this.getPlayer();
-        if (thisPlayer != null && thisPlayer.isDead()) {
-            return;  // don't let dead players regain power until they respawn
-        }
-
-        int millisPerMinute = 60 * 1000;
-        double deltaDTr = P.p.getConfig().getDouble("hcf.dtr.minute-dtr", 0.01);
-        this.alterDTR(millisPassed * deltaDTr / millisPerMinute);
     }
 
     public void onDeath() {

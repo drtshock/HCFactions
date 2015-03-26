@@ -54,9 +54,6 @@ public class CmdShow extends FCommand {
         String maxDtr = dc.format(faction.getMaxDTR());
         String raidable = faction.isRaidable() ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
 
-        if (fme != null) {
-            fme.updateDTR();
-        }
         faction.updateDTR();
 
         // we'll send title now, rest soon :)

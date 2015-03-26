@@ -31,6 +31,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected Set<String> invites = new HashSet<String>();
     protected String id = null;
     protected transient long lastPlayerLoggedOffTime;
+    protected long lastDtrUpdateTime;
     protected boolean peacefulExplosionsEnabled;
     protected String description;
     protected LazyLocation home;
@@ -252,10 +253,12 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.peacefulExplosionsEnabled = false;
         this.permanent = false;
         this.money = 0.0;
+        this.dtr = 0;
     }
 
     public MemoryFaction(MemoryFaction old) {
         id = old.id;
+        this.dtr = old.dtr;
         peacefulExplosionsEnabled = old.peacefulExplosionsEnabled;
         permanent = old.permanent;
         tag = old.tag;
@@ -388,13 +391,24 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void updateDTR() {
-        if (this.isFrozen()) return;
-
-        double toDtr = 0;
-        for (FPlayer fplayer : fplayers) {
-            fplayer.updateDTR();
-            toDtr += fplayer.getDTR();
+        if (this.isFrozen()) {
+            if(P.p.getConfig().getBoolean("hcf.dtr.allow-background-regen", false)) {
+                this.lastDtrUpdateTime = System.currentTimeMillis();
+            }
+            return;
         }
+        if(this.dtr >= this.getMaxDTR()) {
+            this.lastDtrUpdateTime = System.currentTimeMillis();
+            return;
+        }
+
+        double toDtr = this.getDTR();
+        long now = System.currentTimeMillis();
+        long millisPassed = now - this.lastDtrUpdateTime;
+        double deltaDTr = P.p.getConfig().getDouble("hcf.dtr.minute-dtr", 0.01);
+        double change = (millisPassed * deltaDTr) / 60000;
+        toDtr += (this.getOnlinePlayers().size() * change);
+
         double maxDtr = getMaxDTR();
         if (toDtr > maxDtr) {
             P.p.debug("DTR [" + toDtr + "] exceeded max of [" + maxDtr + "]");
@@ -414,6 +428,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             P.p.debug("From=[" + changeEvent.getFrom() + "] To=[" + changeEvent.getTo() + "]");
             P.p.debug("Change=[" + (changeEvent.getTo() - changeEvent.getFrom()) + "]");
             this.dtr = changeEvent.getTo();
+            this.lastDtrUpdateTime = System.currentTimeMillis();
         }
     }
 
@@ -435,17 +450,13 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void alterDTR(double delta) {
-        if (delta == 0) {
-            return;
-        } else if (this.dtr + delta < getMinDTR()) {
-            // set delta to diff between min and current dtr
-            delta = getMinDTR() - this.dtr;
+        if(this.dtr + delta > this.getMaxDTR()) {
+            this.dtr = this.getMaxDTR();
+        } else if(this.dtr + delta < this.getMinDTR()) {
+            this.dtr = this.getMinDTR();
+        } else {
+            this.dtr += delta;
         }
-        double del = delta / this.getSize();
-        for (FPlayer fPlayer : fplayers) {
-            fPlayer.alterDTR(del);
-        }
-        this.updateDTR();
     }
 
     public void thaw() {

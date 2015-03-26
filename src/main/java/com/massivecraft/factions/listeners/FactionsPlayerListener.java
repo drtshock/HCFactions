@@ -71,7 +71,9 @@ public class FactionsPlayerListener implements Listener {
 
         FScoreboard.init(me);
         if (P.p.getConfig().getBoolean("scoreboard.default-enabled", false)) {
-            FScoreboard.get(me).setDefaultSidebar(new FDefaultSidebar(), P.p.getConfig().getInt("default-update-interval", 20));
+            int interval = P.p.getConfig().getInt("default-update-interval", 5);
+            P.p.debug("Update interval: " + interval + " ticks: " + interval*20);
+            FScoreboard.get(me).setDefaultSidebar(new FDefaultSidebar(), interval*20);
         }
         FScoreboard.get(me).setSidebarVisibility(P.p.cmdBase.cmdSB.showBoard(me));
 
@@ -89,8 +91,6 @@ public class FactionsPlayerListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
 
-        // Make sure player's dtr is up to date when they log off.
-        me.updateDTR();
         // and update their last login time to point to when the logged off, for auto-remove routine
         me.setLastLoginTime(System.currentTimeMillis());
 
@@ -428,8 +428,6 @@ public class FactionsPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
-
-        me.updateDTR();  // update dtr, so they won't have gained any while dead
 
         Location home = me.getFaction().getHome();
         if (Conf.homesEnabled &&

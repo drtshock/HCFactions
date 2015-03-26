@@ -301,7 +301,6 @@ public abstract class MCommand<T extends MPlugin> {
                 + humanized);
         String balance = Econ.isSetup() ? Econ.getFriendlyBalance(player) : "no balance";
         Faction faction = player.getFaction();
-        player.updateDTR(); // update DTR before fetch, always
         String dtr = faction.getDTR() + "/" + faction.getMaxDTR();
         String group = P.p.getPrimaryGroup(Bukkit.getOfflinePlayer(player.getName()));
         return s.replace("{balance}", balance).replace("{lastSeen}", lastSeen).replace("{dtr}", dtr).replace("{group}", group);

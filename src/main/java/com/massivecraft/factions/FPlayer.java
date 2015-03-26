@@ -146,15 +146,6 @@ public interface FPlayer extends EconomyParticipator {
     //----------------------------------------------//
     public void heal(int amnt);
 
-    //----------------------------------------------//
-    // DTR
-    //----------------------------------------------//
-    public double getDTR();
-
-    public void alterDTR(double delta);
-
-    public void updateDTR();
-
     public void onDeath();
 
     //----------------------------------------------//
