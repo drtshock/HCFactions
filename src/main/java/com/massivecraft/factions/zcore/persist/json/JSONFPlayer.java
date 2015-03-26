@@ -19,9 +19,6 @@ public class JSONFPlayer extends MemoryFPlayer {
     }
 
     public boolean shouldBeSaved() {
-        if (!this.hasFaction()) {
-            return false;
-        }
-        return true;
+        return this.hasFaction();
     }
 }
