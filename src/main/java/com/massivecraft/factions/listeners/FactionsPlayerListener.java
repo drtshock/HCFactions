@@ -541,13 +541,6 @@ public class FactionsPlayerListener implements Listener {
             return;
         }
 
-        // guy was kicked, remove him from fstuck list
-        if(P.p.getStuckMap().containsKey(badGuy.getPlayer().getUniqueId())) {
-            FPlayers.getInstance().getByPlayer(badGuy.getPlayer()).msg(TL.COMMAND_STUCK_CANCELLED);
-            P.p.getStuckMap().remove(badGuy.getPlayer().getUniqueId());
-            P.p.getTimers().remove(badGuy.getPlayer().getUniqueId());
-        }
-
         // if player was banned (not just kicked), get rid of their stored info
         if (Conf.removePlayerDataWhenBanned && event.getReason().equals("Banned by admin.")) {
             if (badGuy.getRole() == Role.ADMIN) {
