@@ -12,6 +12,9 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.BitSet;
+import java.util.List;
+
 public class CmdStuck extends FCommand {
 
     public CmdStuck() {
@@ -40,6 +43,8 @@ public class CmdStuck extends FCommand {
             String time = DurationFormatUtils.formatDuration(wait, TL.COMMAND_STUCK_TIMEFORMAT.toString(), true);
             msg(TL.COMMAND_STUCK_EXISTS, time);
         } else {
+            final List<Integer> blackList = P.p.getConfig().getIntegerList("hcf.fstuck.black-list");
+
             final int id = Bukkit.getScheduler().runTaskLater(P.p, new BukkitRunnable() {
 
                 @Override
@@ -52,15 +57,15 @@ public class CmdStuck extends FCommand {
                     int cz = (int) chunk.getZ() << 4;
 
                     // Max iterations worse case: 16x16x4 (1024 times)
-                    x : for (int x = cx; cx < x + 16; x++) {
-                        z : for (int z = cz; cz < z + 16; z++) {
+                    x : for (int x = cx; x < cx + 16; x++) {
+                        z : for (int z = cz; z < cz + 16; z++) {
                             Block block = world.getHighestBlockAt(x, z);
                             Location loc = block.getLocation();
 
                             // make sure blocks under and above are okay
                             for (int y = loc.getBlockY() - 1; y < loc.getBlockY() + 3; y++) {
                                 Block check = world.getBlockAt(x, y, z);
-                                if (P.p.getConfig().getIntegerList("hcf.fstuck.black-list").contains(check.getTypeId())) {
+                                if (blackList.contains(check.getTypeId())) {
                                     continue z; // skip this coordinate
                                 }
                             }
