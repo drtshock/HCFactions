@@ -58,6 +58,12 @@ public class CmdDisband extends FCommand {
             return;
         }
 
+        // don't let frozen factions disband (configurable)
+        if (faction.isFrozen() && !P.p.getConfig().getBoolean("hcf.dtr.freeze-disband", false)) {
+            msg(TL.COMMAND_DISBAND_FROZEN);
+            return;
+        }
+
         FactionDisbandEvent disbandEvent = new FactionDisbandEvent(me, faction.getId());
         Bukkit.getServer().getPluginManager().callEvent(disbandEvent);
         if (disbandEvent.isCancelled()) {

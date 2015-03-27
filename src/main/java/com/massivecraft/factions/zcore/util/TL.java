@@ -166,6 +166,7 @@ public enum TL {
     COMMAND_DISBAND_BROADCAST_YOURS("<h>%1$s<i> disbanded your faction."),
     COMMAND_DISBAND_BROADCAST_NOTYOURS("<h>%1$s<i> disbanded the faction %2$s."),
     COMMAND_DISBAND_HOLDINGS("<i>You have been given the disbanded faction's bank, totaling %1$s."),
+    COMMAND_DISBAND_FROZEN("<a>You cannot disband a frozen faction"),
     COMMAND_DISBAND_DESCRIPTION("Disband a faction"),
 
     COMMAND_DTR_DESCRIPTION("Change the faction deaths-till-raidable value"),
