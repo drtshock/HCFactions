@@ -53,19 +53,21 @@ public class CmdShow extends FCommand {
         String dtr = dc.format(faction.getDTR());
         String maxDtr = dc.format(faction.getMaxDTR());
         String raidable = faction.isRaidable() ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
-
+        String tag = faction.getTag(fme);
         faction.updateDTR();
-
-        // we'll send title now, rest soon :)
-        msg(p.txt.titleize(faction.getTag(fme)));
 
         if (!faction.isNormal()) {
             return;
         }
 
         for (String raw : P.p.getConfig().getStringList("fshow")) {
+            if(raw.equals("{header}")) {
+                refined.add(p.txt.titleize(tag));
+                continue;
+            }
             raw = raw.replace("{description}", faction.getDescription());
             raw = raw.replace("{joining}", joining);
+            raw = raw.replace("{tag}", tag);
             raw = raw.replace("{peaceful?}", faction.isPeaceful() ? Conf.colorNeutral + TL.COMMAND_SHOW_PEACEFUL.toString() : "");
             raw = raw.replace("{land}", String.valueOf(faction.getLand())).replace("{maxland}", String.valueOf(faction.getMaxLand()));
             raw = raw.replace("{dtr}", dtr).replace("{maxdtr}", maxDtr).replace("{raidable}", raidable);

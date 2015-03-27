@@ -181,9 +181,11 @@ world-border:
 # {onlinecount} - # of online faction members, {offlinecount} - # of offline faction members.
 # {factionsize} - total size of faction. {alliescount} - # of allies faction has.
 # {maxallies} - max # of allies faction can have. {enemiescount} - how many enemies faction has.
-# {maxenemies} - max # of enemies faction can have.
+# {maxenemies} - max # of enemies faction can have. {header} - the built in header string.
+# {tag} - faction tag
 #
 fshow:
+  - '{header}'
   - '<a>Description: <i>{description}'
   - '<a>Joining: <i>{joining}    {peaceful?}'
   - '<a>Land / Max: <i> {land} / {maxland}'
