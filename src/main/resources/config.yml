@@ -123,8 +123,8 @@ scoreboard:
 # {warps} - the number of warps that a faction has set. {totalOnline} - # of online players
 # {alliescount} - # of allies faction has. {maxenemies} - max # of enemies faction can have.
 # {maxallies} - max # of allies faction can have. {enemiescount} - how many enemies faction has.
-
-  default-enabled: false # Default to false to keep original functionality.
+#
+  default-enabled: true
   default-title: "{name}" # Can use any of the values from above but this won't update once it's set (so don't set {balance}).
   default-update-interval: 5 # in seconds.
 
@@ -137,8 +137,8 @@ scoreboard:
     - "{faction}"
     - "&4Faction DTR"
     - "{dtr}/{maxdtr}"
-    - "&aBalance"
-    - "${balance}"
+    - "&aLand"
+    - "{land}/{maxland}"
 
 # Configration section for warmups.
 # Warmup times are in seconds - if a value of 0 is set, there is no warmup.
@@ -214,9 +214,8 @@ flist:
 # This will make claimed territory lose all protections
 #   allowing factions to open chests, break blocks, etc. 
 hcf:
-  # DTR (death till raidable) will be in /f show if enabled. Configure the message in the lang.yml
+  # DTR (death till raidable) will be in /f show if enabled.
   # When DTR is below 0, the faction is considered raidable
-  # DTR is the sum of all faction member's DTR value, or MaxFactionDTR if it's larger
   dtr:
     # Maximum DTR a faction can have 
     max-faction-dtr: 5.5
@@ -233,26 +232,22 @@ hcf:
     # Max DTR = min(player-dtr * faction size, max-faction-dtr)
     player-dtr: .51
     # How much DTR should a solo faction get?
-    # Overrides player-dtr for solo factions.
     # Used so solo factions can have more than 1 death before raidable.
     solo-faction: 1.01
-    # DTR Freeze
     # After a player dies, how long should the faction not be able to regen dtr?
     # This resets on each death but does not accumulate.
     # Set to 0 for no freeze. Time is in seconds.
     dtr-freeze: 0
     # DTR Freeze background regeneration
-    # When a DTR freeze is started, current DTR will not change, but
-    #  IF we set allow-background-regen to true, then after the freeze, 
-    #  the faction will have recovered the DTR that generated during the freeze. 
-    # If set to false, then the DTR the faction would have generated during the 
-    #   DTR freeze period is simply ignored, so therefore a more harsh penalty :p
+    # False unless you want factions to gain back the DTR
+    # they would have generated during their DTR freeze
     allow-background-regen: false
-    # DTR Freeze restrictions
     # Should we let players leave a frozen faction?
     freeze-leave: false
     # Should we let players join a frozen faction?
     freeze-join: true
+    # Should we let frozen factions disband?
+    freeze-disband: false
   fstuck:
     # Time in seconds before teleport occurs
     delay: 60
@@ -265,13 +260,16 @@ hcf:
     - 10
     - 11
     - 51
-  
+
   # Max land a faction can have claimed
   faction-land-max: 36
   
   # How much land a faction gets per member
   land-per-player: 6
-  
+
+  # Allows PVP betweeen members and allys of one faction
+  friendly-fire: false
+
   # Buffer Zone
   # Buffer Zone is an chunk area required between claims of different Factions.
   # This is default to 0 and has always been that way. Meaning Factions can have
