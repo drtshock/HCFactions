@@ -77,10 +77,12 @@ public class FactionsEntityListener implements Listener {
         if (!dtrEvent.isCancelled()) {
             fplayer.onDeath();
         }
-        // Send the message from the powerLossEvent
-        //final String msg = powerLossEvent.getMessage();
+
+        // TODO: Get this working again
+        // Send the message from the dtr event
+        //final String msg = dtrEvent.getMessage();
         //if (msg != null && !msg.isEmpty()) {
-        //    fplayer.msg(msg, fplayer.getPowerRounded(), fplayer.getPowerMaxRounded());
+        //    fplayer.msg(msg, faction.getDTR(), faction.getMaxDTR());
         //}
     }
 
@@ -100,11 +102,11 @@ public class FactionsEntityListener implements Listener {
             Entity damagee = sub.getEntity();
             Entity damager = sub.getDamager();
 
-            if(damagee instanceof Player) {
-                cancelFStuckTeleport((Player)damagee);
+            if (damagee instanceof Player) {
+                cancelFStuckTeleport((Player) damagee);
             }
-            if(damager instanceof Player) {
-                cancelFStuckTeleport((Player)damager);
+            if (damager instanceof Player) {
+                cancelFStuckTeleport((Player) damager);
             }
         } else if (Conf.safeZonePreventAllDamageToPlayers && isPlayerInSafeZone(event.getEntity())) {
             // Players can not take any damage in a Safe Zone
@@ -113,13 +115,13 @@ public class FactionsEntityListener implements Listener {
 
         // entity took generic damage?
         Entity entity = event.getEntity();
-        if(entity instanceof Player) {
-            cancelFStuckTeleport((Player)event.getEntity());
+        if (entity instanceof Player) {
+            cancelFStuckTeleport((Player) event.getEntity());
         }
     }
 
     public void cancelFStuckTeleport(Player player) {
-        if(P.p.getStuckMap().containsKey(player.getUniqueId())) {
+        if (P.p.getStuckMap().containsKey(player.getUniqueId())) {
             FPlayers.getInstance().getByPlayer(player).msg(TL.COMMAND_STUCK_CANCELLED);
             P.p.getStuckMap().remove(player.getUniqueId());
         }
@@ -383,12 +385,18 @@ public class FactionsEntityListener implements Listener {
             return true;
         }
 
-        // You can never hurt faction members or allies
+        // You can sometimes hurt faction members or allies
         if (relation.isMember() || relation.isAlly()) {
-            if (notify) {
-                attacker.msg(TL.PLAYER_PVP_CANTHURT, defender.describeTo(attacker));
+            if (!P.p.getConfig().getBoolean("hcf.friendly-fire", false)) {
+                if (notify) {
+                    attacker.msg(TL.PLAYER_PVP_CANTHURT, defender.describeTo(attacker));
+                }
+                return false;
+            } else {
+                if (notify) {
+                    attacker.msg(TL.PLAYER_PVP_ALLY, defender.describeTo(attacker));
+                }
             }
-            return false;
         }
 
         boolean ownTerritory = defender.isInOwnTerritory();

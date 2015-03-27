@@ -641,6 +641,7 @@ public enum TL {
     PLAYER_PVP_REQUIREFACTION("<i>You can't hurt other players until you join a faction."),
     PLAYER_PVP_FACTIONLESS("<i>You can't hurt players who are not currently in a faction."),
     PLAYER_PVP_PEACEFUL("<i>Peaceful players cannot participate in combat."),
+    PLAYER_PVP_ALLY("<i>Be careful, that's your ally: %s"),
     PLAYER_PVP_NEUTRAL("<i>You can't hurt neutral factions. Declare them as an enemy."),
     PLAYER_PVP_CANTHURT("<i>You can't hurt %s<i>."),
 
