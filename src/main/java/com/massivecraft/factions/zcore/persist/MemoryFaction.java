@@ -391,23 +391,25 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void updateDTR() {
-        if (this.isFrozen()) {
-            if(P.p.getConfig().getBoolean("hcf.dtr.allow-background-regen", false)) {
+        if (isFrozen()) {
+            if (P.p.getConfig().getBoolean("hcf.dtr.allow-background-regen", false)) {
                 this.lastDtrUpdateTime = System.currentTimeMillis();
             }
             return;
         }
-        if(this.dtr >= this.getMaxDTR()) {
+        if (this.dtr == getMaxDTR()) {
             this.lastDtrUpdateTime = System.currentTimeMillis();
             return;
         }
+        double toDtr = getDTR();
 
-        double toDtr = this.getDTR();
         long now = System.currentTimeMillis();
         long millisPassed = now - this.lastDtrUpdateTime;
-        double deltaDTr = P.p.getConfig().getDouble("hcf.dtr.minute-dtr", 0.01);
-        double change = (millisPassed * deltaDTr) / 60000;
-        toDtr += (this.getOnlinePlayers().size() * change);
+
+        double base = millisPassed * P.p.getConfig().getDouble("hcf.dtr.minute-dtr", 0.01D) / 60000.0D;
+        double delta = getSize() > 1 ? getOnlinePlayers().size() * base : base;
+
+        toDtr += delta;
 
         double maxDtr = getMaxDTR();
         if (toDtr > maxDtr) {
@@ -417,14 +419,13 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
             P.p.debug("DTR [" + toDtr + "] exceeded min of [" + getMinDTR() + "]");
             toDtr = getMinDTR();
         }
-        DTRChangeEvent changeEvent = new DTRChangeEvent(this, this.dtr, toDtr);
-        // only call a change event if DTR actually changes
-        if (changeEvent.getFrom() != changeEvent.getTo()) {
+        if (this.dtr != toDtr) {
+            DTRChangeEvent changeEvent = new DTRChangeEvent(this, this.dtr, toDtr);
             Bukkit.getServer().getPluginManager().callEvent(changeEvent);
             if (changeEvent.isCancelled()) {
                 return;
             }
-            P.p.debug("Faction=[" + this.getTag() + "]");
+            P.p.debug("Faction=[" + getTag() + "]");
             P.p.debug("From=[" + changeEvent.getFrom() + "] To=[" + changeEvent.getTo() + "]");
             P.p.debug("Change=[" + (changeEvent.getTo() - changeEvent.getFrom()) + "]");
             this.dtr = changeEvent.getTo();
@@ -433,7 +434,10 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public double getMaxDTR() {
-        return getMaxPlayerDTR() * fplayers.size();
+        if (getSize() == 1) {
+            return P.p.getConfig().getDouble("hcf.dtr.solo-faction", 1.02D);
+        }
+        return getMaxPlayerDTR() * this.fplayers.size();
     }
 
     public double getMinDTR() {
@@ -450,9 +454,9 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void alterDTR(double delta) {
-        if(this.dtr + delta > this.getMaxDTR()) {
+        if (this.dtr + delta > this.getMaxDTR()) {
             this.dtr = this.getMaxDTR();
-        } else if(this.dtr + delta < this.getMinDTR()) {
+        } else if (this.dtr + delta < this.getMinDTR()) {
             this.dtr = this.getMinDTR();
         } else {
             this.dtr += delta;

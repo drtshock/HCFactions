@@ -235,6 +235,7 @@ hcf:
     # How much DTR should a solo faction get?
     # Overrides player-dtr for solo factions.
     # Used so solo factions can have more than 1 death before raidable.
+    solo-faction: 1.01
     # DTR Freeze
     # After a player dies, how long should the faction not be able to regen dtr?
     # This resets on each death but does not accumulate.
