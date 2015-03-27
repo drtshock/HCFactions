@@ -4,7 +4,7 @@
 
     <groupId>com.massivecraft</groupId>
     <artifactId>HCFactions</artifactId>
-    <version>0.0.6</version>
+    <version>0.0.6-b${BUILD_NUMBER}</version>
     <packaging>jar</packaging>
 
     <name>HCFactions</name>
