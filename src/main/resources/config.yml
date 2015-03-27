@@ -229,8 +229,12 @@ hcf:
     death-dtr: 1.0
     # How much DTR is replenished per faction member per minute 
     minute-dtr: 0.01
-    # Maximum DTR a player can have 
-    max-player-dtr: .51
+    # How much max DTR should a faction gain per player?
+    # Max DTR = min(player-dtr * faction size, max-faction-dtr)
+    player-dtr: .51
+    # How much DTR should a solo faction get?
+    # Overrides player-dtr for solo factions.
+    # Used so solo factions can have more than 1 death before raidable.
     # DTR Freeze
     # After a player dies, how long should the faction not be able to regen dtr?
     # This resets on each death but does not accumulate.
