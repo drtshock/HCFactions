@@ -54,14 +54,22 @@ public class CmdShow extends FCommand {
         String maxDtr = dc.format(faction.getMaxDTR());
         String raidable = faction.isRaidable() ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
         String tag = faction.getTag(fme);
+        List<String> fshow = P.p.getConfig().getStringList("fshow");
         faction.updateDTR();
 
         if (!faction.isNormal()) {
+            // send header and that's all
+            String header = fshow.get(0);
+            if (header.contains("{header}")) {
+                msg(p.txt.titleize(tag));
+            } else {
+                msg(p.txt.parse(header.replace("{tag}", tag)));
+            }
             return;
         }
 
         for (String raw : P.p.getConfig().getStringList("fshow")) {
-            if(raw.equals("{header}")) {
+            if (raw.equals("{header}")) {
                 refined.add(p.txt.titleize(tag));
                 continue;
             }
