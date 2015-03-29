@@ -185,7 +185,7 @@ public enum TL {
     COMMAND_FWARP_WARPS("Warps: "),
     COMMAND_FWARP_DESCRIPTION("Teleport to a faction warp"),
 
-    COMMAND_HELP_404("<b>This page does not exist"),
+    COMMAND_HELP_404("<b>The page '<h>%s<b>' does not exist"),
     COMMAND_HELP_NEXTCREATE("<i>Learn how to create a faction on the next page."),
     COMMAND_HELP_INVITATIONS("command.help.invitations", "<i>You might want to close it and use invitations:"),
     COMMAND_HELP_HOME("<i>And don't forget to set your home:"),

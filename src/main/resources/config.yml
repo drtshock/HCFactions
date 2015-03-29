@@ -211,10 +211,12 @@ flist:
   factionless: '<i>Factionless<i> {count} online'
   entry: '<a>{tag} <i>{online}/{factionsize} online, <a>Land: <i>{land} / {maxland}, <a>Raidable: {raidable}'
 
-# Raids
-# Allow a faction to be raided if their DTR is <= 0 
-# This will make claimed territory lose all protections
-#   allowing factions to open chests, break blocks, etc. 
+############################################################
+# +------------------------------------------------------+ #
+# |                  HardCore Factions                   | #
+# +------------------------------------------------------+ #
+############################################################
+
 hcf:
   # DTR (death till raidable) will be in /f show if enabled.
   # When DTR is below 0, the faction is considered raidable
@@ -283,3 +285,45 @@ hcf:
   # If this is set to 0, we won't even bother checking which is how Factions has
   #   always been.
   buffer-zone: 0
+
+use-old-help: false
+
+############################################################
+# +------------------------------------------------------+ #
+# |                Configurable /f help                  | #
+# +------------------------------------------------------+ #
+############################################################
+
+help:
+  # You can change the page name to whatever you like
+  # We use '1' to preserve default functionality of /f help 1
+  '1':
+    - '&e&m----------------------------------------------'
+    - '                      &c&lHCF Help               '
+    - '&e&m----------------------------------------------'
+    - '&3/f create  &e>>  &7Create your own faction'
+    - '&3/f who      &e>>  &7Show factions info'
+    - '&3/f tag      &e>>  &7Change faction tag'
+    - '&3/f join     &e>>  &7Join faction'
+    - '&3/f list      &e>>  &7List all factions'
+    - '&e&m--------------&r &2/f help 2 for more &e&m--------------'
+  '2':
+    - '&e&m------------------&r&c&l Page 2 &e&m--------------------'
+    - '&3/f home     &e>>  &7Teleport to faction home'
+    - '&3/f sethome &e>>  &7Set your faction home'
+    - '&3/f leave    &e>>  &7Leave your faction'
+    - '&3/f invite    &e>>  &7Invite a player to your faction'
+    - '&3/f deinvite &e>>  &7Revoke invitation to player'
+    - '&e&m--------------&r &2/f help 3 for more &e&m--------------'
+  '3':
+    - '&e&m------------------&r&c&l Page 3 &e&m--------------------'
+    - '&3/f claim     &e>>  &7Claim land'
+    - '&3/f unclaim  &e>>  &7Unclaim land'
+    - '&3/f kick      &e>>  &7Kick player from your faction'
+    - '&3/f mod      &e>>  &7Set player role in faction'
+    - '&3/f chat     &e>>  &7Switch to faction chat'
+    - '&e&m--------------&r &2/f help 4 for more &e&m--------------'
+  '4':
+    - '&e&m------------------&r&c&l Page 4 &e&m--------------------'
+    - '&3/f version &e>>  &7Display version information'
+    - '&e&m--------------&r&2 End of /f help &e&m-----------------'

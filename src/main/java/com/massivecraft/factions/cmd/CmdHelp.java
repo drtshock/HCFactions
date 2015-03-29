@@ -5,8 +5,10 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
+import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class CmdHelp extends FCommand {
@@ -14,6 +16,7 @@ public class CmdHelp extends FCommand {
     public CmdHelp() {
         super();
         this.aliases.add("help");
+        this.aliases.add("halp");
         this.aliases.add("h");
         this.aliases.add("?");
 
@@ -31,21 +34,40 @@ public class CmdHelp extends FCommand {
 
     @Override
     public void perform() {
-        if (helpPages == null) {
-            updateHelp();
-        }
+        if (P.p.getConfig().getBoolean("use-old-help", false)) {
+            if (helpPages == null) {
+                updateHelp();
+            }
 
-        int page = this.argAsInt(0, 1);
+            int page = this.argAsInt(0, 1);
+            sendMessage(p.txt.titleize("Factions Help (" + page + "/" + helpPages.size() + ")"));
 
-        sendMessage(p.txt.titleize("Factions Help (" + page + "/" + helpPages.size() + ")"));
+            page -= 1;
 
-        page -= 1;
-
-        if (page < 0 || page >= helpPages.size()) {
-            msg(TL.COMMAND_HELP_404.toString());
+            if (page < 0 || page >= helpPages.size()) {
+                msg(TL.COMMAND_HELP_404.format(String.valueOf(page)));
+                return;
+            }
+            sendMessage(helpPages.get(page));
             return;
         }
-        sendMessage(helpPages.get(page));
+        ConfigurationSection help = P.p.getConfig().getConfigurationSection("help");
+        if (help == null) {
+            P.p.getConfig().createSection("help"); // create new help section
+            List<String> error = new ArrayList<String>();
+            error.add("&cUpdate help messages in config.yml!");
+            error.add("&cSet use-old-help for legacy help messages");
+            help.set("'1'", error); // add default error messages
+        }
+        String pageArg = this.argAsString(0, "1");
+        List<String> page = help.getStringList(pageArg);
+        if (page == null || page.isEmpty()) {
+            msg(TL.COMMAND_HELP_404.format(pageArg));
+            return;
+        }
+        for (String helpLine : page) {
+            sendMessage(P.p.txt.parse(helpLine));
+        }
     }
 
     //----------------------------------------------//
