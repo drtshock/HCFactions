@@ -90,6 +90,13 @@ public class CmdShow extends FCommand {
                 raw = raw.replace("{y}", String.valueOf(home.getBlockY()));
                 raw = raw.replace("{z}", String.valueOf(home.getBlockZ()));
             } else {
+                if (P.p.getConfig().getBoolean("hide-unused-fshow", true)) {
+                    // having {x} and {z} is reasonable to determine if this line is home related
+                    if (raw.contains("{x}") && raw.contains("{z}")) {
+                        // faction has no home and we're hiding unused
+                        continue;
+                    }
+                }
                 // if no home exists, use home unset tl for "not set"
                 raw = raw.replace("{world},", TL.COMMAND_SHOW_HOME_UNSET.toString()).replace("{x},", "").replace("{y},", "").replace("{z}", "");
             }
@@ -133,25 +140,39 @@ public class CmdShow extends FCommand {
             int maxAlly = p.getConfig().getBoolean("max-relations.enabled", false) ? p.getConfig().getInt("max-relations." + Relation.ALLY.toString(), -1) : -1;
             int maxEnemy = p.getConfig().getBoolean("max-relations.enabled", false) ? p.getConfig().getInt("max-relations." + Relation.ENEMY.toString(), -1) : -1;
 
+            int allyCount = faction.getRelationCount(Relation.ALLY);
+            int enemyCount = faction.getRelationCount(Relation.ENEMY);
+
+            raw = raw.replace("{alliescount}", String.valueOf(allyCount));
+            raw = raw.replace("{maxallies}", maxAlly < 0 ? TL.GENERIC_INFINITY.toString() : String.valueOf(maxAlly));
+            raw = raw.replace("{enemiescount}", String.valueOf(enemyCount));
+            raw = raw.replace("{maxenemies}", maxEnemy < 0 ? TL.GENERIC_INFINITY.toString() : String.valueOf(maxEnemy));
+
+            boolean hide = P.p.getConfig().getBoolean("hide-unused-fshow", true);
             if (raw.contains("{allies}")) {
-                raw = raw.replace("{alliescount}", String.valueOf(faction.getRelationCount(Relation.ALLY)));
-                raw = raw.replace("{maxallies}", maxAlly < 0 ? TL.GENERIC_INFINITY.toString() : String.valueOf(maxAlly));
-                raw = raw.replace("{allies}", "");
-                refined.add(getAllies(faction, p.txt.parse(raw)));
+                if (allyCount == 0 && hide) {
+                    continue;
+                }
+                refined.add(getAllies(faction, raw.replace("{allies}", " ")));
                 continue;
             } else if (raw.contains("{enemies}")) {
-                raw = raw.replace("{enemiescount}", String.valueOf(faction.getRelationCount(Relation.ENEMY)));
-                raw = raw.replace("{maxenemies}", maxEnemy < 0 ? TL.GENERIC_INFINITY.toString() : String.valueOf(maxEnemy));
-                raw = raw.replace("{enemies}", "");
-                refined.add(getEnemies(faction, p.txt.parse(raw)));
+                if (enemyCount == 0 && hide) {
+                    continue;
+                }
+                refined.add(getEnemies(faction, raw.replace("{enemies}", " ")));
                 continue;
             } else if (raw.contains("{online}")) {
-                raw = raw.replace("{online}", "");
-                refined.add(getOnline(faction, p.txt.parse(raw)));
+                if (faction.getOnlinePlayers().size() == 0 && hide) {
+                    continue;
+                }
+                refined.add(getOnline(faction, raw.replace("{online}", "")));
                 continue;
             } else if (raw.contains("{offline}")) {
-                raw = raw.replace("{offline}", "");
-                refined.add(getOffline(faction, p.txt.parse(raw)));
+                List<FancyMessage> offline = getOffline(faction, raw.replace("{offline}", ""), hide);
+                if (!hide) {
+                    refined.add(offline);
+                    continue;
+                }
                 continue;
             }
             // finally, we add the send-able message to our output list
@@ -172,30 +193,23 @@ public class CmdShow extends FCommand {
         return TL.COMMAND_SHOW_COMMANDDESCRIPTION;
     }
 
-    /**
-     * Gets list of allies to this faction
-     *
-     * @param faction faction to analyze
-     * @param pre     title of fancy message
-     * @return list of fancy messages
-     */
     private List<FancyMessage> getAllies(Faction faction, String pre) {
         List<FancyMessage> allies = new ArrayList<FancyMessage>();
-        FancyMessage currentAllies = new FancyMessage(pre);
+        FancyMessage currentAllies = p.txt.parseFancy(pre);
         boolean firstAlly = true;
         for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
             if (otherFaction == faction) {
                 continue;
             }
-
             Relation rel = otherFaction.getRelationTo(faction);
             String s = otherFaction.getTag(fme);
             if (rel.isAlly()) {
                 if (firstAlly) {
-                    currentAllies.then(s).tooltip(getToolTips(otherFaction));
+                    currentAllies.then(s);
                 } else {
-                    currentAllies.then(", " + s).tooltip(getToolTips(otherFaction));
+                    currentAllies.then(", " + s);
                 }
+                currentAllies.tooltip(getToolTips(otherFaction)).color(fme.getColorTo(otherFaction));
                 firstAlly = false;
                 if (currentAllies.toJSONString().length() > ARBITRARY_LIMIT) {
                     allies.add(currentAllies);
@@ -207,16 +221,9 @@ public class CmdShow extends FCommand {
         return allies;
     }
 
-    /**
-     * Gets a list of enemies to this faction
-     *
-     * @param faction faction to analyze
-     * @param pre     title of fancy message
-     * @return list of fancy messages
-     */
     private List<FancyMessage> getEnemies(Faction faction, String pre) {
         List<FancyMessage> enemies = new ArrayList<FancyMessage>();
-        FancyMessage currentEnemies = new FancyMessage(pre);
+        FancyMessage currentEnemies = p.txt.parseFancy(pre);
         boolean firstEnemy = true;
         for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
             if (otherFaction == faction) {
@@ -226,10 +233,11 @@ public class CmdShow extends FCommand {
             String s = otherFaction.getTag(fme);
             if (rel.isEnemy()) {
                 if (firstEnemy) {
-                    currentEnemies.then(s).tooltip(getToolTips(otherFaction));
+                    currentEnemies.then(s);
                 } else {
-                    currentEnemies.then(", " + s).tooltip(getToolTips(otherFaction));
+                    currentEnemies.then(", " + s);
                 }
+                currentEnemies.tooltip(getToolTips(otherFaction)).color(fme.getColorTo(otherFaction));
                 firstEnemy = false;
                 if (currentEnemies.toJSONString().length() > ARBITRARY_LIMIT) {
                     enemies.add(currentEnemies);
@@ -241,44 +249,29 @@ public class CmdShow extends FCommand {
         return enemies;
     }
 
-    /**
-     * Gets list of online faction members
-     *
-     * @param faction faction to analyze
-     * @param pre     title of fancy message
-     * @return list of fancy messages
-     */
     private List<FancyMessage> getOnline(Faction faction, String pre) {
         List<FancyMessage> online = new ArrayList<FancyMessage>();
         FancyMessage currentOnline = new FancyMessage(pre);
         boolean firstOnline = true;
-        for (FPlayer p : MiscUtil.rankOrder(faction.getFPlayers())) {
+        for (FPlayer p : MiscUtil.rankOrder(faction.getFPlayersWhereOnline(true))) {
             String name = p.getNameAndTitle();
-            if (p.isOnline()) {
-                if (firstOnline) {
-                    currentOnline.then(name).tooltip(getToolTips(p));
-                } else {
-                    currentOnline.then(", " + name).tooltip(getToolTips(p));
-                }
-                firstOnline = false;
-                if (currentOnline.toJSONString().length() > ARBITRARY_LIMIT) {
-                    online.add(currentOnline);
-                    currentOnline = new FancyMessage();
-                }
+            if (firstOnline) {
+                currentOnline.then(name);
+            } else {
+                currentOnline.then(", " + name);
+            }
+            currentOnline.tooltip(getToolTips(p)).color(fme.getColorTo(p));
+            firstOnline = false;
+            if (currentOnline.toJSONString().length() > ARBITRARY_LIMIT) {
+                online.add(currentOnline);
+                currentOnline = new FancyMessage();
             }
         }
         online.add(currentOnline);
         return online;
     }
 
-    /**
-     * Gets offline faction members
-     *
-     * @param faction faction to analyze
-     * @param pre     title of fancy message
-     * @return list of fancy messages
-     */
-    private List<FancyMessage> getOffline(Faction faction, String pre) {
+    private List<FancyMessage> getOffline(Faction faction, String pre, boolean hide) {
         List<FancyMessage> offline = new ArrayList<FancyMessage>();
         FancyMessage currentOffline = new FancyMessage(pre);
         boolean firstOffline = true;
@@ -286,10 +279,11 @@ public class CmdShow extends FCommand {
             String name = p.getNameAndTitle();
             if (!p.isOnline()) {
                 if (firstOffline) {
-                    currentOffline.then(name).tooltip(getToolTips(p));
+                    currentOffline.then(name);
                 } else {
-                    currentOffline.then(", " + name).tooltip(getToolTips(p));
+                    currentOffline.then(", " + name);
                 }
+                currentOffline.tooltip(getToolTips(p)).color(fme.getColorTo(p));
                 firstOffline = false;
                 if (currentOffline.toJSONString().length() > ARBITRARY_LIMIT) {
                     offline.add(currentOffline);
@@ -297,6 +291,8 @@ public class CmdShow extends FCommand {
                 }
             }
         }
+        // if we didnt add any offline players, set hide to true
+        hide = firstOffline;
         offline.add(currentOffline);
         return offline;
     }
