@@ -198,6 +198,10 @@ fshow:
   - '<a>Allies(<i>{alliescount}<a>/<i>{maxallies}<a>): {allies} '
   - '<a>Members: (<i>{factionSize}<a> total)(<i>{onlinecount} <a>online)'
 
+# Enable to have a minimalistic fshow
+# Doesn't bother sending useless lines
+hide-unused-fshow: true
+
 # Configurable f list output
 #
 # Variables:
