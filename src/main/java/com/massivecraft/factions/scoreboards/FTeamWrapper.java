@@ -21,18 +21,9 @@ public class FTeamWrapper {
     private final Set<OfflinePlayer> members = new HashSet<OfflinePlayer>();
 
     public static void applyUpdatesLater(final Faction faction) {
-        if (!FScoreboard.isSupportedByServer()) {
+        if (!FScoreboard.isSupportedByServer() || !P.p.getConfig().getBoolean("scoreboard.default-prefixes", true)) {
             return;
         }
-
-        if (faction.isNone()) {
-            return;
-        }
-
-        if (!P.p.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
-            return;
-        }
-
 
         if (updating.add(faction)) {
             Bukkit.getScheduler().runTask(P.p, new Runnable() {
@@ -46,11 +37,7 @@ public class FTeamWrapper {
     }
 
     public static void applyUpdates(Faction faction) {
-        if (!FScoreboard.isSupportedByServer()) {
-            return;
-        }
-
-        if (!P.p.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
+        if (!FScoreboard.isSupportedByServer() || !P.p.getConfig().getBoolean("scoreboard.default-prefixes", true)) {
             return;
         }
 
@@ -62,24 +49,33 @@ public class FTeamWrapper {
         FTeamWrapper wrapper = wrappers.get(faction);
         Set<FPlayer> factionMembers = faction.getFPlayers();
 
+        boolean doWildernessUpdate = false;
         if (wrapper != null && Factions.getInstance().getFactionById(faction.getId()) == null) {
-            // Faction was disbanded
-            wrapper.unregister();
-            wrappers.remove(faction);
-            return;
+            wrappers.remove(faction); // gc disbanded faction
+            doWildernessUpdate = true; // update wilderness since it has a new player
         }
 
         if (wrapper == null) {
+            P.p.debug("New FTeamWrapper for [" + faction.getTag() + "]");
             wrapper = new FTeamWrapper(faction);
             wrappers.put(faction, wrapper);
         }
 
         for (OfflinePlayer player : wrapper.getPlayers()) {
-            if (!player.isOnline() || !factionMembers.contains(FPlayers.getInstance().getByOfflinePlayer(player))) {
-                // Player is offline or no longer in faction
+            if(!player.isOnline()) {
+                wrapper.removePlayer(player);
+            }
+            if(!factionMembers.contains(FPlayers.getInstance().getByOfflinePlayer(player))) {
+                // player kicked or left, faction still exists, so update wilderness
+                doWildernessUpdate = true;
                 wrapper.removePlayer(player);
             }
         }
+
+        if(doWildernessUpdate) {
+            FTeamWrapper.applyUpdates(Factions.getInstance().getNone());
+        }
+
         if (faction.isNone()) {
             // add faction-less players so we can format them in scoreboard
             for (FPlayer player : FPlayers.getInstance().getOnlinePlayers()) {
@@ -96,7 +92,6 @@ public class FTeamWrapper {
                 wrapper.addPlayer(fmember.getPlayer());
             }
         }
-
         wrapper.updatePrefixes();
     }
 
@@ -159,7 +154,7 @@ public class FTeamWrapper {
     }
 
     private void updatePrefixes() {
-        if (P.p.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
+        if (P.p.getConfig().getBoolean("scoreboard.default-prefixes", true)) {
             for (FScoreboard fboard : teams.keySet()) {
                 updatePrefix(fboard);
             }
@@ -167,11 +162,12 @@ public class FTeamWrapper {
     }
 
     private void updatePrefix(FScoreboard fboard) {
-        if (P.p.getConfig().getBoolean("scoreboard.default-prefixes", false)) {
+        if (P.p.getConfig().getBoolean("scoreboard.default-prefixes", true)) {
             FPlayer fplayer = fboard.getFPlayer();
             Team team = teams.get(fboard);
 
             String prefix = TL.DEFAULT_PREFIX.toString();
+
             prefix = prefix.replace("{relationcolor}", faction.getRelationTo(fplayer).getColor().toString());
             prefix = prefix.replace("{faction}", faction.getTag().substring(0, Math.min("{faction}".length() + 16 - prefix.length(), faction.getTag().length())));
             if (team.getPrefix() == null || !team.getPrefix().equals(prefix)) {
@@ -198,13 +194,6 @@ public class FTeamWrapper {
 
     private Set<OfflinePlayer> getPlayers() {
         return new HashSet<OfflinePlayer>(this.members);
-    }
-
-    private void unregister() {
-        for (Team team : teams.values()) {
-            team.unregister();
-        }
-        teams.clear();
     }
 }
 
