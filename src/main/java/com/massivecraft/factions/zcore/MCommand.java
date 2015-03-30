@@ -315,7 +315,7 @@ public abstract class MCommand<T extends MPlugin> {
                 fLeader.getName().length() > 14 ? 13 : fLeader.getName().length());
         return s.replace("{dtr}", String.valueOf(faction.getDTR())).replace("{maxDtr}", String.valueOf(faction.getMaxDTR()))
                 .replace("{leader}", leader).replace("{chunks}", String.valueOf(faction.getLand()))
-                .replace("{raidable}", String.valueOf(raidable)).replace("{warps}", String.valueOf(faction.getWarps().size()))
+                .replace("{raidable}", raidable ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString()).replace("{warps}", String.valueOf(faction.getWarps().size()))
                 .replace("{online}", online).replace("{members}", members);
     }
 
