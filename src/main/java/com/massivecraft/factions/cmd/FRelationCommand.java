@@ -56,6 +56,7 @@ public abstract class FRelationCommand extends FCommand {
             // We message them down there with the count.
             return;
         }
+
         Relation oldRelation = myFaction.getRelationTo(them, true);
         FactionRelationWishEvent wishEvent = new FactionRelationWishEvent(fme, myFaction, them, oldRelation, targetRelation);
         Bukkit.getPluginManager().callEvent(wishEvent);
@@ -67,7 +68,6 @@ public abstract class FRelationCommand extends FCommand {
         if (!payForCommand(targetRelation.getRelationCost(), TL.COMMAND_RELATIONS_TOMARRY, TL.COMMAND_RELATIONS_FORMARRY)) {
             return;
         }
-
         // try to set the new relation
         myFaction.setRelationWish(them, targetRelation);
         Relation currentRelation = myFaction.getRelationTo(them, true);
@@ -75,6 +75,11 @@ public abstract class FRelationCommand extends FCommand {
 
         // if the relation change was successful
         if (targetRelation.value == currentRelation.value) {
+            if (exceedsMaxRelations(targetRelation)) {
+                // revert relation wish
+                myFaction.setRelationWish(them, oldRelation);
+                return;
+            }
             // trigger the faction relation event
             FactionRelationEvent relationEvent = new FactionRelationEvent(myFaction, them, oldRelation, currentRelation);
             Bukkit.getServer().getPluginManager().callEvent(relationEvent);
@@ -106,7 +111,7 @@ public abstract class FRelationCommand extends FCommand {
         if (P.p.getConfig().getBoolean("max-relations.enabled", false)) {
             int max = P.p.getConfig().getInt("max-relations." + targetRelation.toString(), -1);
             // -1 means don't care.
-            if (max != -1 && myFaction.getRelationCount(targetRelation) >= max) {
+            if (max != -1 && myFaction.getRelationCount(targetRelation) > max) {
                 // Message them now as long as we have the count.
                 msg(TL.COMMAND_RELATIONS_EXCEEDS_MAX, max, targetRelation.getPluralTranslation());
                 return true;
