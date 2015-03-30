@@ -59,7 +59,7 @@ public class TextUtil {
     // -------------------------------------------- //
 
     public FancyMessage parseFancy(String prefix) {
-        return toFancy(parseTags(prefix));
+        return toFancy(parse(prefix));
     }
 
     public static FancyMessage toFancy(String first) {
@@ -69,7 +69,7 @@ public class TextUtil {
         char[] chars = first.toCharArray();
 
         for(int i = 0; i < chars.length; i++){
-            if (chars[i] == '&') {
+            if (chars[i] == '§') {
                 if(color != null) {
                     message.then(text).color(color);
                     text = "";
