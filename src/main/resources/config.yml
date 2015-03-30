@@ -108,10 +108,10 @@ scoreboard:
     - "&3Members"
     - "{online}/{members}"
     - "&4DTR"
-    - "{dtr}/{maxdtr}"
+    - "{dtr}/{maxdtr}&r"
     - "&9Raidable: {raidable}"
     - "&bLand"
-    - "{land}/{maxland}"
+    - "{land}/{maxland}&f"
 
 # Default board that will always show up if a player wants it to.
 # This can show any arbitrary text or you can use a lot of variables to replace things.
@@ -136,9 +136,9 @@ scoreboard:
     - "&6Your Faction"
     - "{faction}"
     - "&4Faction DTR"
-    - "{dtr}/{maxdtr}"
+    - "{dtr}/{maxdtr}&r"
     - "&aLand"
-    - "{land}/{maxland}"
+    - "{land}/{maxland}&f"
 
 # Configration section for warmups.
 # Warmup times are in seconds - if a value of 0 is set, there is no warmup.
