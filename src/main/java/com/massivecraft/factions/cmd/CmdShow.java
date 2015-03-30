@@ -251,7 +251,7 @@ public class CmdShow extends FCommand {
 
     private List<FancyMessage> getOnline(Faction faction, String pre) {
         List<FancyMessage> online = new ArrayList<FancyMessage>();
-        FancyMessage currentOnline = new FancyMessage(pre);
+        FancyMessage currentOnline = p.txt.parseFancy(pre);
         boolean firstOnline = true;
         for (FPlayer p : MiscUtil.rankOrder(faction.getFPlayersWhereOnline(true))) {
             String name = p.getNameAndTitle();
@@ -273,7 +273,7 @@ public class CmdShow extends FCommand {
 
     private List<FancyMessage> getOffline(Faction faction, String pre, boolean hide) {
         List<FancyMessage> offline = new ArrayList<FancyMessage>();
-        FancyMessage currentOffline = new FancyMessage(pre);
+        FancyMessage currentOffline = p.txt.parseFancy(pre);
         boolean firstOffline = true;
         for (FPlayer p : MiscUtil.rankOrder(faction.getFPlayers())) {
             String name = p.getNameAndTitle();
