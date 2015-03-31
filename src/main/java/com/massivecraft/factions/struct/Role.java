@@ -38,12 +38,18 @@ public enum Role {
     public String getPrefix() {
         if (this == Role.ADMIN) {
             return Conf.prefixAdmin;
-        }
-
-        if (this == Role.MODERATOR) {
+        } else if (this == Role.MODERATOR) {
             return Conf.prefixMod;
         }
+        return "";
+    }
 
+    public String getChatPrefix() {
+        if (this == Role.ADMIN) {
+            return Conf.chatPrefixAdmin;
+        } else if (this == Role.MODERATOR) {
+            return Conf.chatPrefixMod;
+        }
         return "";
     }
 }

@@ -362,16 +362,18 @@ public abstract class MemoryFPlayer implements FPlayer {
     // These are injected into the format of global chat messages.
 
     public String getChatTag() {
-        return this.hasFaction() ? String.format(Conf.chatTagFormat, this.role.getPrefix() + this.getTag()) : "";
+        String tag = this.hasFaction() ? this.getRole().getChatPrefix() + this.getTag() : Conf.chatTagFactionlessSymbol;
+        return String.format(Conf.chatTagFormat, tag);
     }
 
     // Colored Chat Tag
     public String getChatTag(Faction faction) {
-        return this.hasFaction() ? this.getRelationTo(faction).getColor() + getChatTag() : "";
+        return this.getRelationTo(faction).getColor() + getChatTag();
     }
 
-    public String getChatTag(MemoryFPlayer fplayer) {
-        return this.hasFaction() ? this.getColorTo(fplayer) + getChatTag() : "";
+    @Override
+    public String getChatTag(FPlayer fplayer) {
+        return this.getColorTo(fplayer) + getChatTag();
     }
 
     // -------------------------------
@@ -729,11 +731,6 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public String getNameAndTitle(FPlayer fplayer) {
         return this.getColorTo(fplayer) + this.getNameAndTitle();
-    }
-
-    @Override
-    public String getChatTag(FPlayer fplayer) {
-        return this.hasFaction() ? this.getRelationTo(fplayer).getColor() + getChatTag() : "";
     }
 
     @Override

@@ -49,8 +49,11 @@ public class Conf {
     public static transient boolean chatTagHandledByAnotherPlugin = false;
     public static boolean chatTagRelationColored = true;
     public static String chatTagReplaceString = "[FACTION]";
+    public static String chatTagFactionlessSymbol = "-";
     public static String chatTagInsertAfterString = "";
     public static String chatTagInsertBeforeString = "";
+    public static String chatPrefixAdmin = "*";
+    public static String chatPrefixMod = "*";
     public static int chatTagInsertIndex = 0;
     public static boolean chatTagPadBefore = false;
     public static boolean chatTagPadAfter = true;
