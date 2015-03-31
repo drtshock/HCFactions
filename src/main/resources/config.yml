@@ -182,7 +182,7 @@ world-border:
 # {factionsize} - total size of faction. {alliescount} - # of allies faction has.
 # {maxallies} - max # of allies faction can have. {enemiescount} - how many enemies faction has.
 # {maxenemies} - max # of enemies faction can have. {header} - the built in header string.
-# {tag} - faction tag
+# {tag} - faction tag. {createDate} - time faction was created. Uses format in lang.yml for date.
 #
 fshow:
   - '{header}'
@@ -192,11 +192,12 @@ fshow:
   - '<a>DTR: <i>{dtr} / {maxdtr} <a>Raidable: <i>{raidable}'
   - '<a>Faction Home: <i>{world}, {x}, {y}, {z}'
   - '<a>DTR Freeze: <i>{timeleft}'
+  - '<a>Founded: <i>{createDate}'
   - '<a>This faction is permanent, remaining even with no members.'
-  - '<a>Total land value: <i>{value} {refund}'
-  - '<a>Bank contains: <i>{balance}'
+  - '<a>Land value: <i>{value} {refund}'
+  - '<a>Balanace: <i>{balance}'
   - '<a>Allies(<i>{alliescount}<a>/<i>{maxallies}<a>): {allies} '
-  - '<a>Members: (<i>{factionSize}<a> total)(<i>{onlinecount} <a>online)'
+  - '<a>Members: (<i>{onlineCount}<a>/(<i>{factionSize}<a>): {online}'
 
 # Enable to have a minimalistic fshow
 # Doesn't bother sending useless lines

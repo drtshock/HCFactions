@@ -39,6 +39,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected boolean peaceful;
     protected boolean open;
     protected double money;
+    protected long foundedDate;
     private long lastDeath;
     protected String tag;
     protected double dtr;
@@ -210,6 +211,18 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return (this.home != null) ? this.home.getLocation() : null;
     }
 
+    public long getFoundedDate() {
+        // no factions were founded in 1969, update them
+        if(this.foundedDate == 0) {
+            this.setFoundedDate(System.currentTimeMillis());
+        }
+        return this.foundedDate;
+    }
+
+    public void setFoundedDate(long newDate) {
+        this.foundedDate = newDate;
+    }
+
     public void confirmValidHome() {
         if (!Conf.homesMustBeInClaimedTerritory || this.home == null || (this.home.getLocation() != null && Board.getInstance().getFactionAt(new FLocation(this.home.getLocation())) == this)) {
             return;
@@ -254,11 +267,13 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.permanent = false;
         this.money = 0.0;
         this.dtr = 0;
+        this.foundedDate = System.currentTimeMillis();
     }
 
     public MemoryFaction(MemoryFaction old) {
         id = old.id;
         this.dtr = old.dtr;
+        this.foundedDate = old.foundedDate;
         peacefulExplosionsEnabled = old.peacefulExplosionsEnabled;
         permanent = old.permanent;
         tag = old.tag;
@@ -437,6 +452,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         if (getSize() == 1) {
             return P.p.getConfig().getDouble("hcf.dtr.solo-faction", 1.02D);
         }
+        //TODO: if faction is permanent with 0 players, set to 0.1 or something
         return getMaxPlayerDTR() * this.fplayers.size();
     }
 

@@ -85,7 +85,22 @@ public class CmdTop extends FCommand {
                     return 0;
                 }
             });
-        } else if (criteria.equalsIgnoreCase("online")) {
+        } else if (criteria.equalsIgnoreCase("start")) {
+            Collections.sort(factionList, new Comparator<Faction>() {
+                @Override
+                public int compare(Faction f1, Faction f2) {
+                    long f1start = f1.getFoundedDate();
+                    long f2start = f2.getFoundedDate();
+                    // flip signs because a smaller date is farther in the past
+                    if (f1start > f2start) {
+                        return 1;
+                    } else if (f1start < f2start) {
+                        return -1;
+                    }
+                    return 0;
+                }
+            });
+        }else if (criteria.equalsIgnoreCase("online")) {
             Collections.sort(factionList, new Comparator<Faction>() {
                 @Override
                 public int compare(Faction f1, Faction f2) {
@@ -164,6 +179,8 @@ public class CmdTop extends FCommand {
             return String.valueOf(faction.getLand());
         } else if (criteria.equalsIgnoreCase("dtr")) {
             return dc.format(faction.getDTR());
+        } else if (criteria.equalsIgnoreCase("start")) {
+            return sdf.format(faction.getFoundedDate());
         } else { // Last one is balance, and it has 3 different things it could be.
             double balance = Econ.getBalance(faction.getAccountId());
             for (FPlayer fp : faction.getFPlayers()) {
