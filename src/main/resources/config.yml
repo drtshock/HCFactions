@@ -197,7 +197,8 @@ fshow:
   - '<a>Land value: <i>{value} {refund}'
   - '<a>Balanace: <i>{balance}'
   - '<a>Allies(<i>{alliescount}<a>/<i>{maxallies}<a>): {allies} '
-  - '<a>Members: (<i>{onlineCount}<a>/(<i>{factionSize}<a>): {online}'
+  - '<a>Online: (<i>{onlinecount}<a>/<i>{factionsize}<a>): {online}'
+  - '<a>Offline: (<i>{offlinecount}<a>/<i>{factionsize}<a>): {offline}'
 
 # Enable to have a minimalistic fshow
 # Doesn't bother sending useless lines
