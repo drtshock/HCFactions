@@ -82,7 +82,7 @@ public class CmdShow extends FCommand {
             raw = raw.replace("{createDate}", sdf.format(faction.getFoundedDate()));
             raw = raw.replace("{onlinecount}", String.valueOf(faction.getOnlinePlayers().size()));
             raw = raw.replace("{offlinecount}", String.valueOf(faction.getFPlayers().size() - faction.getOnlinePlayers().size()));
-            raw = raw.replace("{factionSize}", String.valueOf(faction.getFPlayers().size()));
+            raw = raw.replace("{factionsize}", String.valueOf(faction.getFPlayers().size()));
 
             if (faction.hasHome()) {
                 Location home = faction.getHome();
@@ -170,7 +170,7 @@ public class CmdShow extends FCommand {
                 continue;
             } else if (raw.contains("{offline}")) {
                 List<FancyMessage> offline = getOffline(faction, raw.replace("{offline}", ""), hide);
-                if (!hide) {
+                if (offline != null) {
                     refined.add(offline);
                     continue;
                 }
@@ -292,8 +292,9 @@ public class CmdShow extends FCommand {
                 }
             }
         }
-        // if we didnt add any offline players, set hide to true
-        hide = firstOffline;
+        if(hide && firstOffline) {
+            return null; // dont send line, minimal fshow + no offline
+        }
         offline.add(currentOffline);
         return offline;
     }
