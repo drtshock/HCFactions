@@ -455,10 +455,12 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public void sendFactionHereMessage(Faction from) {
         Faction toShow = Board.getInstance().getFactionAt(getLastStoodAt());
+        boolean showChat = true;
         if (shouldShowScoreboard(toShow)) {
-            // Shows them the scoreboard instead of sending a message in chat. Will disappear after a few seconds.
             FScoreboard.get(this).setTemporarySidebar(new FInfoSidebar(toShow));
-        } else {
+            showChat = P.p.getConfig().getBoolean("scoreboard.also-send-chat", false);
+        }
+        if(showChat) {
             this.sendMessage(P.p.txt.parse(TL.FACTION_LEAVE.format(from.getTag(this), toShow.getTag(this))));
         }
     }
