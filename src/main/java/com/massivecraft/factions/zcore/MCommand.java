@@ -1,15 +1,9 @@
 package com.massivecraft.factions.zcore;
 
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.P;
-import com.massivecraft.factions.integration.Econ;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import mkremins.fanciful.FancyMessage;
-import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -276,47 +270,6 @@ public abstract class MCommand<T extends MPlugin> {
         for (FancyMessage m : messages) {
             sendFancyMessage(m);
         }
-    }
-
-    public List<String> getToolTips(FPlayer player) {
-        List<String> lines = new ArrayList<String>();
-        for (String s : p.getConfig().getStringList("tooltips.show")) {
-            lines.add(ChatColor.translateAlternateColorCodes('&', replaceFPlayerTags(s, player)));
-        }
-        return lines;
-    }
-
-    public List<String> getToolTips(Faction faction) {
-        List<String> lines = new ArrayList<String>();
-        for (String s : p.getConfig().getStringList("tooltips.list")) {
-            lines.add(ChatColor.translateAlternateColorCodes('&', replaceFactionTags(s, faction)));
-        }
-        return lines;
-    }
-
-    public String replaceFPlayerTags(String s, FPlayer player) {
-        String humanized = DurationFormatUtils.formatDurationWords(System.currentTimeMillis() - player.getLastLoginTime(), true, true) + " ago";
-        String lastSeen = player.isOnline() ? ChatColor.GREEN + "Online"
-                : (System.currentTimeMillis() - player.getLastLoginTime() < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED
-                + humanized);
-        String balance = Econ.isSetup() ? Econ.getFriendlyBalance(player) : "no balance";
-        Faction faction = player.getFaction();
-        String dtr = faction.getDTR() + "/" + faction.getMaxDTR();
-        String group = P.p.getPrimaryGroup(Bukkit.getOfflinePlayer(player.getName()));
-        return s.replace("{balance}", balance).replace("{lastSeen}", lastSeen).replace("{dtr}", dtr).replace("{group}", group);
-    }
-
-    public String replaceFactionTags(String s, Faction faction) {
-        boolean raidable = faction.isRaidable();
-        FPlayer fLeader = faction.getFPlayerAdmin();
-        String online = String.valueOf(faction.getOnlinePlayers().size());
-        String members = String.valueOf(faction.getSize());
-        String leader = fLeader == null ? "Server" : fLeader.getName().substring(0,
-                fLeader.getName().length() > 14 ? 13 : fLeader.getName().length());
-        return s.replace("{dtr}", String.valueOf(faction.getDTR())).replace("{maxDtr}", String.valueOf(faction.getMaxDTR()))
-                .replace("{leader}", leader).replace("{chunks}", String.valueOf(faction.getLand()))
-                .replace("{raidable}", raidable ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString()).replace("{warps}", String.valueOf(faction.getWarps().size()))
-                .replace("{online}", online).replace("{members}", members);
     }
 
     // -------------------------------------------- //

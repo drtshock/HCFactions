@@ -9,15 +9,10 @@ import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 
 public abstract class FCommand extends MCommand<P> {
-
-    public DecimalFormat dc = new DecimalFormat(TL.GENERIC_DECIMALFORMAT.toString());
-    public SimpleDateFormat sdf = new SimpleDateFormat(TL.DATE_FORMAT.toString());
 
     public boolean disableOnLock;
 

@@ -33,15 +33,15 @@ public class CmdDtr extends FCommand {
         }
 
         Double targetDtr = this.argAsDouble(1);
-        String change = "";
+        String change;
         double max = targetFaction.getMaxDTR();
         double min = targetFaction.getMinDTR();
 
         if (targetDtr > max) {
-            msg(TL.COMMAND_DTR_ERROR_MAX.format(dc.format(max).toString()));
+            msg(TL.COMMAND_DTR_ERROR_MAX.format(TL.dc.format(max)));
             return;
         } else if (targetDtr < min) {
-            msg(TL.COMMAND_DTR_ERROR_MIN.format(dc.format(min).toString()));
+            msg(TL.COMMAND_DTR_ERROR_MIN.format(TL.dc.format(min)));
             return;
         } else {
             // needs own event call

@@ -19,6 +19,9 @@ package com.massivecraft.factions.zcore.util;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+
 /**
  * An enum for requesting strings from the language file. The contents of this enum file may be subject to frequent
  * changes.
@@ -415,7 +418,6 @@ public enum TL {
     COMMAND_SHOW_UNINVITED("no invitation is needed"),
     COMMAND_SHOW_PEACEFUL("This faction is Peaceful"),
     COMMAND_SHOW_FREEZEFORMAT("m 'minutes', s 'seconds.'"),
-    COMMAND_SHOW_HOME_UNSET("Not set"),
     COMMAND_SHOW_DEPRECIATED("(%1$s depreciated)"), //This is spelled correctly.
     COMMAND_SHOW_COMMANDDESCRIPTION("Show faction information"),
 
@@ -684,6 +686,8 @@ public enum TL {
     private String path;
     private String def;
     private static YamlConfiguration LANG;
+    public static DecimalFormat dc;
+    public static SimpleDateFormat sdf;
 
     /**
      * Lang enum constructor.
@@ -716,6 +720,8 @@ public enum TL {
      */
     public static void setFile(YamlConfiguration config) {
         LANG = config;
+        dc = new DecimalFormat(GENERIC_DECIMALFORMAT.toString());
+        sdf = new SimpleDateFormat(DATE_FORMAT.toString());
     }
 
     @Override

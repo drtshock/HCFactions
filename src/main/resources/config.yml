@@ -55,75 +55,51 @@ warp-cost:
 # http://i.gyazo.com/6a1a31222e58a5d60ff341c13f6a8404.gif
 disable-pistons-in-territory: false
 
-# ToolTips
-# This section is to configure tooltips for things like /f list
+# ToolTips in /f show
 tooltips:
 
-  # List
-  # This shows up when someone does /f list for the top factions.
-  # It will not sure up for factionless of course, just actual factions.
-  # You can use color codes here.
+  # Faction show
+  # This shows up when someone hovers over a faction name in /f show
+  # You can use color codes and any variable here
   list:
-    - "&6Leader: &f{leader}"
-    - "&6Claimed: &f{chunks}"
-    - "&6Raidable: &f{raidable}"
-    - "&6Warps: &f{warps}"
-    - "&6Members: &f{online}/{members}"
+    - "&6Leader: &r{leader}"
+    - "&6Claimed: &d{land} &6/ &d{max-land}"
+    - "&6Raidable: {raidable}"
+    - "&6DTR: &d{dtr} &6/ &d{max-dtr}"
+    - "&6Members: &d{online-count} &6/ &d{faction-size}"
 
-  # Show
-  # This shows up when someone does /f show.
-  # It adds tooltips to each player in the list here, nothing else.
-  # {group} will show the players primary group if you have vault installed.
-  # {balance} will show their balance if you have vault installed.
-  # {lastSeen} will show human readable info on when the player was last seen, or online.
+  # Player show
+  # This shows up when someone hovers over a player name in /f show
+  # You can use any player variable
   show:
-    - "&6Last Seen: &f{lastSeen}"
+    - "&6Last Seen: &f{last-seen}"
     - "&6Rank: &f{group}"
-    - "&6Balance: &a${balance}"
+    - "&6Balance: &a${player-balance}"
 
-# Configuration section for Scoreboards
-# This will allow you to completely customize how your scoreboards look.
-# Make sure that no lines are duplicates of each other otherwise only the first will display.
-# Use &0-9a-f for colors and include messages in "quotes"
+############################################################
+# +------------------------------------------------------+ #
+# |                  Scoreboard settings                 | #
+# +------------------------------------------------------+ #
+############################################################
+
 scoreboard:
-
-# How long do we want scoreboards to stay if set temporarily.
-  expiration: 7
+  expiration: 7 # in seconds, how long should an info scoreboard persist?
 
 # FInfo scoreboard is displayed when a player walks into a new Faction's territory.
 # Scoreboard disappears after <expiration> seconds.
-# Things to be replaced in this:
-# {name} - viewer name. {balance} - viewer balance. {faction} faction tag (FYI: title of board is already faction tag)
-# {dtr} - Factions current DTR. {maxdtr} - Max DTR that faction can have
-# {land} - total claimed land (in chunks). {maxland} - how much land a faction can claim
-# {members} - total members. {online} - online members. {leader} - faction's leader.
-# {raidable} - true if the faction can be claimed over, otherwise false.
-# {warps} - the number of warps that a faction has set. {totalOnline} - # of online players
-# {alliescount} - # of allies faction has. {maxenemies} - max # of enemies faction can have.
-# {maxallies} - max # of allies faction can have. {enemiescount} - how many enemies faction has.
-# The title of the scoreboard will be the Faction's tag and colored according to the relation with the player's Faction.
-# Commenting this section out will cause the info to appear in chat as the plugin originally did.
-  finfo-enabled: false # Default to false to keep original functionality.
+# You can use any variable and color codes here
+  finfo-enabled: false
   finfo:
     - "&3Members"
-    - "{online}/{members}"
+    - "{online-count}/{faction-size}"
     - "&4DTR"
-    - "{dtr}/{maxdtr}&r"
+    - "{dtr}/{max-dtr}&r"
     - "&9Raidable: {raidable}"
     - "&bLand"
-    - "{land}/{maxland}&f"
+    - "{land}/{max-land}&f"
 
 # Default board that will always show up if a player wants it to.
-# This can show any arbitrary text or you can use a lot of variables to replace things.
-# {name} - viewer name. {balance} - viewer balance. {faction} - faction tag
-# {dtr} - Factions current DTR. {maxdtr} - Max DTR that faction can have
-# {land} - total claimed land (in chunks). {maxland} - how much land a faction can claim
-# {members} - total members. {online} - online members. {leader} - faction's leader.
-# {raidable} - true if the faction can be claimed over, otherwise false.
-# {warps} - the number of warps that a faction has set. {totalOnline} - # of online players
-# {alliescount} - # of allies faction has. {maxenemies} - max # of enemies faction can have.
-# {maxallies} - max # of allies faction can have. {enemiescount} - how many enemies faction has.
-#
+# This can show any arbitrary text or you can use any of the variables as well.
   default-enabled: true
   default-title: "{name}" # Can use any of the values from above but this won't update once it's set (so don't set {balance}).
   default-update-interval: 5 # in seconds.
@@ -136,16 +112,21 @@ scoreboard:
     - "&6Your Faction"
     - "{faction}"
     - "&4Faction DTR"
-    - "{dtr}/{maxdtr}&r"
+    - "{dtr}/{max-dtr}&r"
     - "&aLand"
-    - "{land}/{maxland}&f"
+    - "{land}/{max-land}&f"
 
-# Configration section for warmups.
-# Warmup times are in seconds - if a value of 0 is set, there is no warmup.
+  # Should we also send the chat message when a player enters a new claim?
+  # By default, if we have a scoreboard enabled, no message will be sent
+  # This value only applies when either a default or info scoreboard is enabled
+  # Remember, you can configure the message in lang.yml
+  also-send-chat: false
+
+# Warpup settings
 warmups:
-  # Delay for /f home
+  # Delay for /f home , 0 for none
   f-home: 0
-  # Delay for /f warp
+  # Delay for /f warp, 0 for none
   f-warp: 0
 
 # Max Relation Types
@@ -168,58 +149,9 @@ max-relations:
 world-border:
   buffer: 0
 
-# Configurable f show output
-#
-# Variables: 
-# {description} - faction description. {joining} - joining instructions. {peaceful?} - only shows if peaceful.
-# {land} - how many chunks faction claimed. {maxland} - how many chunks faction can claim.
-# {dtr} - current deaths to raidable value. {maxdtr} - max deaths to raidable value.
-# {raidable} - raidable status. {world} - world of faction home. {x} - x coord. {y} - y coord. {z} - z coord.
-# {timeleft} - time remaining on DTR freeze. {value} - total land value.
-# {refund} - land refund value. {balance} - factions bank balance. {allies} - list of faction allies.
-# {enemies} - list of faction enemies. {online} - list of online members. {offline} - list of offline members.
-# {onlinecount} - # of online faction members, {offlinecount} - # of offline faction members.
-# {factionsize} - total size of faction. {alliescount} - # of allies faction has.
-# {maxallies} - max # of allies faction can have. {enemiescount} - how many enemies faction has.
-# {maxenemies} - max # of enemies faction can have. {header} - the built in header string.
-# {tag} - faction tag. {createDate} - time faction was created. Uses format in lang.yml for date.
-#
-fshow:
-  - '{header}'
-  - '<a>Description: <i>{description}'
-  - '<a>Joining: <i>{joining}    {peaceful?}'
-  - '<a>Land / Max: <i> {land} / {maxland}'
-  - '<a>DTR: <i>{dtr} / {maxdtr} <a>Raidable: <i>{raidable}'
-  - '<a>Faction Home: <i>{world}, {x}, {y}, {z}'
-  - '<a>DTR Freeze: <i>{timeleft}'
-  - '<a>Founded: <i>{createDate}'
-  - '<a>This faction is permanent, remaining even with no members.'
-  - '<a>Land value: <i>{value} {refund}'
-  - '<a>Balanace: <i>{balance}'
-  - '<a>Allies(<i>{alliescount}<a>/<i>{maxallies}<a>): {allies} '
-  - '<a>Online: (<i>{onlinecount}<a>/<i>{factionsize}<a>): {online}'
-  - '<a>Offline: (<i>{offlinecount}<a>/<i>{factionsize}<a>): {offline}'
-
-# Enable to have a minimalistic fshow
-# Doesn't bother sending useless lines
-hide-unused-fshow: true
-
-# Configurable f list output
-#
-# Variables:
-# {pagenumber} - current page number. {pagecount} - number of pages.
-# {tag} - faction tag. {online} - # of members online. {factionsize} - total # of members in faction.
-# {land} - how many chunks faction claimed. {maxland} - how many chunks faction can claim.
-# {dtr} - current deaths to raidable value. {maxdtr} - max deaths to raidable value.
-# {raidable} - raidable status. {count} - how many factionless players are online.
-flist:
-  header: 'Faction List {pagenumber}/{pagecount}'
-  factionless: '<i>Factionless<i> {count} online'
-  entry: '<a>{tag} <i>{online}/{factionsize} online, <a>Land: <i>{land} / {maxland}, <a>Raidable: {raidable}'
-
 ############################################################
 # +------------------------------------------------------+ #
-# |                  HardCore Factions                   | #
+# |                    HCF Settings                      | #
 # +------------------------------------------------------+ #
 ############################################################
 
@@ -292,6 +224,7 @@ hcf:
   #   always been.
   buffer-zone: 0
 
+# Enable to use the old help system
 use-old-help: false
 
 ############################################################
@@ -333,3 +266,90 @@ help:
     - '&e&m------------------&r&c&l Page 4 &e&m--------------------'
     - '&3/f version &e>>  &7Display version information'
     - '&e&m--------------&r&2 End of /f help &e&m-----------------'
+
+############################################################
+# +------------------------------------------------------+ #
+# |                Configurable /f show                  | #
+# +------------------------------------------------------+ #
+############################################################
+
+# You can use any variable here, including fancy messages. Color codes and or tags work fine.
+# Lines that arent defined wont be sent (home not set, faction not peaceful / permanent, dtr freeze)
+show:
+  # First line can be {header} for default header, or any string (we recommend &m for smooth lines ;p)
+  - '{header}'
+  - '<a>Description: <i>{description}'
+  - '<a>Joining: <i>{joining}    {peaceful}'
+  - '<a>Land / Max: <i> {land} / {max-land}'
+  - '<a>DTR: <i>{dtr} / {max-dtr} <a>Raidable: <i>{raidable}'
+  - '<a>Faction Home: <i>{world}, {x}, {y}, {z}'
+  - '<a>DTR Freeze: <i>{time-left}'
+  - '<a>Founded: <i>{create-date}'
+  - '<a>This faction is permanent, remaining even with no members.'
+  - '<a>Land value: <i>{land-value} {land-refund}'
+  - '<a>Balance: <i>{faction-balance}'
+  - '<a>Allies(<i>{allies-count}<a>/<i>{max-allies}<a>): {allies} '
+  - '<a>Online: (<i>{online-count}<a>/<i>{faction-size}<a>): {online}'
+  - '<a>Offline: (<i>{offline-count}<a>/<i>{faction-size}<a>): {offline}'
+
+# Enable to have a minimalistic fshow
+# Doesn't send fancy messages unless there is elements to send
+hide-unused-fshow: false
+
+############################################################
+# +------------------------------------------------------+ #
+# |                Configurable /f list                  | #
+# +------------------------------------------------------+ #
+############################################################
+
+list:
+  # You can only use {pagenumber} and {pagecount} in the header
+  header: 'Faction List {pagenumber}/{pagecount}'
+  # You can use any variables here
+  factionless: '<i>Factionless<i> {factionless} online'
+  # You can use any variable here
+  entry: '<a>{faction} <i>{online-count} / {faction-size} online, <a>Land: <i>{land} / {max-land}, <a>Raidable: {raidable}'
+
+############################################################
+# +------------------------------------------------------+ #
+# |                Big List of variables                 | #
+# +------------------------------------------------------+ #
+############################################################
+# Fancy variables. Can only be used in /f show
+#  - {allies}  : Lists each faction ally with tooltips
+#  - {enemies} : Lists each faction enemy with tooltips
+#  - {online}  : Lists all online members with tooltips
+#  - {offline} : Lists all offline members with tooltips
+# Player variables. Can be used in tooltips.show, scoreboards, or /f show
+#  - {group}  : Players group
+#  - {name}   : Players name
+#  - {last-seen}  : Last time player was seen (if offline), or just 'Online'
+#  - {player-balance} : Players balance
+# Faction variables. Can be used in tooltips.list, scoreboards, or /f show
+#  - {header}   : Default factions header (ex. /f show)
+#  - {faction}  : Factions tag (if none, uses lang.yml for factionless name)
+#  - {joining}  : How to join this faction
+#  - {raidable} : True or false, if the faction is raidable
+#  - {dtr}      : Factions deaths until raidable value
+#  - {max-dtr}  : Factions max deaths until raidable value
+#  - {land}     : # of claims faction has (in chunks)
+#  - {max-land} : Max # of claims factio can make (in chunks)
+#  - {warps}    : # of warps faction has
+#  - {description} : Factions description
+#  - {create-date} : Date faction was created
+#  - {leader}      : Faction leader
+#  - {land-value}    : Value of all claims
+#  - {land-refund}   : Calculated refund value
+#  - {allies-count}  : # of allies faction has
+#  - {enemies-count} : # of enemies faction has
+#  - {online-count}  : # of faction members online
+#  - {offline-count} : # of faction members offline
+#  - {faction-size}  : # of faction members (includes offline)
+#  - {faction-balance}      : Faction bank balance
+#  - {world}, {x}, {y}, {z} : Faction home variables. You don't need to use them all.
+# General variables. Can be used anywhere.
+# - {total-online}  : Total # of players on the server
+# - {max-warps}     : Max # of warps a faction can set
+# - {max-allies}    : Max # of allies a faction can have
+# - {max-enemies}   : Max # of enemies a faction can have
+# - {factionless}   : Count of all factionless players online

@@ -4,7 +4,6 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.scoreboards.FSidebarProvider;
-import org.bukkit.ChatColor;
 
 import java.util.List;
 import java.util.ListIterator;

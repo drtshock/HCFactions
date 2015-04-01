@@ -100,7 +100,6 @@ public class CmdKick extends FCommand {
         }
 
         if (Conf.logFactionKick) {
-            //TODO:TL
             P.p.log((senderIsConsole ? "A console command" : fme.getName()) + " kicked " + toKick.getName() + " from the faction: " + toKickFaction.getTag());
         }
 
@@ -112,7 +111,7 @@ public class CmdKick extends FCommand {
         double fine = P.p.getConfig().getDouble("hcf.dtr.kick-penalty", 1.0);
         if (fine > 0 && toKickFaction.isFrozen()) {
             toKickFaction.alterDTR(-fine);
-            fme.msg(TL.COMMAND_KICK_FINE.format(dc.format(fine), toKick.getName()));
+            fme.msg(TL.COMMAND_KICK_FINE.format(TL.dc.format(fine), toKick.getName()));
         }
         toKickFaction.deinvite(toKick);
         toKick.resetFactionData();

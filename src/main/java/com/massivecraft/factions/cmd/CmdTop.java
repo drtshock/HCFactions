@@ -33,7 +33,7 @@ public class CmdTop extends FCommand {
 
     @Override
     public void perform() {
-        // Can sort by: money, members, online, allies, enemies, power, land.
+        // Can sort by: money, members, online, allies, enemies, dtr, land.
         // Get all Factions and remove non player ones.
         ArrayList<Faction> factionList = Factions.getInstance().getAllFactions();
         factionList.remove(Factions.getInstance().getNone());
@@ -91,7 +91,7 @@ public class CmdTop extends FCommand {
                 public int compare(Faction f1, Faction f2) {
                     long f1start = f1.getFoundedDate();
                     long f2start = f2.getFoundedDate();
-                    // flip signs because a smaller date is farther in the past
+                    // flip signs because a smaller date is further in the past
                     if (f1start > f2start) {
                         return 1;
                     } else if (f1start < f2start) {
@@ -100,7 +100,7 @@ public class CmdTop extends FCommand {
                     return 0;
                 }
             });
-        }else if (criteria.equalsIgnoreCase("online")) {
+        } else if (criteria.equalsIgnoreCase("online")) {
             Collections.sort(factionList, new Comparator<Faction>() {
                 @Override
                 public int compare(Faction f1, Faction f2) {
@@ -178,9 +178,9 @@ public class CmdTop extends FCommand {
         } else if (criteria.equalsIgnoreCase("land")) {
             return String.valueOf(faction.getLand());
         } else if (criteria.equalsIgnoreCase("dtr")) {
-            return dc.format(faction.getDTR());
+            return TL.dc.format(faction.getDTR());
         } else if (criteria.equalsIgnoreCase("start")) {
-            return sdf.format(faction.getFoundedDate());
+            return TL.sdf.format(faction.getFoundedDate());
         } else { // Last one is balance, and it has 3 different things it could be.
             double balance = Econ.getBalance(faction.getAccountId());
             for (FPlayer fp : faction.getFPlayers()) {
