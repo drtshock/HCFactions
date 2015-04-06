@@ -416,6 +416,7 @@ public enum TL {
     COMMAND_SHOW_FORSHOW("for showing faction information"),
     COMMAND_SHOW_INVITATION("invitation is required"),
     COMMAND_SHOW_UNINVITED("no invitation is needed"),
+    COMMAND_SHOW_NOHOME("n/a"),
     COMMAND_SHOW_PEACEFUL("This faction is Peaceful"),
     COMMAND_SHOW_FREEZEFORMAT("m 'minutes', s 'seconds.'"),
     COMMAND_SHOW_DEPRECIATED("(%1$s depreciated)"), //This is spelled correctly.
@@ -585,6 +586,12 @@ public enum TL {
     CHAT_ALLIANCE("alliance chat"),
     CHAT_TRUCE("truce chat"),
     CHAT_PUBLIC("public chat"),
+
+    /**
+     * Economy stuff
+     */
+
+    ECON_OFF("<h>no %s"), // no balance, no value, no refund, etc
 
     /**
      * Relations
