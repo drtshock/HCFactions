@@ -59,20 +59,25 @@ public class CmdShow extends FCommand {
         }
 
         for (String raw : show) {
-            String replaced = TagUtil.parsePlain(faction, raw); // ready to go
-            if (TagUtil.hasFancy(replaced)) {
-                List<FancyMessage> fancy = TagUtil.parseFancy(faction, fme, replaced);
+            String parsed = TagUtil.parsePlain(faction, raw); // ready to go
+            if (TagUtil.hasFancy(parsed)) {
+                List<FancyMessage> fancy = TagUtil.parseFancy(faction, fme, parsed);
                 if (fancy != null) {
                     sendFancyMessage(fancy);
                 }
                 continue;
             }
-            if (!replaced.contains("{ignore}")) {
-                msg(p.txt.parse(replaced));
+            if (!parsed.contains("{notFrozen}") && !parsed.contains("{notPermanent}")) {
+                if (parsed.contains("{ig}")) {
+                    // replaces all variables with no home TL
+                    parsed = parsed.substring(0, parsed.indexOf("{ig}")) + TL.COMMAND_SHOW_NOHOME.toString();
+                }
+                // we don't add these entire lines to fshow, wouldn't make any sense to.
+                // Ex: DTR Freeze: 0 seconds. uhm, what?
+                msg(p.txt.parse(parsed));
             }
         }
     }
-
 
     @Override
     public TL getUsageTranslation() {
