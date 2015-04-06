@@ -282,19 +282,15 @@ show:
   - '<a>Joining: <i>{joining}    {peaceful}'
   - '<a>Land / Max: <i> {land} / {max-land}'
   - '<a>DTR: <i>{dtr} / {max-dtr} <a>Raidable: <i>{raidable}'
-  - '<a>Faction Home: <i>{world}, {x}, {y}, {z}'
-  - '<a>DTR Freeze: <i>{time-left}'
+  - '<a>Faction Home: <i>{world}, {x}, {y}, {z}' # if no home is set, {z} = COMMAND_SHOW_NOHOME, from lang.yml
+  - '<a>DTR Freeze: <i>{time-left}' # only shows if faction is frozen
   - '<a>Founded: <i>{create-date}'
-  - '<a>This faction is permanent, remaining even with no members.'
+  - '<a>This faction is permanent, remaining even with no members.' # only shows if faction is permanent
   - '<a>Land value: <i>{land-value} {land-refund}'
   - '<a>Balance: <i>{faction-balance}'
   - '<a>Allies(<i>{allies-count}<a>/<i>{max-allies}<a>): {allies} '
   - '<a>Online: (<i>{online-count}<a>/<i>{faction-size}<a>): {online}'
   - '<a>Offline: (<i>{offline-count}<a>/<i>{faction-size}<a>): {offline}'
-
-# Enable to have a minimalistic fshow
-# Doesn't send fancy messages unless there is elements to send
-hide-unused-fshow: false
 
 ############################################################
 # +------------------------------------------------------+ #
