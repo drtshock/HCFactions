@@ -51,7 +51,7 @@ public enum TagReplacer {
     MAX_LAND(TagType.FACTION, "{max-land}"),
     RAIDABLE(TagType.FACTION, "{raidable}"),
     PEACEFUL(TagType.FACTION, "{peaceful}"),
-    PERMANENT(TagType.FACTION, "permanent"), // no braces intended
+    PERMANENT(TagType.FACTION, "permanent"), // no braces needed
     TIME_LEFT(TagType.FACTION, "{time-left}"),
     LAND_VALUE(TagType.FACTION, "{land-value}"),
     DESCRIPTION(TagType.FACTION, "{description}"),
@@ -67,11 +67,11 @@ public enum TagReplacer {
     /**
      * General variables, require no faction or player
      */
-    TOTAL_ONLINE(TagType.GENERAL, "{total-online}"),
     MAX_WARPS(TagType.GENERAL, "{max-warps}"),
     MAX_ALLIES(TagType.GENERAL, "{max-allies}"),
     MAX_ENEMIES(TagType.GENERAL, "{max-enemies}"),
-    FACTIONLESS(TagType.GENERAL, "{factionless}");
+    FACTIONLESS(TagType.GENERAL, "{factionless}"),
+    TOTAL_ONLINE(TagType.GENERAL, "{total-online}");
 
     private TagType type;
     private String tag;
@@ -129,11 +129,15 @@ public enum TagReplacer {
             return getValue();
         }
         if (fplayer != null) {
+            Faction myFaction = fplayer.getFaction();
             switch (this) {
                 case PLAYER_NAME:
                     return fplayer.getName();
                 case FACTION:
-                    return !fac.isNone() ? fac.getTag() : TL.GENERIC_FACTIONLESS.toString();
+                    if(myFaction == fac) {
+                        return !fac.isNone() ? fac.getTag() : TL.GENERIC_FACTIONLESS.toString();
+                    }
+                    return !fac.isNone() ? fac.getTag(fplayer) : TL.GENERIC_FACTIONLESS.toString();
                 case LAST_SEEN:
                     long lastSeen = System.currentTimeMillis() - fplayer.getLastLoginTime();
                     String niceTime = DurationFormatUtils.formatDurationWords(lastSeen, true, true) + " ago";
@@ -141,7 +145,7 @@ public enum TagReplacer {
                 case PLAYER_GROUP:
                     return P.p.getPrimaryGroup(Bukkit.getOfflinePlayer(fplayer.getName()));
                 case PLAYER_BALANCE:
-                    return Econ.isSetup() ? Econ.getFriendlyBalance(fplayer) : "no balance";
+                    return Econ.isSetup() ? Econ.getFriendlyBalance(fplayer) : TL.ECON_OFF.format("balance");
             }
         }
         switch (this) {
@@ -156,14 +160,14 @@ public enum TagReplacer {
             case PEACEFUL:
                 return fac.isPeaceful() ? Conf.colorNeutral + TL.COMMAND_SHOW_PEACEFUL.toString() : "";
             case PERMANENT:
-                return fac.isPermanent() ? "permanent" : "{ignore}";
+                return fac.isPermanent() ? "permanent" : "{notPermanent}";
             case LAND:
                 return String.valueOf(fac.getLand());
             case MAX_LAND:
                 return String.valueOf(fac.getMaxLand());
             case LEADER:
-                FPlayer fLeader = fac.getFPlayerAdmin();
-                return fLeader == null ? "Server" : fLeader.getName().substring(0, fLeader.getName().length() > 14 ? 13 : fLeader.getName().length());
+                FPlayer fAdmin = fac.getFPlayerAdmin();
+                return fAdmin == null ? "Server" : fAdmin.getName().substring(0, fAdmin.getName().length() > 14 ? 13 : fAdmin.getName().length());
             case WARPS:
                 return String.valueOf(fac.getWarps().size());
             case DTR:
@@ -175,32 +179,24 @@ public enum TagReplacer {
             case RAIDABLE:
                 return fac.isRaidable() ? TL.RAIDABLE_TRUE.toString() : TL.RAIDABLE_FALSE.toString();
             case HOME_WORLD:
-                return fac.hasHome() ? fac.getHome().getWorld().getName() : "{ignore}";
+                return fac.hasHome() ? fac.getHome().getWorld().getName() : "{ig}";
             case HOME_X:
-                return fac.hasHome() ? String.valueOf(fac.getHome().getBlockX()) : "{ignore}";
+                return fac.hasHome() ? String.valueOf(fac.getHome().getBlockX()) : "{ig}";
             case HOME_Y:
-                return fac.hasHome() ? String.valueOf(fac.getHome().getBlockY()) : "{ignore}";
+                return fac.hasHome() ? String.valueOf(fac.getHome().getBlockY()) : "{ig}";
             case HOME_Z:
-                return fac.hasHome() ? String.valueOf(fac.getHome().getBlockZ()) : "{ignore}";
+                return fac.hasHome() ? String.valueOf(fac.getHome().getBlockZ()) : "{ig}";
             case TIME_LEFT:
-                return fac.isFrozen() ? DurationFormatUtils.formatDuration(fac.getFreezeLeft(), TL.COMMAND_SHOW_FREEZEFORMAT.toString(), true) : "{ignore}";
+                return fac.isFrozen() ? DurationFormatUtils.formatDuration(fac.getFreezeLeft(), TL.COMMAND_SHOW_FREEZEFORMAT.toString(), true) : "{notFrozen}";
             case LAND_VALUE:
-                if (Econ.shouldBeUsed()) {
-                    double value = Econ.calculateTotalLandValue(fac.getLand());
-                    return value > 0 ? Econ.moneyString(value) : "{ignore}";
-                }
-                return "{ignore}";
+                return Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandValue(fac.getLand())) : TL.ECON_OFF.format("value");
             case LAND_REFUND:
-                if (Econ.shouldBeUsed()) {
-                    double refund = Econ.calculateTotalLandRefund(fac.getLand());
-                    return refund > 0 ? Econ.moneyString(refund) : "{ignore}";
-                }
-                return "{ignore}";
+                return Econ.shouldBeUsed() ? Econ.moneyString(Econ.calculateTotalLandRefund(fac.getLand())) : TL.ECON_OFF.format("refund");
             case BANK_BALANCE:
                 if (Econ.shouldBeUsed()) {
-                    return Conf.bankEnabled ? Econ.moneyString(Econ.getBalance(fac.getAccountId())) : "{ignore}";
+                    return Conf.bankEnabled ? Econ.moneyString(Econ.getBalance(fac.getAccountId())) : TL.ECON_OFF.format("balance");
                 }
-                return "{ignore}";
+                return TL.ECON_OFF.format("balance");
             case ALLIES_COUNT:
                 return String.valueOf(fac.getRelationCount(Relation.ALLY));
             case ENEMIES_COUNT:
@@ -212,7 +208,7 @@ public enum TagReplacer {
             case FACTION_SIZE:
                 return String.valueOf(fac.getFPlayers().size());
         }
-        return this.tag; // variable exists, but wasn't handled correctly
+        return this.tag; // variable exists, is either a fancy message or something we missed
     }
 
     /**

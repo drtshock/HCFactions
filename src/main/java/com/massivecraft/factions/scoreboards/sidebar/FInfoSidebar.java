@@ -26,7 +26,7 @@ public class FInfoSidebar extends FSidebarProvider {
 
         ListIterator<String> it = lines.listIterator();
         while (it.hasNext()) {
-            it.set(replaceTags(fplayer, it.next()));
+            it.set(replaceTags(faction, fplayer, it.next()));
         }
         return lines;
     }

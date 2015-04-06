@@ -52,6 +52,23 @@ public class TagUtil {
     }
 
     /**
+     * Replaces all variables in a plain raw line for a faction, using relations from fplayer
+     *
+     * @param faction for faction
+     * @param fplayer from player
+     * @param line raw line from config with variables to replace for
+     * @return clean line
+     */
+    public static String parsePlain(Faction faction, FPlayer fplayer, String line) {
+        for (TagReplacer tagReplacer : TagReplacer.getByType(TagType.PLAYER)) {
+            if (tagReplacer.contains(line)) {
+                line = tagReplacer.replace(line, tagReplacer.getValue(faction, fplayer));
+            }
+        }
+        return line;
+    }
+
+    /**
      * Scan a line and parse the fancy variable into a fancy list
      *
      * @param faction for faction (viewers faction)
@@ -94,13 +111,8 @@ public class TagUtil {
      */
     protected static List<FancyMessage> getFancy(Faction target, FPlayer fme, TagReplacer type, String prefix) {
         List<FancyMessage> fancyMessages = new ArrayList<FancyMessage>();
-        boolean hide = P.p.getConfig().getBoolean("hide-unused-fshow", false);
         switch (type) {
             case ALLIES_LIST:
-                int allyCount = target.getRelationCount(Relation.ALLY);
-                if (allyCount == 0 && hide) {
-                    return null; // nothing to add and we want a minimal f-show
-                }
                 FancyMessage currentAllies = P.p.txt.parseFancy(prefix);
                 boolean firstAlly = true;
                 for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
@@ -121,10 +133,6 @@ public class TagUtil {
                 fancyMessages.add(currentAllies);
                 return fancyMessages; // we must return here and not outside the switch
             case ENEMIES_LIST:
-                int enemyCount = target.getRelationCount(Relation.ENEMY);
-                if (enemyCount == 0 && hide) {
-                    return null; // nothing to add and we want a minimal f-show
-                }
                 FancyMessage currentEnemies = P.p.txt.parseFancy(prefix);
                 boolean firstEnemy = true;
                 for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
@@ -145,9 +153,6 @@ public class TagUtil {
                 fancyMessages.add(currentEnemies);
                 return fancyMessages; // we must return here and not outside the switch
             case ONLINE_LIST:
-                if (target.getOnlinePlayers().size() == 0 && hide) {
-                    return null; // nothing to add and we want a minimal f-show
-                }
                 FancyMessage currentOnline = P.p.txt.parseFancy(prefix);
                 boolean firstOnline = true;
                 for (FPlayer p : MiscUtil.rankOrder(target.getFPlayersWhereOnline(true))) {
@@ -163,9 +168,6 @@ public class TagUtil {
                 fancyMessages.add(currentOnline);
                 return fancyMessages; // we must return here and not outside the switch
             case OFFLINE_LIST:
-                if ((target.getFPlayers().size() - target.getOnlinePlayers().size()) == 0 && hide) {
-                    return null; // nothing to add and we want a minimal f-show
-                }
                 FancyMessage currentOffline = P.p.txt.parseFancy(prefix);
                 boolean firstOffline = true;
                 for (FPlayer p : MiscUtil.rankOrder(target.getFPlayers())) {
