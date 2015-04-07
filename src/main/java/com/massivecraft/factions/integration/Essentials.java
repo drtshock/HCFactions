@@ -3,6 +3,7 @@ package com.massivecraft.factions.integration;
 import com.earth2me.essentials.IEssentials;
 import com.earth2me.essentials.Teleport;
 import com.earth2me.essentials.Trade;
+import com.earth2me.essentials.utils.LocationUtil;
 import com.massivecraft.factions.Conf;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -33,6 +34,20 @@ public class Essentials {
             teleport.teleport(loc, trade);
         } catch (Exception e) {
             player.sendMessage(ChatColor.RED.toString() + e.getMessage());
+        }
+        return true;
+    }
+
+    public static boolean safeTeleport(Player player, Location location) {
+        if (!Conf.homesTeleportCommandEssentialsIntegration || essentials == null) {
+            return false;
+        }
+        Teleport teleport = essentials.getUser(player).getTeleport();
+        Trade trade = new Trade(Conf.econCostStuck, essentials);
+        try {
+            teleport.teleport(LocationUtil.getSafeDestination(location), trade);
+        } catch (Exception ex) {
+            player.sendMessage(ChatColor.RED.toString() + ex.getMessage());
         }
         return true;
     }
