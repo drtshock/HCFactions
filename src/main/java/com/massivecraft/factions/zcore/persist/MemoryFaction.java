@@ -213,7 +213,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public long getFoundedDate() {
         // no factions were founded in 1969, update them
-        if(this.foundedDate == 0) {
+        if (this.foundedDate == 0) {
             this.setFoundedDate(System.currentTimeMillis());
         }
         return this.foundedDate;
@@ -390,7 +390,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     public int getMaxLand() {
         int landPerPlayer = P.p.getConfig().getInt("hcf.land-per-player", 6);
         int maxFactionLand = P.p.getConfig().getInt("hcf.faction-land-max", 36);
-        return Math.min(this.getSize() * landPerPlayer, maxFactionLand);
+        // if faction is a player made, permanent faction it has the max faction land
+        return isPermanent() && isNormal() ? maxFactionLand : Math.min(getSize() * landPerPlayer, maxFactionLand);
     }
 
     public int getLandInWorld(String worldName) {
@@ -452,7 +453,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         if (getSize() == 1) {
             return P.p.getConfig().getDouble("hcf.dtr.solo-faction", 1.02D);
         }
-        //TODO: if faction is permanent with 0 players, set to 0.1 or something
         return getMaxPlayerDTR() * this.fplayers.size();
     }
 
@@ -486,7 +486,8 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public boolean isRaidable() {
         this.updateDTR();
-        return this.getDTR() <= 0;
+        // by default, permanent factions are not raidable
+        return this.isPermanent() ? Conf.permanentFactionsAreRaidable && this.getDTR() <= 0 : this.getDTR() <= 0;
     }
 
     public boolean isFrozen() {

@@ -115,6 +115,7 @@ public class Conf {
     public static boolean peacefulTerritoryDisableMonsters = false;
     public static boolean peacefulMembersDisableDtrLoss = true;
 
+    public static boolean permanentFactionsAreRaidable = false;
     public static boolean permanentFactionsDisableLeaderPromotion = false;
 
     public static boolean claimsMustBeConnected = false;
