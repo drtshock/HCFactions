@@ -235,7 +235,7 @@ public class Conf {
     public static double econCostTitle = 0.0;
     public static double econCostList = 0.0;
     public static double econCostMap = 0.0;
-    public static double econCostDtr = 0.0;
+    public static double econCostStuck = 0.0;
     public static double econCostShow = 0.0;
     public static double econCostOpen = 0.0;
     public static double econCostAlly = 0.0;
