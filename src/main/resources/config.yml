@@ -163,7 +163,9 @@ hcf:
     max-faction-dtr: 5.5
     # How much DTR should we charge a faction for kicking a player when they are frozen
     # Set to 0 to disable penalty, but remember a faction can kick low dtr players to remain unraidable if theres no penalty!
-    kick-penalty: 1.0 
+    kick-penalty: 1.0
+    # How many seconds after a player exits combat may they leave or be kicked
+    leave-cooldown: 0
     # Minimum DTR a faction can have 
     min-faction-dtr: -6.0
     # How much DTR is lost on death

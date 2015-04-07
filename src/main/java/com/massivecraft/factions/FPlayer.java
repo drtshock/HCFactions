@@ -75,7 +75,11 @@ public interface FPlayer extends EconomyParticipator {
 
     public long getLastLoginTime();
 
+    public long getLastCombatTime();
+
     public void setLastLoginTime(long lastLoginTime);
+
+    public void setLastCombatTime(long lastCombatTime);
 
     public boolean isMapAutoUpdating();
 

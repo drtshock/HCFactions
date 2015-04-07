@@ -40,46 +40,25 @@ import java.util.UUID;
  */
 
 public abstract class MemoryFPlayer implements FPlayer {
-    // FIELD: factionId
+
     protected String factionId;
-
-    // FIELD: role
-    protected Role role;
-    // FIELD: title
     protected String title;
-
-    // FIELD: lastLoginTime
-    protected long lastLoginTime;
-
-    // FIELD: chatMode
-    protected ChatMode chatMode;
-
     protected String id;
     protected String name;
-
+    protected ChatMode chatMode;
+    protected Role role;
     protected boolean monitorJoins;
-
-    //private transient String playerName;
-    protected transient FLocation lastStoodAt = new FLocation(); // Where did this player stand the last time we checked?
-
-    // FIELD: mapAutoUpdating
-    protected transient boolean mapAutoUpdating;
-
-    // FIELD: autoClaimEnabled
-    protected transient Faction autoClaimFor;
-
-    // FIELD: autoSafeZoneEnabled
-    protected transient boolean autoSafeZoneEnabled;
-
-    // FIELD: autoWarZoneEnabled
-    protected transient boolean autoWarZoneEnabled;
-
-    protected transient boolean isAdminBypassing = false;
-
-    // FIELD: loginPvpDisabled
-    protected transient boolean loginPvpDisabled;
-
     protected boolean spyingChat = false;
+    protected long lastLoginTime;
+    protected long lastCombatTime;
+
+    protected transient FLocation lastStoodAt = new FLocation();
+    protected transient Faction autoClaimFor;
+    protected transient boolean mapAutoUpdating;
+    protected transient boolean autoSafeZoneEnabled;
+    protected transient boolean autoWarZoneEnabled;
+    protected transient boolean isAdminBypassing = false;
+    protected transient boolean loginPvpDisabled;
 
     public Faction getFaction() {
         if (this.factionId == null) {
@@ -266,6 +245,14 @@ public abstract class MemoryFPlayer implements FPlayer {
         if (Conf.noPVPDamageToOthersForXSecondsAfterLogin > 0) {
             this.loginPvpDisabled = true;
         }
+    }
+
+    public long getLastCombatTime() {
+        return this.lastCombatTime;
+    }
+
+    public void setLastCombatTime(long lastCombatTime) {
+        this.lastCombatTime = lastCombatTime;
     }
 
     public boolean isMapAutoUpdating() {
@@ -460,7 +447,7 @@ public abstract class MemoryFPlayer implements FPlayer {
             FScoreboard.get(this).setTemporarySidebar(new FInfoSidebar(toShow));
             showChat = P.p.getConfig().getBoolean("scoreboard.also-send-chat", false);
         }
-        if(showChat) {
+        if (showChat) {
             this.sendMessage(P.p.txt.parse(TL.FACTION_LEAVE.format(from.getTag(this), toShow.getTag(this))));
         }
     }
@@ -503,6 +490,13 @@ public abstract class MemoryFPlayer implements FPlayer {
         // prevent player from leaving a frozen faction if enabled
         if (!P.p.getConfig().getBoolean("hcf.dtr.freeze-leave", false) && myFaction.isFrozen()) {
             msg(TL.LEAVE_DENY_FROZEN);
+            return;
+        }
+
+        // prevent player leaving during combat
+        int cooldown = P.p.getConfig().getInt("hcf.dtr.leave-cooldown", 0);
+        if (cooldown > 0 && System.currentTimeMillis() - getLastCombatTime() < (cooldown * 1000)) {
+            msg(TL.LEAVE_DENY_COOLING.toString());
             return;
         }
 

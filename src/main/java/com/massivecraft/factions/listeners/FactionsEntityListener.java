@@ -103,7 +103,9 @@ public class FactionsEntityListener implements Listener {
             Entity damager = sub.getDamager();
 
             if (damagee instanceof Player) {
-                cancelFStuckTeleport((Player) damagee);
+                FPlayer player = FPlayers.getInstance().getByPlayer((Player) damagee);
+                player.setLastCombatTime(System.currentTimeMillis());
+                cancelFStuckTeleport(player.getPlayer());
             }
             if (damager instanceof Player) {
                 cancelFStuckTeleport((Player) damager);
@@ -121,9 +123,10 @@ public class FactionsEntityListener implements Listener {
     }
 
     public void cancelFStuckTeleport(Player player) {
-        if (P.p.getStuckMap().containsKey(player.getUniqueId())) {
+        UUID uuid = player.getPlayer().getUniqueId();
+        if (P.p.getStuckMap().containsKey(uuid)) {
             FPlayers.getInstance().getByPlayer(player).msg(TL.COMMAND_STUCK_CANCELLED);
-            P.p.getStuckMap().remove(player.getUniqueId());
+            P.p.getStuckMap().remove(uuid);
         }
     }
 

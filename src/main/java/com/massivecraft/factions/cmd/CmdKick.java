@@ -81,6 +81,13 @@ public class CmdKick extends FCommand {
             return;
         }
 
+        // prevent player being kicked during combat
+        int cooldown = P.p.getConfig().getInt("hcf.dtr.leave-cooldown", 0);
+        if (cooldown > 0 && System.currentTimeMillis() - toKick.getLastCombatTime() < (cooldown * 1000)) {
+            msg(TL.COMMAND_KICK_COOLING.toString());
+            return;
+        }
+
         // trigger the leave event (cancellable) [reason:kicked]
         FPlayerLeaveEvent event = new FPlayerLeaveEvent(toKick, toKick.getFaction(), FPlayerLeaveEvent.PlayerLeaveReason.KICKED);
         Bukkit.getServer().getPluginManager().callEvent(event);
