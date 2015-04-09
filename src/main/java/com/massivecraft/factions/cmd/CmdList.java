@@ -99,7 +99,7 @@ public class CmdList extends FCommand {
                 continue;
             }
             faction.updateDTR(); // make sure we have fresh DTR values
-            lines.add(p.txt.parse(TagUtil.parsePlain(faction, p.getConfig().getString("list.entry"))));
+            lines.add(p.txt.parse(TagUtil.parsePlain(faction, fme, p.getConfig().getString("list.entry"))));
         }
         sendMessage(lines);
     }

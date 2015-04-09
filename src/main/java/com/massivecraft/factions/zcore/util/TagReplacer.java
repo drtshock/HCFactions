@@ -131,12 +131,11 @@ public enum TagReplacer {
         if (fplayer != null) {
             Faction myFaction = fplayer.getFaction();
             switch (this) {
+                case HEADER:
+                    return P.p.txt.titleize(fac.getTag(fplayer));
                 case PLAYER_NAME:
                     return fplayer.getName();
                 case FACTION:
-                    if(myFaction == fac) {
-                        return !fac.isNone() ? fac.getTag() : TL.GENERIC_FACTIONLESS.toString();
-                    }
                     return !fac.isNone() ? fac.getTag(fplayer) : TL.GENERIC_FACTIONLESS.toString();
                 case LAST_SEEN:
                     long lastSeen = System.currentTimeMillis() - fplayer.getLastLoginTime();
@@ -149,8 +148,6 @@ public enum TagReplacer {
             }
         }
         switch (this) {
-            case HEADER:
-                return P.p.txt.titleize(fac.getTag());
             case DESCRIPTION:
                 return fac.getDescription();
             case FACTION:
