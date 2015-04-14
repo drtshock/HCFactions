@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Link between config and in-game messages<br>
@@ -129,7 +130,6 @@ public enum TagReplacer {
             return getValue();
         }
         if (fplayer != null) {
-            Faction myFaction = fplayer.getFaction();
             switch (this) {
                 case HEADER:
                     return P.p.txt.titleize(fac.getTag(fplayer));
@@ -142,7 +142,7 @@ public enum TagReplacer {
                     String niceTime = DurationFormatUtils.formatDurationWords(lastSeen, true, true) + " ago";
                     return fplayer.isOnline() ? ChatColor.GREEN + "Online" : (lastSeen < 432000000 ? ChatColor.YELLOW + niceTime : ChatColor.RED + niceTime);
                 case PLAYER_GROUP:
-                    return P.p.getPrimaryGroup(Bukkit.getOfflinePlayer(fplayer.getName()));
+                    return P.p.getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(fplayer.getId())));
                 case PLAYER_BALANCE:
                     return Econ.isSetup() ? Econ.getFriendlyBalance(fplayer) : TL.ECON_OFF.format("balance");
             }
