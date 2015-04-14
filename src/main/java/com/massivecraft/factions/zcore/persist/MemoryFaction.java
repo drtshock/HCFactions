@@ -407,17 +407,21 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public void updateDTR() {
+        double toDtr = getDTR();
+        double maxDtr = getMaxDTR();
+
+        if (toDtr == maxDtr) {
+            this.lastDtrUpdateTime = System.currentTimeMillis();
+            return;
+        }
+
         if (isFrozen()) {
-            if (P.p.getConfig().getBoolean("hcf.dtr.allow-background-regen", false)) {
+            if (!P.p.getConfig().getBoolean("hcf.dtr.allow-background-regen", false)) {
+                // if we block background-regen, then we need to fake updates
                 this.lastDtrUpdateTime = System.currentTimeMillis();
             }
             return;
         }
-        if (this.dtr == getMaxDTR()) {
-            this.lastDtrUpdateTime = System.currentTimeMillis();
-            return;
-        }
-        double toDtr = getDTR();
 
         long now = System.currentTimeMillis();
         long millisPassed = now - this.lastDtrUpdateTime;
@@ -427,7 +431,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
         toDtr += delta;
 
-        double maxDtr = getMaxDTR();
         if (toDtr > maxDtr) {
             P.p.debug("DTR [" + toDtr + "] exceeded max of [" + maxDtr + "]");
             toDtr = maxDtr;
@@ -485,7 +488,6 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     }
 
     public boolean isRaidable() {
-        this.updateDTR();
         // by default, permanent factions are not raidable
         return this.isPermanent() ? Conf.permanentFactionsAreRaidable && this.getDTR() <= 0 : this.getDTR() <= 0;
     }
