@@ -420,6 +420,10 @@ public enum TL {
     COMMAND_SHOW_NOHOME("n/a"),
     COMMAND_SHOW_PEACEFUL("This faction is Peaceful"),
     COMMAND_SHOW_FREEZEFORMAT("m 'minutes', s 'seconds.'"),
+    COMMAND_SHOW_DTRSYM_MAX("&a◂"),
+    COMMAND_SHOW_DTRSYM_FROZEN("&e▾"),
+    COMMAND_SHOW_DTRSYM_REGEN("&a▴"),
+    COMMAND_SHOW_DTRSYM_RAIDABLE("&c•"),
     COMMAND_SHOW_DEPRECIATED("(%1$s depreciated)"), //This is spelled correctly.
     COMMAND_SHOW_COMMANDDESCRIPTION("Show faction information"),
 

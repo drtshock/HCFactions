@@ -333,6 +333,7 @@ list:
 #  - {joining}  : How to join this faction
 #  - {raidable} : True or false, if the faction is raidable
 #  - {dtr}      : Factions deaths until raidable value
+#  - {dtr-sym}  : DTR Symbol based on current DTR (max, regen, frozen, raidable)
 #  - {max-dtr}  : Factions max deaths until raidable value
 #  - {land}     : # of claims faction has (in chunks)
 #  - {max-land} : Max # of claims factio can make (in chunks)

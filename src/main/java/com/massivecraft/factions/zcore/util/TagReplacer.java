@@ -37,6 +37,7 @@ public enum TagReplacer {
      * Faction variables, require at least a player
      */
     DTR(TagType.FACTION, "{dtr}"),
+    DTR_SYM(TagType.FACTION, "{dtr-sym}"),
     HOME_X(TagType.FACTION, "{x}"),
     HOME_Y(TagType.FACTION, "{y}"),
     HOME_Z(TagType.FACTION, "{z}"),
@@ -169,6 +170,16 @@ public enum TagReplacer {
                 return String.valueOf(fac.getWarps().size());
             case DTR:
                 return TL.dc.format(fac.getDTR());
+            case DTR_SYM:
+                if(fac.getDTR() == fac.getMaxDTR()) {
+                    return TL.COMMAND_SHOW_DTRSYM_MAX.toString();
+                } else if(fac.isFrozen()) {
+                    return TL.COMMAND_SHOW_DTRSYM_FROZEN.toString();
+                } else if(fac.isRaidable()) {
+                    return TL.COMMAND_SHOW_DTRSYM_RAIDABLE.toString();
+                } else {
+                    return TL.COMMAND_SHOW_DTRSYM_REGEN.toString();
+                }
             case MAX_DTR:
                 return TL.dc.format(fac.getMaxDTR());
             case CREATE_DATE:
