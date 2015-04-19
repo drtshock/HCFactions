@@ -266,8 +266,10 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         this.peacefulExplosionsEnabled = false;
         this.permanent = false;
         this.money = 0.0;
-        this.dtr = 0;
-        this.foundedDate = System.currentTimeMillis();
+        this.dtr = 0.0;
+        long time = System.currentTimeMillis();
+        this.lastDtrUpdateTime = time;
+        this.foundedDate = time;
     }
 
     public MemoryFaction(MemoryFaction old) {
