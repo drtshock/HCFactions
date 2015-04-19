@@ -215,7 +215,7 @@ hcf:
   # How much land a faction gets per member
   land-per-player: 6
 
-  # Allows PVP betweeen members and allys of one faction
+  # Allows PVP betweeen faction allies
   friendly-fire: false
 
   # Buffer Zone

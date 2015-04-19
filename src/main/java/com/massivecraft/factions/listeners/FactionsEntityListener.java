@@ -388,8 +388,8 @@ public class FactionsEntityListener implements Listener {
             return true;
         }
 
-        // You can sometimes hurt faction members or allies
-        if (relation.isMember() || relation.isAlly()) {
+        // You can sometimes hurt faction allies
+        if (relation.isAlly()) {
             if (!P.p.getConfig().getBoolean("hcf.friendly-fire", false)) {
                 if (notify) {
                     attacker.msg(TL.PLAYER_PVP_CANTHURT, defender.describeTo(attacker));
