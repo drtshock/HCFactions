@@ -123,7 +123,7 @@ public class FactionsEntityListener implements Listener {
     }
 
     public void cancelFStuckTeleport(Player player) {
-        UUID uuid = player.getPlayer().getUniqueId();
+        UUID uuid = player.getUniqueId();
         if (P.p.getStuckMap().containsKey(uuid)) {
             FPlayers.getInstance().getByPlayer(player).msg(TL.COMMAND_STUCK_CANCELLED);
             P.p.getStuckMap().remove(uuid);
