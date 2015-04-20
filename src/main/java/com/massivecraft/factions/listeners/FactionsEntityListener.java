@@ -400,6 +400,11 @@ public class FactionsEntityListener implements Listener {
                     attacker.msg(TL.PLAYER_PVP_ALLY, defender.describeTo(attacker));
                 }
             }
+        } else if(relation.isMember()) {
+            if (notify) {
+                attacker.msg(TL.PLAYER_PVP_CANTHURT, defender.describeTo(attacker));
+            }
+            return false;
         }
 
         boolean ownTerritory = defender.isInOwnTerritory();
