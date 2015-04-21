@@ -52,7 +52,7 @@ public abstract class FRelationCommand extends FCommand {
             return;
         }
 
-        if (exceedsMaxRelations(targetRelation)) {
+        if (hasMaxRelations(them, targetRelation)) {
             // We message them down there with the count.
             return;
         }
@@ -75,11 +75,6 @@ public abstract class FRelationCommand extends FCommand {
 
         // if the relation change was successful
         if (targetRelation.value == currentRelation.value) {
-            if (exceedsMaxRelations(targetRelation)) {
-                // revert relation wish
-                myFaction.setRelationWish(them, oldRelation);
-                return;
-            }
             // trigger the faction relation event
             FactionRelationEvent relationEvent = new FactionRelationEvent(myFaction, them, oldRelation, currentRelation);
             Bukkit.getServer().getPluginManager().callEvent(relationEvent);
@@ -107,14 +102,18 @@ public abstract class FRelationCommand extends FCommand {
         FTeamWrapper.updatePrefixes(them);
     }
 
-    private boolean exceedsMaxRelations(Relation targetRelation) {
-        if (P.p.getConfig().getBoolean("max-relations.enabled", false)) {
-            int max = P.p.getConfig().getInt("max-relations." + targetRelation.toString(), -1);
-            // -1 means don't care.
-            if (max != -1 && myFaction.getRelationCount(targetRelation) > max) {
-                // Message them now as long as we have the count.
-                msg(TL.COMMAND_RELATIONS_EXCEEDS_MAX, max, targetRelation.getPluralTranslation());
-                return true;
+    private boolean hasMaxRelations(Faction them, Relation targetRelation) {
+        int max = P.p.getConfig().getInt("max-relations." + targetRelation.toString(), -1);
+        if (P.p.getConfig().getBoolean("max-relations.enabled", true)) {
+            if (max != -1) {
+                if (myFaction.getRelationCount(targetRelation) >= max) {
+                    msg(TL.COMMAND_RELATIONS_EXCEEDS_ME, max, targetRelation.getPluralTranslation());
+                    return true;
+                }
+                if (them.getRelationCount(targetRelation) > max) {
+                    msg(TL.COMMAND_RELATIONS_EXCEEDS_THEY, max, targetRelation.getPluralTranslation());
+                    return true;
+                }
             }
         }
         return false;
