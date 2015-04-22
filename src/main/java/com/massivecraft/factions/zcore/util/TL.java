@@ -634,7 +634,7 @@ public enum TL {
 
     REGION_PEACEFUL("peaceful territory"),
     /**
-     * In the player and entity listeners
+     * In the player, entity, and block listeners
      */
     PLAYER_CANTHURT("<i>You may not harm other players in %s"),
     PLAYER_SAFEAUTO("<i>This land is now a safe zone."),
@@ -654,8 +654,8 @@ public enum TL {
     PLAYER_DTR_NOLOSS_WORLD("<i>You didn't lose any dtr due to the world you died in."),
     PLAYER_DTR_NOLOSS_WILDERNESS("<i>You didn't lose any dtr since you were in the wilderness."),
     PLAYER_DTR_NOLOSS_WARZONE("<i>You didn't lose any dtr since you were in a war zone."),
-    PLAYER_DTR_LOSS_WARZONE("<b>The world you are in has dtr loss normally disabled, but you still lost dtr since you were in a war zone.\n<i>Your faction dtr is now <h>%d / %d"),
-    PLAYER_DTR_NOW("<i>Your faction dtr is now <h>%d / %d"),
+    PLAYER_DTR_LOSS_WARZONE("<b>The world you are in has dtr loss normally disabled, but you still lost dtr since you were in a war zone.\n<i>Your faction dtr is now <h>%1$d / %2$d"),
+    PLAYER_DTR_NOW("<i>Your faction dtr is now <h>%1$d / %2$d"),
 
     PLAYER_PVP_LOGIN("<i>You can't hurt other players for %d seconds after logging in."),
     PLAYER_PVP_REQUIREFACTION("<i>You can't hurt other players until you join a faction."),
@@ -668,6 +668,9 @@ public enum TL {
     PLAYER_PVP_NEUTRALFAIL("<i>You can't hurt %s<i> in their own territory unless you declare them as an enemy."),
     PLAYER_PVP_TRIED("%s<i> tried to hurt you."),
 
+    PLAYER_ACTION_ZONE("<b>You cant %1$s in a %2$s."),
+    PLAYER_ACTION_CLAIM("<b>You cant %1$s in the territory of %2$s."),
+    PLAYER_PAIN_CLAIM("<b>It is painful to try to %1$s in the territory of %2$s."),
     /**
      * Strings lying around in other bits of the plugins
      */

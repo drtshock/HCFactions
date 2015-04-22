@@ -4,6 +4,7 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -12,7 +13,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
-
 
 public class FactionsBlockListener implements Listener {
 
@@ -66,7 +66,6 @@ public class FactionsBlockListener implements Listener {
         // if potentially pushing into air/water/lava in another territory, we need to check it out
         if ((targetBlock.isEmpty() || targetBlock.isLiquid()) && !canPistonMoveBlock(pistonFaction, targetBlock.getLocation())) {
             event.setCancelled(true);
-            return;
         }
 
 		/*
@@ -101,12 +100,10 @@ public class FactionsBlockListener implements Listener {
 
         if (!canPistonMoveBlock(pistonFaction, targetLoc)) {
             event.setCancelled(true);
-            return;
         }
     }
 
     private boolean canPistonMoveBlock(Faction pistonFaction, Location target) {
-
         Faction otherFaction = Board.getInstance().getFactionAt(new FLocation(target));
 
         if (pistonFaction == otherFaction) {
@@ -114,32 +111,16 @@ public class FactionsBlockListener implements Listener {
         }
 
         if (otherFaction.isNone()) {
-            if (!Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(target.getWorld().getName())) {
-                return true;
-            }
-
-            return false;
+            return !Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(target.getWorld().getName());
         } else if (otherFaction.isSafeZone()) {
-            if (!Conf.safeZoneDenyBuild) {
-                return true;
-            }
-
-            return false;
+            return !Conf.safeZoneDenyBuild;
         } else if (otherFaction.isWarZone()) {
-            if (!Conf.warZoneDenyBuild) {
-                return true;
-            }
-
-            return false;
+            return !Conf.warZoneDenyBuild;
         }
 
         Relation rel = pistonFaction.getRelationTo(otherFaction);
+        return !rel.confDenyBuild(otherFaction.hasPlayersOnline());
 
-        if (rel.confDenyBuild(otherFaction.hasPlayersOnline())) {
-            return false;
-        }
-
-        return true;
     }
 
     public static boolean playerCanBuildDestroyBlock(Player player, Location location, String action, boolean justCheck) {
@@ -160,44 +141,34 @@ public class FactionsBlockListener implements Listener {
             if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location)) {
                 return true;
             }
-
             if (!Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName())) {
                 return true; // This is not faction territory. Use whatever you like here.
             }
-
             if (!justCheck) {
-                //TODO: TL
-                me.msg("<b>You can't " + action + " in the wilderness.");
+                me.msg(TL.PLAYER_ACTION_ZONE, action, TL.WILDERNESS.toString());
             }
-
             return false;
         } else if (otherFaction.isSafeZone()) {
             if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location)) {
                 return true;
             }
-
             if (!Conf.safeZoneDenyBuild || Permission.MANAGE_SAFE_ZONE.has(player)) {
                 return true;
             }
-
             if (!justCheck) {
-                me.msg("<b>You can't " + action + " in a safe zone.");
+                me.msg(TL.PLAYER_ACTION_ZONE, action, TL.SAFEZONE.toString());
             }
-
             return false;
         } else if (otherFaction.isWarZone()) {
             if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location)) {
                 return true;
             }
-
             if (!Conf.warZoneDenyBuild || Permission.MANAGE_WAR_ZONE.has(player)) {
                 return true;
             }
-
             if (!justCheck) {
-                me.msg("<b>You can't " + action + " in a war zone.");
+                me.msg(TL.PLAYER_ACTION_ZONE, action, TL.WARZONE.toString());
             }
-
             return false;
         }
         // is faction raidable? 
@@ -214,20 +185,16 @@ public class FactionsBlockListener implements Listener {
         // hurt the player for building/destroying in other territory?
         if (pain) {
             player.damage(Conf.actionDeniedPainAmount);
-
             if (!deny) {
-                //TODO: TL
-                me.msg("<b>It is painful to try to " + action + " in the territory of " + otherFaction.getTag(myFaction));
+                me.msg(TL.PLAYER_PAIN_CLAIM, action, otherFaction.getTag(myFaction));
             }
         }
 
         // cancel building/destroying in other territory?
         if (deny) {
             if (!justCheck) {
-                //TODO: TL
-                me.msg("<b>You can't " + action + " in the territory of " + otherFaction.getTag(myFaction));
+                me.msg(TL.PLAYER_ACTION_CLAIM, action, otherFaction.getTag(myFaction));
             }
-
             return false;
         }
 
@@ -237,20 +204,16 @@ public class FactionsBlockListener implements Listener {
                 player.damage(Conf.actionDeniedPainAmount);
 
                 if (!Conf.ownedAreaDenyBuild) {
-                    //TODO: TL
-                    me.msg("<b>It is painful to try to " + action + " in this territory, it is owned by: " + otherFaction.getOwnerListString(loc));
+                    me.msg(TL.PLAYER_PAIN_CLAIM, action, otherFaction.getTag(myFaction));
                 }
             }
             if (Conf.ownedAreaDenyBuild) {
                 if (!justCheck) {
-                    //TODO: TL
-                    me.msg("<b>You can't " + action + " in this territory, it is owned by: " + otherFaction.getOwnerListString(loc));
+                    me.msg(TL.PLAYER_ACTION_CLAIM, action, otherFaction.getTag(myFaction));
                 }
-
                 return false;
             }
         }
-
         return true;
     }
 }
