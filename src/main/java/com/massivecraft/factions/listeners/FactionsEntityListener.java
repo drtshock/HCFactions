@@ -102,7 +102,7 @@ public class FactionsEntityListener implements Listener {
             Entity damagee = sub.getEntity();
             Entity damager = sub.getDamager();
 
-            if (damagee instanceof Player) {
+            if (damagee != null && damagee instanceof Player) {
                 FPlayer player = FPlayers.getInstance().getByPlayer((Player) damagee);
                 player.setLastCombatTime(System.currentTimeMillis());
                 cancelFStuckTeleport(player.getPlayer());
