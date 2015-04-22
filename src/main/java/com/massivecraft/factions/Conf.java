@@ -91,6 +91,7 @@ public class Conf {
     public static boolean handleExploitEnderPearlClipping = true;
     public static boolean handleExploitInteractionSpam = true;
     public static boolean handleExploitTNTWaterlog = false;
+    public static boolean handleExploitLiquidFlow= false;
 
     public static boolean homesEnabled = true;
     public static boolean homesMustBeInClaimedTerritory = true;
