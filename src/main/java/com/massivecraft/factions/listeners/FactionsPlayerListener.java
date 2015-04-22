@@ -72,8 +72,8 @@ public class FactionsPlayerListener implements Listener {
         FScoreboard.init(me);
         if (P.p.getConfig().getBoolean("scoreboard.default-enabled", false)) {
             int interval = P.p.getConfig().getInt("default-update-interval", 5);
-            P.p.debug("Update interval: " + interval + " ticks: " + interval*20);
-            FScoreboard.get(me).setDefaultSidebar(new FDefaultSidebar(), interval*20);
+            P.p.debug("Update interval: " + interval + " ticks: " + interval * 20);
+            FScoreboard.get(me).setDefaultSidebar(new FDefaultSidebar(), interval * 20);
         }
         FScoreboard.get(me).setSidebarVisibility(P.p.cmdBase.cmdSB.showBoard(me));
 
@@ -95,7 +95,7 @@ public class FactionsPlayerListener implements Listener {
         me.setLastLoginTime(System.currentTimeMillis());
 
         // if player is waiting for fstuck teleport but leaves, remove
-        if(P.p.getStuckMap().containsKey(me.getPlayer().getUniqueId())) {
+        if (P.p.getStuckMap().containsKey(me.getPlayer().getUniqueId())) {
             FPlayers.getInstance().getByPlayer(me.getPlayer()).msg(TL.COMMAND_STUCK_CANCELLED);
             P.p.getStuckMap().remove(me.getPlayer().getUniqueId());
             P.p.getTimers().remove(me.getPlayer().getUniqueId());
@@ -335,7 +335,7 @@ public class FactionsPlayerListener implements Listener {
         // Cancel if we are not in our own territory
         if (rel.confDenyUseage()) {
             if (!justCheck) {
-                me.msg(TL.PLAYER_USE_TERRITORY, TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
+                me.msg(TL.PLAYER_USE_TERRITORY, "use " + TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
             }
 
             return false;
@@ -407,7 +407,7 @@ public class FactionsPlayerListener implements Listener {
         // You may use any block unless it is another faction's territory...
         if (rel.isNeutral() || (rel.isEnemy() && Conf.territoryEnemyProtectMaterials) || (rel.isAlly() && Conf.territoryAllyProtectMaterials) || (rel.isTruce() && Conf.territoryTruceProtectMaterials)) {
             if (!justCheck) {
-                me.msg(TL.PLAYER_USE_TERRITORY, (material == Material.SOIL ? "trample" : "use"), TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
+                me.msg(TL.PLAYER_USE_TERRITORY, (material == Material.SOIL ? "trample " : "use ") + TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
             }
 
             return false;
