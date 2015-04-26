@@ -5,14 +5,18 @@ import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.zcore.util.TL;
+import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
+import org.bukkit.event.entity.EntityInteractEvent;
 
 public class FactionsBlockListener implements Listener {
 
@@ -49,6 +53,34 @@ public class FactionsBlockListener implements Listener {
     public void onBlockDamage(BlockDamageEvent event) {
         if (event.getInstaBreak() && !playerCanBuildDestroyBlock(event.getPlayer(), event.getBlock().getLocation(), "destroy", false)) {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onEntityInteract(EntityInteractEvent event) {
+        Material material = event.getBlock().getType();
+        if (material == Material.SOIL) {
+            if (event.getEntity() instanceof Horse) {
+                Entity passenger = event.getEntity().getPassenger();
+                if (passenger != null && passenger instanceof Player) {
+                    Player player = (Player) passenger;
+                    Faction faction = Board.getInstance().getFactionAt(new FLocation(event.getBlock()));
+                    FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
+                    Relation rel = fplayer.getRelationTo(faction);
+                    if (faction.isNormal() && rel.isAtMost(Relation.NEUTRAL)) {
+                        if (rel.confDenyUseage()) {
+                            Faction myFaction = fplayer.getFaction();
+                            fplayer.msg(TL.PLAYER_USE_TERRITORY, (material == Material.SOIL ? "trample " : "use ") + TextUtil.getMaterialName(material), faction.getTag(myFaction));
+                            event.setCancelled(true);
+                        }
+                    }
+                } else {
+                    Faction faction = Board.getInstance().getFactionAt(new FLocation(event.getBlock()));
+                    if (faction.isNormal()) {
+                        event.setCancelled(true);
+                    }
+                }
+            }
         }
     }
 
