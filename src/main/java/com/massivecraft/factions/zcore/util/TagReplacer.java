@@ -169,6 +169,7 @@ public enum TagReplacer {
             case WARPS:
                 return String.valueOf(fac.getWarps().size());
             case DTR:
+                fac.updateDTR();
                 return TL.dc.format(fac.getDTR());
             case DTR_SYM:
                 if(fac.getDTR() == fac.getMaxDTR()) {
