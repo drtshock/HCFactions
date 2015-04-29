@@ -391,6 +391,10 @@ public enum TL {
     COMMAND_RELOAD_TIME("<i>Reloaded <h>conf.json <i>from disk, took <h>%1$d ms<i>."),
     COMMAND_RELOAD_DESCRIPTION("Reload data file(s) from disk"),
 
+    COMMAND_ROLE_NOTADMIN("<b>You are not the faction admin."),
+    COMMAND_ROLE_NOTMEMBER("%1$s<b> is not a member in your faction."),
+    COMMAND_ROLE_SELF("<b>The target player must not be yourself."),
+
     COMMAND_SAFEUNCLAIMALL_DESCRIPTION("Unclaim all safezone land"),
     COMMAND_SAFEUNCLAIMALL_UNCLAIMED("<i>You unclaimed ALL safe zone land."),
     COMMAND_SAFEUNCLAIMALL_UNCLAIMEDLOG("%1$s unclaimed all safe zones."),
@@ -466,6 +470,14 @@ public enum TL {
     COMMAND_TITLE_FORCHANGE("for changing a players title"),
     COMMAND_TITLE_CHANGED("%1$s<i> changed a title: %2$s"),
     COMMAND_TITLE_DESCRIPTION("Set or remove a players title"),
+
+    COMMAND_TC_CHEST("Chest"),
+    COMMAND_TC_DOUBLECHEST("Double chest"),
+    COMMAND_TC_ON("<a>Toggled tc. Open a chest to make it trusted only"),
+    COMMAND_TC_OFF("<a>Toggled tc off, can open chests now"),
+    COMMAND_TC_SUCCESS("<a>%1$s at %2$s is now a trusted %1$s"),
+    COMMAND_TC_CANT("<b>Cannot set a trusted chest for <i>%s"),
+    COMMAND_TC_DESCRIPTION("Mark chest as for only trusted faction members"),
 
     COMMAND_TOGGLESB_DISABLED("You can't toggle scoreboards while they are disabled"),
 
@@ -624,6 +636,7 @@ public enum TL {
     ROLE_ADMIN("admin"),
     ROLE_MODERATOR("moderator"),
     ROLE_NORMAL("normal member"),
+    ROLE_UNTRUSTED("untrusted member"),
 
     /**
      * Region types.
@@ -645,6 +658,7 @@ public enum TL {
     PLAYER_USE_WARZONE("<b>You can't use <h>%s<b> in a war zone."),
     PLAYER_USE_TERRITORY("<b>You can't <h>%s<b> in the territory of <h>%s<b>."),
     PLAYER_USE_OWNED("<b>You can't use <h>%s<b> in this territory, it is owned by: %s<b>."),
+    PLAYER_UNTRUSTED("<b>You can't use that chest as an untrusted faction member."),
     PLAYER_COMMAND_WARZONE("<b>You can't use the command '%s' in warzone."),
     PLAYER_COMMAND_NEUTRAL("<b>You can't use the command '%s' in neutral territory."),
     PLAYER_COMMAND_ENEMY("<b>You can't use the command '%s' in enemy territory."),
@@ -747,6 +761,9 @@ public enum TL {
 
     @Override
     public String toString() {
+        if(LANG == null) {
+            return "ERROR"; // gracefully handle null langs for unit testing
+        }
         return this == TITLE ? ChatColor.translateAlternateColorCodes('&', LANG.getString(this.path, def)) + " " : ChatColor.translateAlternateColorCodes('&', LANG.getString(this.path, def));
     }
 

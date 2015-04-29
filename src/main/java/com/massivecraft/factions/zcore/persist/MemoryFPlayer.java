@@ -168,7 +168,6 @@ public abstract class MemoryFPlayer implements FPlayer {
         return spyingChat;
     }
 
-    // FIELD: account
     public String getAccountId() {
         return this.getId();
     }
@@ -221,7 +220,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         }
         this.factionId = "0"; // The default neutral faction
         this.chatMode = ChatMode.PUBLIC;
-        this.role = Role.NORMAL;
+        this.role = Role.UNTRUSTED;
         this.title = "";
         this.autoClaimFor = null;
     }

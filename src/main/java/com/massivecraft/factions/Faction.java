@@ -107,6 +107,10 @@ public interface Faction extends EconomyParticipator {
 
     public void setLastDeath(long time);
 
+    public boolean isModChest(Location location);
+
+    public void setModChest(Location location);
+
     // -------------------------------
     // Relation and relation colors
     // -------------------------------

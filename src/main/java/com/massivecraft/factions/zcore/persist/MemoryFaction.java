@@ -29,6 +29,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected Map<String, Relation> relationWish = new HashMap<String, Relation>();
     protected transient Set<FPlayer> fplayers = new HashSet<FPlayer>();
     protected Set<String> invites = new HashSet<String>();
+    protected Set<LazyLocation> modChests = new HashSet<LazyLocation>();
     protected String id = null;
     protected transient long lastPlayerLoggedOffTime;
     protected long lastDtrUpdateTime;
@@ -248,6 +249,19 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
 
     public long getLastDeath() {
         return this.lastDeath;
+    }
+
+    public boolean isModChest(Location location) {
+        for (LazyLocation lazyLoc : modChests) {
+            if (lazyLoc.getLocation().equals(location)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void setModChest(Location location) {
+        modChests.add(new LazyLocation(location));
     }
 
     // -------------------------------------------- //

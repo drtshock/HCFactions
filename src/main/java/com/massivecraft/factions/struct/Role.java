@@ -6,7 +6,8 @@ import com.massivecraft.factions.zcore.util.TL;
 public enum Role {
     ADMIN(2, TL.ROLE_ADMIN),
     MODERATOR(1, TL.ROLE_MODERATOR),
-    NORMAL(0, TL.ROLE_NORMAL);
+    NORMAL(0, TL.ROLE_NORMAL),
+    UNTRUSTED(-1, TL.ROLE_UNTRUSTED);
 
     public final int value;
     public final String nicename;

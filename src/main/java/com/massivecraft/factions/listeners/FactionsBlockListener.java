@@ -4,11 +4,14 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.Worldguard;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
+import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
+import org.bukkit.block.DoubleChest;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
@@ -17,6 +20,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityInteractEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.inventory.Inventory;
 
 public class FactionsBlockListener implements Listener {
 
@@ -24,6 +29,41 @@ public class FactionsBlockListener implements Listener {
 
     public FactionsBlockListener(P p) {
         this.p = p;
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onChestOpen(InventoryOpenEvent e) {
+        Inventory inventory = e.getInventory();
+        Location location = null;
+        TL chestType = null;
+        if (inventory.getHolder() instanceof Chest) {
+            location = ((Chest) inventory.getHolder()).getLocation();
+            chestType = TL.COMMAND_TC_CHEST;
+        } else if (inventory.getHolder() instanceof DoubleChest) {
+            location = ((DoubleChest) inventory.getHolder()).getLocation();
+            chestType = TL.COMMAND_TC_DOUBLECHEST;
+        }
+        if (location != null && e.getPlayer() instanceof Player) {
+            Player player = (Player) e.getPlayer();
+            FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
+            Faction faction = Board.getInstance().getFactionAt(new FLocation(location));
+            if (fplayer.getRole().isAtLeast(Role.NORMAL)) {
+                if (faction == fplayer.getFaction()) {
+                    if (p.cmdBase.cmdTc.uuidSet.contains(player.getUniqueId())) {
+                        p.cmdBase.cmdTc.uuidSet.remove(player.getUniqueId());
+                        faction.setModChest(location);
+                        fplayer.msg(TL.COMMAND_TC_SUCCESS, chestType.toString(), location.getBlockX() + ", " + location.getBlockY() + ", " + location.getBlockZ());
+                    }
+                }
+                return;
+            }
+            if (faction.isNormal() && faction.getRelationTo(fplayer).isMember()) {
+                if (faction.isModChest(location)) {
+                    fplayer.msg(TL.PLAYER_UNTRUSTED);
+                    e.setCancelled(true);
+                }
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
@@ -166,6 +206,10 @@ public class FactionsBlockListener implements Listener {
             return true;
         }
 
+        if(otherFaction.isModChest(target)){
+            return false; // mod chests can't be moved. period.
+        }
+
         if (otherFaction.isNone()) {
             return !Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(target.getWorld().getName());
         } else if (otherFaction.isSafeZone()) {
@@ -232,8 +276,14 @@ public class FactionsBlockListener implements Listener {
             return true;
         }
 
+
         Faction myFaction = me.getFaction();
         Relation rel = myFaction.getRelationTo(otherFaction);
+
+        if (rel.isMember() && myFaction.isModChest(location) && me.getRole() == Role.UNTRUSTED) {
+            return false; // don't let untrusted break modchest
+        }
+
         boolean online = otherFaction.hasPlayersOnline();
         boolean pain = !justCheck && rel.confPainBuild(online);
         boolean deny = rel.confDenyBuild(online);

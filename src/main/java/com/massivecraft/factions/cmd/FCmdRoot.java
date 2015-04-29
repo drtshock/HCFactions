@@ -50,6 +50,7 @@ public class FCmdRoot extends FCommand {
     public CmdThaw cmdThaw = new CmdThaw();
     public CmdTop cmdTop = new CmdTop();
     public CmdTitle cmdTitle = new CmdTitle();
+    public CmdTrustedChest cmdTc = new CmdTrustedChest();
     public CmdUnclaim cmdUnclaim = new CmdUnclaim();
     public CmdUnclaimall cmdUnclaimall = new CmdUnclaimall();
     public CmdVersion cmdVersion = new CmdVersion();
@@ -129,6 +130,7 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdTag);
         this.addSubCommand(this.cmdThaw);
         this.addSubCommand(this.cmdTitle);
+        this.addSubCommand(this.cmdTc);
         this.addSubCommand(this.cmdUnclaim);
         this.addSubCommand(this.cmdUnclaimall);
         this.addSubCommand(this.cmdVersion);

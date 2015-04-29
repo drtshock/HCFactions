@@ -57,6 +57,11 @@ public enum Permission {
     STUCK("stuck"),
     RELATION("relation"),
     RELOAD("reload"),
+    ROLE_ANY(".any"),
+    ROLE_ADMIN("role.admin"),
+    ROLE_MODERATOR("role.mod"),
+    ROLE_NORMAL("role.normal"),
+    ROLE_UNTRUSTED("role.untrusted"),
     SAVE("save"),
     SETHOME("sethome"),
     SETHOME_ANY("sethome.any"),
@@ -65,6 +70,7 @@ public enum Permission {
     TAG("tag"),
     THAW("thaw"),
     TITLE("title"),
+    TC("trustedchest"),
     UNCLAIM("unclaim"),
     UNCLAIM_ALL("unclaimall"),
     VERSION("version"),
@@ -82,6 +88,14 @@ public enum Permission {
 
     public boolean has(CommandSender sender, boolean informSenderIfNot) {
         return P.p.perm.has(sender, this.node, informSenderIfNot);
+    }
+
+    public String any() {
+        return this.node + ".any";
+    }
+
+    public static Permission from(Role role) {
+        return Permission.valueOf("ROLE_" + role.name());
     }
 
     public boolean has(CommandSender sender) {
