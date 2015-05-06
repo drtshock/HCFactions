@@ -123,29 +123,32 @@ public enum TagReplacer {
      * Gets the value for this (as in the instance this is called from) variable!
      *
      * @param fac     Target faction
-     * @param fplayer Target player (can be null)
+     * @param fp Target player (can be null)
      * @return the value for this enum!
      */
-    protected String getValue(Faction fac, FPlayer fplayer) {
+    protected String getValue(Faction fac, FPlayer fp) {
         if (this.type == TagType.GENERAL) {
             return getValue();
         }
-        if (fplayer != null) {
+        if (fp != null) {
             switch (this) {
                 case HEADER:
-                    return P.p.txt.titleize(fac.getTag(fplayer));
+                    return P.p.txt.titleize(fac.getTag(fp));
                 case PLAYER_NAME:
-                    return fplayer.getName();
+                    return fp.getName();
                 case FACTION:
-                    return !fac.isNone() ? fac.getTag(fplayer) : TL.GENERIC_FACTIONLESS.toString();
+                    return !fac.isNone() ? fac.getTag(fp) : TL.GENERIC_FACTIONLESS.toString();
                 case LAST_SEEN:
-                    long lastSeen = System.currentTimeMillis() - fplayer.getLastLoginTime();
-                    String niceTime = DurationFormatUtils.formatDurationWords(lastSeen, true, true) + " ago";
-                    return fplayer.isOnline() ? ChatColor.GREEN + "Online" : (lastSeen < 432000000 ? ChatColor.YELLOW + niceTime : ChatColor.RED + niceTime);
+                    long lastSeen = System.currentTimeMillis() - fp.getLastLoginTime();
+                    String humanized = DurationFormatUtils.formatDurationWords(lastSeen, true, true) + TL.COMMAND_STATUS_AGOSUFFIX;
+                    String last = fp.isOnline() ? ChatColor.GREEN + TL.COMMAND_STATUS_ONLINE.toString() :
+                            (lastSeen < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);
+                    return String.format(TL.COMMAND_STATUS_FORMAT.toString(),
+                            ChatColor.GOLD + fp.getRole().getPrefix() + fp.getName() + ChatColor.RESET, last).trim();
                 case PLAYER_GROUP:
-                    return P.p.getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(fplayer.getId())));
+                    return P.p.getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(fp.getId())));
                 case PLAYER_BALANCE:
-                    return Econ.isSetup() ? Econ.getFriendlyBalance(fplayer) : TL.ECON_OFF.format("balance");
+                    return Econ.isSetup() ? Econ.getFriendlyBalance(fp) : TL.ECON_OFF.format("balance");
             }
         }
         switch (this) {

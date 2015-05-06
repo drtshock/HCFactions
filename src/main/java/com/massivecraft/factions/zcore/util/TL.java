@@ -603,7 +603,7 @@ public enum TL {
      * Economy stuff
      */
 
-    ECON_OFF("<h>no %s"), // no balance, no value, no refund, etc
+    ECON_OFF("no %s"), // no balance, no value, no refund, etc
 
     /**
      * Relations
