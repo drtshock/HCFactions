@@ -306,7 +306,7 @@ show:
 
 list:
   # You can only use {pagenumber} and {pagecount} in the header
-  header: 'Faction List {pagenumber}/{pagecount}'
+  header: '&e&m----------&r&e[ &2Faction List &9{pagenumber}&e/&9{pagecount} &e]&m----------'
   # You can use any variables here
   factionless: '<i>Factionless<i> {factionless} online'
   # You can use any variable here

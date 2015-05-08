@@ -91,7 +91,7 @@ public class CmdList extends FCommand {
             end = factionList.size();
         }
         String header = p.getConfig().getString("list.header").replace("{pagenumber}", String.valueOf(pagenumber)).replace("{pagecount}", String.valueOf(pagecount));
-        lines.add(p.txt.titleize(header));
+        lines.add(p.txt.parse(header));
 
         for (Faction faction : factionList.subList(start, end)) {
             if (faction.isNone()) {
