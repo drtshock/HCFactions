@@ -123,6 +123,7 @@ public class FactionsEntityListener implements Listener {
     }
 
     public void cancelFStuckTeleport(Player player) {
+        if (player == null) return;
         UUID uuid = player.getUniqueId();
         if (P.p.getStuckMap().containsKey(uuid)) {
             FPlayers.getInstance().getByPlayer(player).msg(TL.COMMAND_STUCK_CANCELLED);
@@ -400,7 +401,7 @@ public class FactionsEntityListener implements Listener {
                     attacker.msg(TL.PLAYER_PVP_ALLY, defender.describeTo(attacker));
                 }
             }
-        } else if(relation.isMember()) {
+        } else if (relation.isMember()) {
             if (notify) {
                 attacker.msg(TL.PLAYER_PVP_CANTHURT, defender.describeTo(attacker));
             }
