@@ -122,8 +122,8 @@ public enum TagReplacer {
     /**
      * Gets the value for this (as in the instance this is called from) variable!
      *
-     * @param fac     Target faction
-     * @param fp Target player (can be null)
+     * @param fac Target faction
+     * @param fp  Target player (can be null)
      * @return the value for this enum!
      */
     protected String getValue(Faction fac, FPlayer fp) {
@@ -141,10 +141,8 @@ public enum TagReplacer {
                 case LAST_SEEN:
                     long lastSeen = System.currentTimeMillis() - fp.getLastLoginTime();
                     String humanized = DurationFormatUtils.formatDurationWords(lastSeen, true, true) + TL.COMMAND_STATUS_AGOSUFFIX;
-                    String last = fp.isOnline() ? ChatColor.GREEN + TL.COMMAND_STATUS_ONLINE.toString() :
+                    return fp.isOnline() ? ChatColor.GREEN + TL.COMMAND_STATUS_ONLINE.toString() :
                             (lastSeen < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);
-                    return String.format(TL.COMMAND_STATUS_FORMAT.toString(),
-                            ChatColor.GOLD + fp.getRole().getPrefix() + fp.getName() + ChatColor.RESET, last).trim();
                 case PLAYER_GROUP:
                     return P.p.getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(fp.getId())));
                 case PLAYER_BALANCE:
@@ -175,11 +173,11 @@ public enum TagReplacer {
                 fac.updateDTR();
                 return TL.dc.format(fac.getDTR());
             case DTR_SYM:
-                if(fac.getDTR() == fac.getMaxDTR()) {
+                if (fac.getDTR() == fac.getMaxDTR()) {
                     return TL.COMMAND_SHOW_DTRSYM_MAX.toString();
-                } else if(fac.isFrozen()) {
+                } else if (fac.isFrozen()) {
                     return TL.COMMAND_SHOW_DTRSYM_FROZEN.toString();
-                } else if(fac.isRaidable()) {
+                } else if (fac.isRaidable()) {
                     return TL.COMMAND_SHOW_DTRSYM_RAIDABLE.toString();
                 } else {
                     return TL.COMMAND_SHOW_DTRSYM_REGEN.toString();
