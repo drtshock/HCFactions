@@ -53,7 +53,7 @@ public class CmdHelp extends FCommand {
         }
         ConfigurationSection help = P.p.getConfig().getConfigurationSection("help");
         if (help == null) {
-            P.p.getConfig().createSection("help"); // create new help section
+            help = P.p.getConfig().createSection("help"); // create new help section
             List<String> error = new ArrayList<String>();
             error.add("&cUpdate help messages in config.yml!");
             error.add("&cSet use-old-help for legacy help messages");
