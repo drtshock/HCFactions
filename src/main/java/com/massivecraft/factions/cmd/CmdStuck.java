@@ -1,20 +1,17 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.Conf;
-import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.P;
+import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.struct.Permission;
+import com.massivecraft.factions.util.SpiralTask;
 import com.massivecraft.factions.zcore.util.TL;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.List;
 import java.util.Random;
 
 public class CmdStuck extends FCommand {
@@ -64,7 +61,7 @@ public class CmdStuck extends FCommand {
                     }
 
                     // check for world difference or radius exceeding
-                    World world = chunk.getWorld();
+                    final World world = chunk.getWorld();
                     if (world.getUID() != player.getWorld().getUID() || sentAt.distance(player.getLocation()) > radius) {
                         msg(TL.COMMAND_STUCK_OUTSIDE.format(radius));
                         P.p.getTimers().remove(player.getUniqueId());
@@ -72,46 +69,32 @@ public class CmdStuck extends FCommand {
                         return;
                     }
 
-                    // pseudo random coord to get us out of most traps, +- 8 on the x and z
-                    Location location = sentAt.add(random.nextInt(16) - 8, 1, random.nextInt(16) - 8);
+                    final Board board = Board.getInstance();
+                    // spiral task to find nearest wilderness chunk
+                    new SpiralTask(new FLocation(me), radius * 2) {
 
-                    // essentials safe teleport will take care of us :)
-                    if (Essentials.safeTeleport(player, location)) {
-                        Location loc = player.getLocation(); // players new location
-                        msg(TL.COMMAND_STUCK_TELEPORT, loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
-                        P.p.getTimers().remove(player.getUniqueId());
-                        P.p.getStuckMap().remove(player.getUniqueId());
-                    } else {
-                        List<Integer> blackList = P.p.getConfig().getIntegerList("hcf.fstuck.black-list");
-                        int cx = FLocation.chunkToBlock((int) chunk.getX());
-                        int cz = FLocation.chunkToBlock((int) chunk.getZ());
-
-                        for (int x = cx; x < cx + 16; x++) {
-                            z:
-                            for (int z = cz; z < cz + 16; z++) {
-                                Block block = world.getHighestBlockAt(x, z);
-                                Location loc = block.getLocation();
-
-                                // make sure blocks under and above are okay
-                                for (int y = loc.getBlockY() - 1; y < loc.getBlockY() + 3; y++) {
-                                    Block check = world.getBlockAt(x, y, z);
-                                    if (blackList.contains(check.getTypeId())) {
-                                        continue z; // skip this coordinate
-                                    }
-                                }
-
-                                player.teleport(loc);
-                                msg(TL.COMMAND_STUCK_TELEPORT, loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
+                        @Override
+                        public boolean work() {
+                            FLocation chunk = currentFLocation();
+                            Faction faction = board.getFactionAt(chunk);
+                            if (faction.isNone()) {
+                                int cx = FLocation.chunkToBlock((int) chunk.getX());
+                                int cz = FLocation.chunkToBlock((int) chunk.getZ());
+                                int y = world.getHighestBlockYAt(cx, cz);
+                                Location tp = new Location(world, cx, y, cz);
+                                msg(TL.COMMAND_STUCK_TELEPORT, tp.getBlockX(), tp.getBlockY(), tp.getBlockZ());
                                 P.p.getTimers().remove(player.getUniqueId());
                                 P.p.getStuckMap().remove(player.getUniqueId());
-                                return;
+                                if (!Essentials.safeTeleport(player, tp)) {
+                                    player.teleport(tp);
+                                    P.p.debug("/f stuck used regular teleport, not essentials!");
+                                }
+                                this.stop();
+                                return false;
                             }
+                            return true;
                         }
-                        P.p.debug("Failed to teleport [" + fme.getName() + "] safely");
-                        msg(TL.COMMAND_STUCK_NOTELEPORT.toString());
-                        P.p.getTimers().remove(player.getUniqueId());
-                        P.p.getStuckMap().remove(player.getUniqueId());
-                    }
+                    };
                 }
             }, delay * 20).getTaskId();
 
