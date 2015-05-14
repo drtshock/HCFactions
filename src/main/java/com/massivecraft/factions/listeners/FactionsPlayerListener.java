@@ -219,6 +219,14 @@ public class FactionsPlayerListener implements Listener {
             return;  // clicked in air, apparently
         }
 
+        // handle boat glitching
+        if(Conf.handleExploitBoatClipping && player.getItemInHand().getType() == Material.BOAT) {
+            if(!playerCanUseItemHere(player, block.getLocation(), Material.BOAT, false)) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+
         if (!canPlayerUseBlock(player, block, false)) {
             event.setCancelled(true);
             if (Conf.handleExploitInteractionSpam) {
