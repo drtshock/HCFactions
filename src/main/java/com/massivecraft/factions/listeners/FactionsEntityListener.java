@@ -153,10 +153,7 @@ public class FactionsEntityListener implements Listener {
             event.setCancelled(true);
         } else if (
             // it's a bit crude just using fireball protection for Wither boss too, but I'd rather not add in a whole new set of xxxBlockWitherExplosion or whatever
-                (boomer instanceof Fireball || boomer instanceof WitherSkull || boomer instanceof Wither) && ((faction.isNone() && Conf.wildernessBlockFireballs && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName())) ||
-                        (faction.isNormal() && (online ? Conf.territoryBlockFireballs : Conf.territoryBlockFireballsWhenOffline)) ||
-                        (faction.isWarZone() && Conf.warZoneBlockFireballs) ||
-                        faction.isSafeZone())) {
+                (boomer instanceof Fireball || boomer instanceof Wither) && ((faction.isNone() && Conf.wildernessBlockFireballs && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName())) || (faction.isNormal() && (online ? Conf.territoryBlockFireballs : Conf.territoryBlockFireballsWhenOffline)) || (faction.isWarZone() && Conf.warZoneBlockFireballs) || faction.isSafeZone())) {
             // ghast fireball which needs prevention
             event.setCancelled(true);
         } else if ((boomer instanceof TNTPrimed || boomer instanceof ExplosiveMinecart) && ((faction.isNone() && Conf.wildernessBlockTNT && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName())) ||
@@ -224,7 +221,7 @@ public class FactionsEntityListener implements Listener {
         if (thrower instanceof Player) {
             Player player = (Player) thrower;
             FPlayer fPlayer = FPlayers.getInstance().getByPlayer(player);
-            if (badjuju && fPlayer.getFaction().isPeaceful()) {
+            if (fPlayer.getFaction().isPeaceful()) {
                 event.setCancelled(true);
                 return;
             }
@@ -243,13 +240,7 @@ public class FactionsEntityListener implements Listener {
     }
 
     public boolean isPlayerInSafeZone(Entity damagee) {
-        if (!(damagee instanceof Player)) {
-            return false;
-        }
-        if (Board.getInstance().getFactionAt(new FLocation(damagee.getLocation())).isSafeZone()) {
-            return true;
-        }
-        return false;
+        return damagee instanceof Player && Board.getInstance().getFactionAt(new FLocation(damagee.getLocation())).isSafeZone();
     }
 
     public boolean canDamagerHurtDamagee(EntityDamageByEntityEvent sub) {
@@ -259,7 +250,6 @@ public class FactionsEntityListener implements Listener {
     public boolean canDamagerHurtDamagee(EntityDamageByEntityEvent sub, boolean notify) {
         Entity damager = sub.getDamager();
         Entity damagee = sub.getEntity();
-        double damage = sub.getDamage();
 
         if (!(damagee instanceof Player)) {
             return true;
@@ -277,16 +267,14 @@ public class FactionsEntityListener implements Listener {
         // for damage caused by projectiles, getDamager() returns the projectile... what we need to know is the source
         if (damager instanceof Projectile) {
             Projectile projectile = (Projectile) damager;
-
             if (!(projectile.getShooter() instanceof Entity)) {
                 return true;
             }
-
             damager = (Entity) projectile.getShooter();
         }
 
-        if (damager == damagee)  // ender pearl usage and other self-inflicted damage
-        {
+        if (damager == damagee) {
+            // ender pearl usage and other self-inflicted damage
             return true;
         }
 
@@ -417,20 +405,6 @@ public class FactionsEntityListener implements Listener {
             }
             return false;
         }
-
-        // Damage will be dealt. However check if the damage should be reduced.
-        /*
-        if (damage > 0.0 && ownTerritory && Conf.territoryShieldFactor > 0) {
-            double newDamage = Math.ceil(damage * (1D - Conf.territoryShieldFactor));
-            sub.setDamage(newDamage);
-
-            // Send message
-            if (notify) {
-                String perc = MessageFormat.format("{0,number,#%}", (Conf.territoryShieldFactor)); // TODO does this display correctly??
-                defender.msg("<i>Enemy damage reduced by <rose>%s<i>.", perc);
-            }
-        } */
-
         return true;
     }
 
@@ -522,7 +496,7 @@ public class FactionsEntityListener implements Listener {
             if (stopEndermanBlockManipulation(loc)) {
                 event.setCancelled(true);
             }
-        } else if (entity instanceof Wither) {
+        } else {
             Faction faction = Board.getInstance().getFactionAt(new FLocation(loc));
             // it's a bit crude just using fireball protection, but I'd rather not add in a whole new set of xxxBlockWitherExplosion or whatever
             if ((faction.isNone() && Conf.wildernessBlockFireballs && !Conf.worldsNoWildernessProtection.contains(loc.getWorld().getName())) ||
@@ -567,11 +541,7 @@ public class FactionsEntityListener implements Listener {
             return false;
         }
         // quick check to see if all Enderman deny options are enabled; if so, no need to check location
-        if (Conf.wildernessDenyEndermanBlocks &&
-                Conf.territoryDenyEndermanBlocks &&
-                Conf.territoryDenyEndermanBlocksWhenOffline &&
-                Conf.safeZoneDenyEndermanBlocks &&
-                Conf.warZoneDenyEndermanBlocks) {
+        if (Conf.wildernessDenyEndermanBlocks && Conf.territoryDenyEndermanBlocks && Conf.territoryDenyEndermanBlocksWhenOffline && Conf.safeZoneDenyEndermanBlocks && Conf.warZoneDenyEndermanBlocks) {
             return true;
         }
 
