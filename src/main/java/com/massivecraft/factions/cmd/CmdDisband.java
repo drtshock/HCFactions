@@ -37,7 +37,7 @@ public class CmdDisband extends FCommand {
             return;
         }
 
-        boolean isMyFaction = fme == null ? false : faction == myFaction;
+        boolean isMyFaction = fme != null && faction == myFaction;
 
         if (isMyFaction) {
             if (!assertMinRole(Role.ADMIN)) {
@@ -85,7 +85,6 @@ public class CmdDisband extends FCommand {
             }
         }
         if (Conf.logFactionDisband) {
-            //TODO: Format this correctly and translate.
             P.p.log("The faction " + faction.getTag() + " (" + faction.getId() + ") was disbanded by " + (senderIsConsole ? "console command" : fme.getName()) + ".");
         }
 
@@ -97,7 +96,6 @@ public class CmdDisband extends FCommand {
             if (amount > 0.0) {
                 String amountString = Econ.moneyString(amount);
                 msg(TL.COMMAND_DISBAND_HOLDINGS, amountString);
-                //TODO: Format this correctly and translate
                 P.p.log(fme.getName() + " has been given bank holdings of " + amountString + " from disbanding " + faction.getTag() + ".");
             }
         }
