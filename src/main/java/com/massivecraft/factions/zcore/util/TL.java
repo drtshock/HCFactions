@@ -655,8 +655,7 @@ public enum TL {
     PLAYER_DTR_NOLOSS_WORLD("<i>You didn't lose any dtr due to the world you died in."),
     PLAYER_DTR_NOLOSS_WILDERNESS("<i>You didn't lose any dtr since you were in the wilderness."),
     PLAYER_DTR_NOLOSS_WARZONE("<i>You didn't lose any dtr since you were in a war zone."),
-    PLAYER_DTR_LOSS_WARZONE("<b>The world you are in has dtr loss normally disabled, but you still lost dtr since you were in a war zone.\n<i>Your faction dtr is now <h>%1$d / %2$d"),
-    PLAYER_DTR_NOW("<i>Your faction dtr is now <h>%1$d / %2$d"),
+    PLAYER_DTR_LOSS_WARZONE("<b>The world you are in has dtr loss normally disabled, but you still lost dtr since you were in a war zone."),
 
     PLAYER_PVP_LOGIN("<i>You can't hurt other players for %d seconds after logging in."),
     PLAYER_PVP_REQUIREFACTION("<i>You can't hurt other players until you join a faction."),
@@ -690,6 +689,7 @@ public enum TL {
     SAFEZONE_DESCRIPTION("safezone-description", "Free from pvp and monsters."),
     TOGGLE_SB("toggle-sb", "You now have scoreboards set to {value}"),
     FACTION_LEAVE("faction-leave", "<a>Leaving %1$s, <a>Entering %2$s"),
+    FACTION_DEATH("faction-death", "&6Member death: &2%1$s &e(&6DTR = &5%2$s / %3$s&e)"),
     DEFAULT_PREFIX("default-prefix", "[&3{faction}&r]{relationcolor}"),
     FACTION_LOGIN("faction-login", "&e%1$s &9logged in."),
     FACTION_LOGOUT("faction-logout", "&e%1$s &9logged out.."),

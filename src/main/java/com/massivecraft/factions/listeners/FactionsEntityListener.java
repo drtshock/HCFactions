@@ -66,24 +66,23 @@ public class FactionsEntityListener implements Listener {
         } else if (Conf.peacefulMembersDisableDtrLoss && fplayer.hasFaction() && fplayer.getFaction().isPeaceful()) {
             dtrEvent.setMessage(TL.PLAYER_DTR_NOLOSS_PEACEFUL.toString());
             dtrEvent.setCancelled(true);
-        } else {
-            dtrEvent.setMessage(TL.PLAYER_DTR_NOW.toString());
         }
 
         // call Event
         Bukkit.getPluginManager().callEvent(dtrEvent);
 
+        if (dtrEvent.getMessage() != null) {
+            fplayer.msg(dtrEvent.getMessage()); // send involved player message
+        }
+
         // Call player onDeath if the event is not cancelled
         if (!dtrEvent.isCancelled()) {
             fplayer.onDeath();
+            Faction disFac = fplayer.getFaction();
+            for (FPlayer member : disFac.getFPlayersWhereOnline(true)) {
+                member.msg(TL.FACTION_DEATH, fplayer.getName(), TL.dc.format(disFac.getDTR()), TL.dc.format(disFac.getMaxDTR()));
+            }
         }
-
-        // TODO: Get this working again
-        // Send the message from the dtr event
-        //final String msg = dtrEvent.getMessage();
-        //if (msg != null && !msg.isEmpty()) {
-        //    fplayer.msg(msg, faction.getDTR(), faction.getMaxDTR());
-        //}
     }
 
     /**
