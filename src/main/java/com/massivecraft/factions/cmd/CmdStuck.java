@@ -85,7 +85,7 @@ public class CmdStuck extends FCommand {
                                 msg(TL.COMMAND_STUCK_TELEPORT, tp.getBlockX(), tp.getBlockY(), tp.getBlockZ());
                                 P.p.getTimers().remove(player.getUniqueId());
                                 P.p.getStuckMap().remove(player.getUniqueId());
-                                if (!Essentials.safeTeleport(player, tp)) {
+                                if (!Essentials.handleTeleport(player, tp)) {
                                     player.teleport(tp);
                                     P.p.debug("/f stuck used regular teleport, not essentials!");
                                 }
