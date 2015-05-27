@@ -57,7 +57,7 @@ public class CmdUnclaim extends FCommand {
             return;
         }
 
-        if (fme.isAdminBypassing()) {
+        if (fme.isAdminBypassing() && canUnclaim(otherFaction)) {
             Board.getInstance().removeAt(flocation);
 
             otherFaction.msg(TL.COMMAND_UNCLAIM_UNCLAIMED, fme.describeTo(otherFaction, true));
@@ -78,6 +78,9 @@ public class CmdUnclaim extends FCommand {
             return;
         }
 
+        if(!canUnclaim(otherFaction)) {
+            return;
+        }
 
         if (myFaction != otherFaction) {
             msg(TL.COMMAND_UNCLAIM_WRONGFACTION);
@@ -117,4 +120,7 @@ public class CmdUnclaim extends FCommand {
         return TL.COMMAND_UNCLAIM_DESCRIPTION;
     }
 
+    private boolean canUnclaim(Faction faction) {
+        return !faction.isFrozen() || P.p.getConfig().getBoolean("hcf.dtr.freeze-unclaim", false);
+    }
 }

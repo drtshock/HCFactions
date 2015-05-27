@@ -192,6 +192,8 @@ hcf:
     freeze-join: true
     # Should we let frozen factions disband?
     freeze-disband: false
+    # Should we let frozen factions unclaim land?
+    freeze-unclaim: false
   fstuck:
     # Time in seconds before teleport occurs
     delay: 60
