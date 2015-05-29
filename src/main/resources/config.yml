@@ -323,6 +323,7 @@ list:
 #  - {header}   : Default factions header (ex. /f show)
 #  - {faction}  : Factions tag (if none, uses lang.yml for factionless name)
 #  - {joining}  : How to join this faction
+#  - {color}    : Relation color variable
 #  - {raidable} : True or false, if the faction is raidable
 #  - {dtr}      : Factions deaths until raidable value
 #  - {dtr-sym}  : DTR Symbol based on current DTR (max, regen, frozen, raidable)

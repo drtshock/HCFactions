@@ -43,6 +43,7 @@ public enum TagReplacer {
     HOME_Z(TagType.FACTION, "{z}"),
     LAND(TagType.FACTION, "{land}"),
     WARPS(TagType.FACTION, "{warps}"),
+    COLOR(TagType.FACTION, "{color}"),
     HEADER(TagType.FACTION, "{header}"),
     LEADER(TagType.FACTION, "{leader}"),
     JOINING(TagType.FACTION, "{joining}"),
@@ -136,6 +137,8 @@ public enum TagReplacer {
                     return P.p.txt.titleize(fac.getTag(fp));
                 case PLAYER_NAME:
                     return fp.getName();
+                case COLOR:
+                    return fac.getRelationTo(fp).getColor().toString();
                 case FACTION:
                     return !fac.isNone() ? fac.getTag(fp) : TL.GENERIC_FACTIONLESS.toString();
                 case LAST_SEEN:
@@ -164,6 +167,8 @@ public enum TagReplacer {
                 return String.valueOf(fac.getLand());
             case MAX_LAND:
                 return String.valueOf(fac.getMaxLand());
+            case COLOR:
+                return Relation.MEMBER.getColor().toString(); // relation to own faction is always member
             case LEADER:
                 FPlayer fAdmin = fac.getFPlayerAdmin();
                 return fAdmin == null ? "Server" : fAdmin.getName().substring(0, fAdmin.getName().length() > 14 ? 13 : fAdmin.getName().length());
