@@ -4,11 +4,9 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.integration.Essentials;
 import com.massivecraft.factions.util.SpiralTask;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class StuckRequest implements Runnable {
 
@@ -17,7 +15,7 @@ public class StuckRequest implements Runnable {
     private Player player;
     private FPlayer fPlayer;
     private long runtime;
-    private int radiusSq, taskid;
+    private int radiusSq;
 
     public StuckRequest(Player player, long delay, long time) {
         this.player = player;
@@ -83,12 +81,8 @@ public class StuckRequest implements Runnable {
         P.p.getStuckRequestMap().remove(player.getUniqueId()); // remove request
     }
 
-    public void alert(){
-        fPlayer.msg(TL.COMMAND_STUCK_OUTSIDE.format((int)Math.sqrt(radiusSq)));
-    }
-
-    public void setTaskid(int taskid) {
-        this.taskid = taskid;
+    public void alert() {
+        fPlayer.msg(TL.COMMAND_STUCK_OUTSIDE.format((int) Math.sqrt(radiusSq)));
     }
 
     public long getRemainingTime() {

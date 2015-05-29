@@ -1,19 +1,13 @@
 package com.massivecraft.factions.cmd;
 
-import com.massivecraft.factions.*;
-import com.massivecraft.factions.integration.Essentials;
+import com.massivecraft.factions.Conf;
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
-import com.massivecraft.factions.util.SpiralTask;
 import com.massivecraft.factions.zcore.StuckRequest;
 import com.massivecraft.factions.zcore.util.TL;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.Random;
 
 public class CmdStuck extends FCommand {
 
@@ -38,7 +32,7 @@ public class CmdStuck extends FCommand {
         final long delay = P.p.getConfig().getLong("hcf.fstuck.delay", 60);
 
         if (P.p.getStuckRequestMap().containsKey(player.getUniqueId())) {
-            if(fme.isInOwnTerritory()) {
+            if (fme.isInOwnTerritory()) {
                 msg(TL.COMMAND_STUCK_INOWNZONE);
                 return; // don't waste cpu cycles if they're not really stuck
             }
@@ -52,9 +46,7 @@ public class CmdStuck extends FCommand {
             }
 
             StuckRequest request = new StuckRequest(player, delay, System.currentTimeMillis());
-            int taskId = Bukkit.getScheduler().runTaskLater(P.p, request, delay*20).getTaskId();
-            request.setTaskid(taskId);
-
+            Bukkit.getScheduler().runTaskLater(P.p, request, delay * 20);
             P.p.getStuckRequestMap().put(player.getUniqueId(), request);
 
             String time = DurationFormatUtils.formatDuration(request.getRemainingTime(), TL.COMMAND_STUCK_TIMEFORMAT.toString(), true);
