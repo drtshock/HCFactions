@@ -200,16 +200,6 @@ hcf:
     # Number of blocks player can move before teleport cancels
     # Note: This is used to check distance right before teleport, it doesnt cancel as soon as you leave the radius
     radius: 10
-    # list of block ids you want to rule out from f stuck
-    # we check the block under, at, and two above (player head and then space above) for this block
-    # if it exists in any of the 4 locations, we will skip and find a safer teleport location
-    # NOTE: THIS IS ONLY USED IF ESSENTIALS IS NOT AVAILABLE FOR SAFE TELEPORT!
-    black-list:
-    - 8
-    - 9
-    - 10
-    - 11
-    - 51
 
   # Max land a faction can have claimed
   faction-land-max: 36

@@ -4,6 +4,7 @@ import com.massivecraft.factions.*;
 import com.massivecraft.factions.event.DTRChangeEvent;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.MiscUtil;
+import com.massivecraft.factions.zcore.StuckRequest;
 import com.massivecraft.factions.zcore.util.TL;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -124,9 +125,9 @@ public class FactionsEntityListener implements Listener {
     public void cancelFStuckTeleport(Player player) {
         if (player == null) return;
         UUID uuid = player.getUniqueId();
-        if (P.p.getStuckMap().containsKey(uuid)) {
+        if (P.p.getStuckRequestMap().containsKey(uuid)) {
             FPlayers.getInstance().getByPlayer(player).msg(TL.COMMAND_STUCK_CANCELLED);
-            P.p.getStuckMap().remove(uuid);
+            P.p.getStuckRequestMap().get(uuid).cancel();
         }
     }
 

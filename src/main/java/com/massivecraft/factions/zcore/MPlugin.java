@@ -48,10 +48,6 @@ public abstract class MPlugin extends JavaPlugin {
 
     public String refCommand = "";
 
-    // Listeners
-    private MPluginSecretPlayerListener mPluginSecretPlayerListener;
-    private MPluginSecretServerListener mPluginSecretServerListener;
-
     // Our stored base commands
     private List<MCommand<?>> baseCommands = new ArrayList<MCommand<?>>();
 
@@ -59,11 +55,8 @@ public abstract class MPlugin extends JavaPlugin {
         return this.baseCommands;
     }
 
-    // holds f stuck start times
-    private Map<UUID, Long> timers = new HashMap<UUID, Long>();
-
-    //holds f stuck taskids
-    public Map<UUID, Integer> stuckMap = new HashMap<UUID, Integer>();
+    // Stuck request storage
+    private Map<UUID, StuckRequest> stuckRequestMap = new HashMap<UUID, StuckRequest>();
 
     // -------------------------------------------- //
     // ENABLE
@@ -99,10 +92,8 @@ public abstract class MPlugin extends JavaPlugin {
         }
 
         // Create and register listeners
-        this.mPluginSecretPlayerListener = new MPluginSecretPlayerListener(this);
-        this.mPluginSecretServerListener = new MPluginSecretServerListener(this);
-        getServer().getPluginManager().registerEvents(this.mPluginSecretPlayerListener, this);
-        getServer().getPluginManager().registerEvents(this.mPluginSecretServerListener, this);
+        getServer().getPluginManager().registerEvents(new MPluginSecretPlayerListener(this), this);
+        getServer().getPluginManager().registerEvents(new MPluginSecretServerListener(this), this);
 
         // Register recurring tasks
         if (saveTask == null && Conf.saveToFileEveryXMinutes > 0.0) {
@@ -318,12 +309,8 @@ public abstract class MPlugin extends JavaPlugin {
 
     }
 
-    public Map<UUID, Integer> getStuckMap() {
-        return this.stuckMap;
-    }
-
-    public Map<UUID, Long> getTimers() {
-        return this.timers;
+    public Map<UUID, StuckRequest> getStuckRequestMap() {
+        return this.stuckRequestMap;
     }
 
     // -------------------------------------------- //

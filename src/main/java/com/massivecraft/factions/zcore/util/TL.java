@@ -445,6 +445,7 @@ public enum TL {
     COMMAND_STUCK_EXISTS("<a>You are already teleporting, you must wait <i>%1$s"),
     COMMAND_STUCK_START("<a>Teleport will commence in <i>%s<a>. Don't take or deal damage. "),
     COMMAND_STUCK_TELEPORT("<a>Teleported safely to %1$d, %2$d, %3$d."),
+    COMMAND_STUCK_INOWNZONE("<a>You are in your own territory."),
     COMMAND_STUCK_TOSTUCK("to safely teleport %1$s out"),
     COMMAND_STUCK_FORSTUCK("for %1$s initiating a safe teleport out"),
     COMMAND_STUCK_DESCRIPTION("Safely teleports you out of enemy faction"),
