@@ -60,6 +60,9 @@ public class CmdShow extends FCommand {
 
         for (String raw : show) {
             String parsed = TagUtil.parsePlain(faction, fme, raw); // use relations
+            if (parsed == null) {
+                continue; // line to be ignored, due to minimal show
+            }
             if (TagUtil.hasFancy(parsed)) {
                 List<FancyMessage> fancy = TagUtil.parseFancy(faction, fme, parsed);
                 if (fancy != null) {
