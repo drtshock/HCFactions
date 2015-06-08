@@ -712,6 +712,9 @@ public abstract class MemoryFPlayer implements FPlayer {
     // -------------------------------------------- //
 
     public void sendMessage(String msg) {
+        if(msg.contains("{null}")) {
+            return; // user wants this message to not send
+        }
         Player player = this.getPlayer();
         if (player == null) {
             return;
