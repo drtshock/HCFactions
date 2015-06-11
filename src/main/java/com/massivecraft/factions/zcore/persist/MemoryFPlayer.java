@@ -44,6 +44,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     protected String name;
     protected ChatMode chatMode;
     protected Role role;
+    protected int kills, deaths;
     protected boolean monitorJoins;
     protected boolean spyingChat = false;
     protected long lastLoginTime;
@@ -179,6 +180,8 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.lastLoginTime = System.currentTimeMillis();
         this.mapAutoUpdating = false;
         this.autoClaimFor = null;
+        this.kills = 0;
+        this.deaths = 0;
         this.autoSafeZoneEnabled = false;
         this.autoWarZoneEnabled = false;
         this.monitorJoins = true;
@@ -192,6 +195,8 @@ public abstract class MemoryFPlayer implements FPlayer {
     public MemoryFPlayer(MemoryFPlayer other) {
         this.factionId = other.factionId;
         this.id = other.id;
+        this.kills = other.kills;
+        this.deaths = other.deaths;
         this.lastLoginTime = other.lastLoginTime;
         this.mapAutoUpdating = other.mapAutoUpdating;
         this.autoClaimFor = other.autoClaimFor;
@@ -205,6 +210,16 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.spyingChat = other.spyingChat;
         this.lastStoodAt = other.lastStoodAt;
         this.isAdminBypassing = other.isAdminBypassing;
+    }
+
+    public void login() {
+        this.kills = this.getPlayer().getStatistic(Statistic.PLAYER_KILLS);
+        this.deaths = this.getPlayer().getStatistic(Statistic.DEATHS);
+    }
+
+    public void logout() {
+        this.kills = this.getPlayer().getStatistic(Statistic.PLAYER_KILLS);
+        this.deaths = this.getPlayer().getStatistic(Statistic.DEATHS);
     }
 
     public void resetFactionData(boolean doSpoutUpdate) {
@@ -235,7 +250,6 @@ public abstract class MemoryFPlayer implements FPlayer {
     public long getLastLoginTime() {
         return lastLoginTime;
     }
-
 
     public void setLastLoginTime(long lastLoginTime) {
         this.lastLoginTime = lastLoginTime;
@@ -313,11 +327,11 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public int getKills() {
-        return getPlayer().getStatistic(Statistic.PLAYER_KILLS);
+        return this.isOffline() ? this.kills : this.getPlayer().getStatistic(Statistic.PLAYER_KILLS);
     }
 
     public int getDeaths() {
-        return getPlayer().getStatistic(Statistic.DEATHS);
+        return this.isOffline() ? this.deaths : this.getPlayer().getStatistic(Statistic.DEATHS);
     }
 
     // Base concatenations:
@@ -717,7 +731,7 @@ public abstract class MemoryFPlayer implements FPlayer {
     // -------------------------------------------- //
 
     public void sendMessage(String msg) {
-        if(msg.contains("{null}")) {
+        if (msg.contains("{null}")) {
             return; // user wants this message to not send
         }
         Player player = this.getPlayer();
