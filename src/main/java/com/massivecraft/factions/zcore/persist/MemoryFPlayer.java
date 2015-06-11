@@ -16,10 +16,7 @@ import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.util.RelationUtil;
 import com.massivecraft.factions.zcore.util.TL;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
@@ -313,6 +310,14 @@ public abstract class MemoryFPlayer implements FPlayer {
 
     public String getTag() {
         return this.hasFaction() ? this.getFaction().getTag() : "";
+    }
+
+    public int getKills() {
+        return getPlayer().getStatistic(Statistic.PLAYER_KILLS);
+    }
+
+    public int getDeaths() {
+        return getPlayer().getStatistic(Statistic.DEATHS);
     }
 
     // Base concatenations:

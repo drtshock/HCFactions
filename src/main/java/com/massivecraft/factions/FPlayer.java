@@ -99,6 +99,10 @@ public interface FPlayer extends EconomyParticipator {
 
     public String getTag();
 
+    public int getKills();
+
+    public int getDeaths();
+
     // Base concatenations:
 
     public String getNameAndSomething(String something);

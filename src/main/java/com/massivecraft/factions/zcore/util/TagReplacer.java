@@ -32,6 +32,8 @@ public enum TagReplacer {
     PLAYER_GROUP(TagType.PLAYER, "{group}"),
     LAST_SEEN(TagType.PLAYER, "{last-seen}"),
     PLAYER_BALANCE(TagType.PLAYER, "{player-balance}"),
+    PLAYER_KILLS(TagType.PLAYER, "{player-kills}"),
+    PLAYER_DEATHS(TagType.PLAYER, "{player-deaths}"),
 
     /**
      * Faction variables, require at least a player
@@ -66,6 +68,8 @@ public enum TagReplacer {
     ONLINE_COUNT(TagType.FACTION, "{online-count}"),
     OFFLINE_COUNT(TagType.FACTION, "{offline-count}"),
     FACTION_SIZE(TagType.FACTION, "{faction-size}"),
+    FACTION_KILLS(TagType.FACTION, "{faction-kills}"),
+    FACTION_DEATHS(TagType.FACTION, "{faction-deaths}"),
 
     /**
      * General variables, require no faction or player
@@ -151,6 +155,10 @@ public enum TagReplacer {
                     return P.p.getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(fp.getId())));
                 case PLAYER_BALANCE:
                     return Econ.isSetup() ? Econ.getFriendlyBalance(fp) : TL.ECON_OFF.format("balance");
+                case PLAYER_KILLS:
+                    return String.valueOf(fp.getKills());
+                case PLAYER_DEATHS:
+                    return String.valueOf(fp.getDeaths());
             }
         }
         switch (this) {
@@ -190,6 +198,10 @@ public enum TagReplacer {
                 }
             case MAX_DTR:
                 return TL.dc.format(fac.getMaxDTR());
+            case FACTION_KILLS:
+                return String.valueOf(fac.getKills());
+            case FACTION_DEATHS:
+                return String.valueOf(fac.getDeaths());
             case CREATE_DATE:
                 return TL.sdf.format(fac.getFoundedDate());
             case RAIDABLE:

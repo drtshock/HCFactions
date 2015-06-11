@@ -321,6 +321,8 @@ list:
 #  - {group}  : Players group
 #  - {name}   : Players name
 #  - {last-seen}  : Last time player was seen (if offline), or just 'Online'
+#  - {player-kills} : # of kills the player has
+#  - {player-deaths}: # of deaths the player has
 #  - {player-balance} : Players balance
 # Faction variables. Can be used in tooltips.list, scoreboards, or /f show
 #  - {header}   : Default factions header (ex. /f show)
@@ -344,6 +346,8 @@ list:
 #  - {online-count}  : # of faction members online
 #  - {offline-count} : # of faction members offline
 #  - {faction-size}  : # of faction members (includes offline)
+#  - {faction-kills} : # of kills the faction has
+#  - {faction-deaths}: # of deaths the faction has
 #  - {faction-balance}      : Faction bank balance
 #  - {world}, {x}, {y}, {z} : Faction home variables. You don't need to use them all.
 # General variables. Can be used anywhere.

@@ -165,6 +165,22 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         return prefix + this.tag;
     }
 
+    public int getKills() {
+        int kills = 0;
+        for (FPlayer player : this.getFPlayers()) {
+            kills += player.getKills();
+        }
+        return kills;
+    }
+
+    public int getDeaths() {
+        int deaths = 0;
+        for (FPlayer player : this.getFPlayers()) {
+            deaths += player.getDeaths();
+        }
+        return deaths;
+    }
+
     public String getTag(Faction otherFaction) {
         if (otherFaction == null) {
             return getTag();
