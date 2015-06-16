@@ -44,6 +44,14 @@ public class CmdShow extends FCommand {
 
         List<String> show = P.p.getConfig().getStringList("show");
 
+        // handle separate /f show for permanent and player-less factions
+        if(faction.isPermanent() && faction.getFPlayers().size() == 0) {
+            List<String> perm_show = P.p.getConfig().getStringList("permanent-show");
+            if (perm_show != null && !perm_show.isEmpty()) {
+                show = perm_show; // we can show the permanent show from config
+            }
+        }
+
         faction.updateDTR();
 
         if (!faction.isNormal()) {
