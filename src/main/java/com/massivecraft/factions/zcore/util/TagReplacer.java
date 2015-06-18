@@ -145,7 +145,7 @@ public enum TagReplacer {
                 case COLOR:
                     return fac.getRelationTo(fp).getColor().toString();
                 case FACTION:
-                    return !fac.isNone() ? fac.getTag(fp) : TL.GENERIC_FACTIONLESS.toString();
+                    return !fac.isNone() ? fac.getTag(fp) : TL.WILDERNESS.toString();
                 case LAST_SEEN:
                     long lastSeen = System.currentTimeMillis() - fp.getLastLoginTime();
                     String humanized = DurationFormatUtils.formatDurationWords(lastSeen, true, true) + TL.COMMAND_STATUS_AGOSUFFIX;

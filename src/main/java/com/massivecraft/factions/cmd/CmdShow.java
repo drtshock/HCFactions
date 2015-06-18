@@ -5,7 +5,6 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
-import com.massivecraft.factions.zcore.util.TagReplacer;
 import com.massivecraft.factions.zcore.util.TagUtil;
 import mkremins.fanciful.FancyMessage;
 
@@ -44,26 +43,19 @@ public class CmdShow extends FCommand {
 
         List<String> show = P.p.getConfig().getStringList("show");
 
+        faction.updateDTR(); // get this out of way early
+
         // handle separate /f show for permanent and player-less factions
-        if(faction.isPermanent() && faction.getFPlayers().size() == 0) {
-            List<String> perm_show = P.p.getConfig().getStringList("permanent-show");
-            if (perm_show != null && !perm_show.isEmpty()) {
-                show = perm_show; // we can show the permanent show from config
+        if(faction.isNormal()) {
+            if (faction.isPermanent() && faction.getFPlayers().size() == 0) {
+                List<String> perm_show = P.p.getConfig().getStringList("permanent-show");
+                if (perm_show != null && !perm_show.isEmpty()) {
+                    show = perm_show; // we can show the permanent show from config
+                }
             }
-        }
-
-        faction.updateDTR();
-
-        if (!faction.isNormal()) {
-            String tag = faction.getTag(fme);
-            // send header and that's all
-            String header = show.get(0);
-            if (TagReplacer.HEADER.contains(header)) {
-                msg(p.txt.titleize(tag));
-            } else {
-                msg(p.txt.parse(TagReplacer.FACTION.replace(header, tag)));
-            }
-            return; // we only show header for non-normal factions
+        } else {
+            msg(p.txt.parse(TagUtil.parsePlain(faction, fme, show.get(0))));
+            return; // we only show first line for non-normal factions
         }
 
         for (String raw : show) {
