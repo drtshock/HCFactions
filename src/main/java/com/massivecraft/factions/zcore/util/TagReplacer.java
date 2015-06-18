@@ -78,7 +78,8 @@ public enum TagReplacer {
     MAX_ALLIES(TagType.GENERAL, "{max-allies}"),
     MAX_ENEMIES(TagType.GENERAL, "{max-enemies}"),
     FACTIONLESS(TagType.GENERAL, "{factionless}"),
-    TOTAL_ONLINE(TagType.GENERAL, "{total-online}");
+    TOTAL_ONLINE(TagType.GENERAL, "{total-online}"),
+    FACTION_MAX(TagType.GENERAL, "{faction-max}");
 
     private TagType type;
     private String tag;
@@ -120,6 +121,8 @@ public enum TagReplacer {
                 return TL.GENERIC_INFINITY.toString();
             case MAX_WARPS:
                 return String.valueOf(P.p.getConfig().getInt("max-warps", 5));
+            case FACTION_MAX:
+                return Conf.factionMemberLimit == 0 ? TL.GENERIC_INFINITY.toString() : String.valueOf(Conf.factionMemberLimit);
         }
         return null;
     }

@@ -363,3 +363,4 @@ list:
 # - {max-allies}    : Max # of allies a faction can have
 # - {max-enemies}   : Max # of enemies a faction can have
 # - {factionless}   : Count of all factionless players online
+# - {faction-max}   : Max # of players a faction can have (0 = unlimited)
