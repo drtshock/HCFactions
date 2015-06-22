@@ -734,6 +734,12 @@ public abstract class MemoryFPlayer implements FPlayer {
         if (msg.contains("{null}")) {
             return; // user wants this message to not send
         }
+        if (msg.contains("/n/")) {
+            for (String s : msg.split("/n/")) {
+                sendMessage(s);
+            }
+            return;
+        }
         Player player = this.getPlayer();
         if (player == null) {
             return;
