@@ -291,6 +291,8 @@ public enum TL {
     COMMAND_LOCK_DESCRIPTION("Lock all write stuff. Apparently."),
 
     COMMAND_LOGINS_TOGGLE("<i>Set login / logout notifications for Faction members to: <a>%s"),
+    COMMAND_LOGINS_TRUE("true"),
+    COMMAND_LOGINS_FALSE("false"),
     COMMAND_LOGINS_DESCRIPTION("Toggle(?) login / logout notifications for Faction members"),
 
     COMMAND_MAP_TOSHOW("to show the map"),
