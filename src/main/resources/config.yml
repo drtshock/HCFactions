@@ -116,6 +116,11 @@ scoreboard:
     - "&aLand"
     - "{land}/{max-land}&f"
 
+  factionless-enabled: false
+  factionless:
+    - "&6Make a new faction"
+    - "&6using /f &ccreate"
+
   # Should we also send the chat message when a player enters a new claim?
   # By default, if we have a scoreboard enabled, no message will be sent
   # This value only applies when either a default or info scoreboard is enabled
