@@ -97,7 +97,7 @@ public class FactionsPlayerListener implements Listener {
         // and update their last login time to point to when the logged off, for auto-remove routine
         me.setLastLoginTime(System.currentTimeMillis());
 
-        ((MemoryFPlayer)me).logout(); // cache kills / deaths
+        ((MemoryFPlayer) me).logout(); // cache kills / deaths
 
         // if player is waiting for a fstuck request but leaves, cancel and alert when they come back
         if (P.p.getStuckRequestMap().containsKey(me.getPlayer().getUniqueId())) {
@@ -183,7 +183,7 @@ public class FactionsPlayerListener implements Listener {
                 if (Conf.ownedAreasEnabled && Conf.ownedMessageOnBorder && myFaction == factionTo && !ownersTo.isEmpty()) {
                     me.sendMessage(TL.GENERIC_OWNERS.format(ownersTo));
                 }
-            } else if (Conf.ownedAreasEnabled && Conf.ownedMessageInsideTerritory && factionFrom == factionTo && myFaction == factionTo) {
+            } else if (Conf.ownedAreasEnabled && Conf.ownedMessageInsideTerritory && myFaction == factionTo) {
                 String ownersFrom = myFaction.getOwnerListString(from);
                 if (Conf.ownedMessageByChunk || !ownersFrom.equals(ownersTo)) {
                     if (!ownersTo.isEmpty()) {
@@ -233,8 +233,8 @@ public class FactionsPlayerListener implements Listener {
         }
 
         // handle boat glitching
-        if(Conf.handleExploitBoatClipping && player.getItemInHand().getType() == Material.BOAT) {
-            if(!playerCanUseItemHere(player, block.getLocation(), Material.BOAT, false)) {
+        if (Conf.handleExploitBoatClipping && player.getItemInHand().getType() == Material.BOAT) {
+            if (!playerCanUseItemHere(player, block.getLocation(), Material.BOAT, false)) {
                 event.setCancelled(true);
                 return;
             }
@@ -322,31 +322,25 @@ public class FactionsPlayerListener implements Listener {
             if (!Conf.wildernessDenyUseage || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName())) {
                 return true; // This is not faction territory. Use whatever you like here.
             }
-
             if (!justCheck) {
                 me.msg(TL.PLAYER_USE_WILDERNESS, TextUtil.getMaterialName(material));
             }
-
             return false;
         } else if (otherFaction.isSafeZone()) {
             if (!Conf.safeZoneDenyUseage || Permission.MANAGE_SAFE_ZONE.has(player)) {
                 return true;
             }
-
             if (!justCheck) {
                 me.msg(TL.PLAYER_USE_SAFEZONE, TextUtil.getMaterialName(material));
             }
-
             return false;
         } else if (otherFaction.isWarZone()) {
             if (!Conf.warZoneDenyUseage || Permission.MANAGE_WAR_ZONE.has(player)) {
                 return true;
             }
-
             if (!justCheck) {
                 me.msg(TL.PLAYER_USE_WARZONE, TextUtil.getMaterialName(material));
             }
-
             return false;
         }
 
@@ -358,7 +352,6 @@ public class FactionsPlayerListener implements Listener {
             if (!justCheck) {
                 me.msg(TL.PLAYER_USE_TERRITORY, "use " + TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
             }
-
             return false;
         }
 
@@ -367,7 +360,6 @@ public class FactionsPlayerListener implements Listener {
             if (!justCheck) {
                 me.msg(TL.PLAYER_USE_OWNED, TextUtil.getMaterialName(material), otherFaction.getOwnerListString(loc));
             }
-
             return false;
         }
 
@@ -389,11 +381,7 @@ public class FactionsPlayerListener implements Listener {
         Faction otherFaction = Board.getInstance().getFactionAt(loc);
 
         // no door/chest/whatever protection in wilderness, war zones, or safe zones
-        if (!otherFaction.isNormal()) {
-            return true;
-        }
-
-        if (otherFaction.isRaidable()) {
+        if (!otherFaction.isNormal() || otherFaction.isRaidable()) {
             return true;
         }
 
@@ -430,7 +418,6 @@ public class FactionsPlayerListener implements Listener {
             if (!justCheck) {
                 me.msg(TL.PLAYER_USE_TERRITORY, (material == Material.SOIL ? "trample " : "use ") + TextUtil.getMaterialName(material), otherFaction.getTag(myFaction));
             }
-
             return false;
         }
 
@@ -439,21 +426,16 @@ public class FactionsPlayerListener implements Listener {
             if (!justCheck) {
                 me.msg(TL.PLAYER_USE_OWNED, TextUtil.getMaterialName(material), otherFaction.getOwnerListString(loc));
             }
-
             return false;
         }
-
         return true;
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         FPlayer me = FPlayers.getInstance().getByPlayer(event.getPlayer());
-
         Location home = me.getFaction().getHome();
-        if (Conf.homesEnabled &&
-                Conf.homesTeleportToOnDeath &&
-                home != null &&
+        if (Conf.homesEnabled && Conf.homesTeleportToOnDeath && home != null &&
                 (Conf.homesRespawnFromNoDtrLossWorlds || !Conf.worldsNoDtrLoss.contains(event.getPlayer().getWorld().getName()))) {
             event.setRespawnLocation(home);
         }
@@ -468,7 +450,6 @@ public class FactionsPlayerListener implements Listener {
 
         if (!playerCanUseItemHere(player, block.getLocation(), event.getBucket(), false)) {
             event.setCancelled(true);
-            return;
         }
     }
 
@@ -479,7 +460,6 @@ public class FactionsPlayerListener implements Listener {
 
         if (!playerCanUseItemHere(player, block.getLocation(), event.getBucket(), false)) {
             event.setCancelled(true);
-            return;
         }
     }
 
@@ -500,11 +480,7 @@ public class FactionsPlayerListener implements Listener {
             fullCmd = "/" + fullCmd;
         }
 
-        if (me.hasFaction() &&
-                !me.isAdminBypassing() &&
-                !Conf.permanentFactionMemberDenyCommands.isEmpty() &&
-                me.getFaction().isPermanent() &&
-                isCommandInList(fullCmd, shortCmd, Conf.permanentFactionMemberDenyCommands.iterator())) {
+        if (me.hasFaction() && !me.isAdminBypassing() && !Conf.permanentFactionMemberDenyCommands.isEmpty() && me.getFaction().isPermanent() && isCommandInList(fullCmd, shortCmd, Conf.permanentFactionMemberDenyCommands.iterator())) {
             me.msg(TL.PLAYER_COMMAND_PERMANENT, fullCmd);
             return true;
         }
