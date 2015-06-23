@@ -47,8 +47,8 @@ public class CmdAdmin extends FCommand {
             return;
         }
 
-        if (fyou == fme && !permAny) {
-            msg(TL.COMMAND_ADMIN_TARGETSELF);
+        if ((fyou == fme && !permAny) || targetFaction.getFPlayers().size() == 1) {
+            msg(TL.COMMAND_ADMIN_TARGETSELF); // if solo fac, then you're targeting yourself
             return;
         }
 
