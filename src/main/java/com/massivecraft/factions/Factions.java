@@ -1,6 +1,7 @@
 package com.massivecraft.factions;
 
 import com.massivecraft.factions.zcore.persist.json.JSONFactions;
+import com.massivecraft.factions.zcore.persist.mongodb.MongoFactions;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -40,6 +41,8 @@ public abstract class Factions {
 
     private static Factions getFactionsImpl() {
         switch (Conf.backEnd) {
+            case MONGODB:
+                return new MongoFactions();
             case JSON:
                 return new JSONFactions();
         }

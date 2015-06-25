@@ -1,6 +1,7 @@
 package com.massivecraft.factions;
 
 import com.massivecraft.factions.zcore.persist.json.JSONBoard;
+import com.massivecraft.factions.zcore.persist.mongodb.MongoBoard;
 
 import java.util.ArrayList;
 
@@ -15,6 +16,8 @@ public abstract class Board {
 
     private static Board getBoardImpl() {
         switch (Conf.backEnd) {
+            case MONGODB:
+                return new MongoBoard();
             case JSON:
                 return new JSONBoard();
         }

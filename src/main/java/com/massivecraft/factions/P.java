@@ -14,17 +14,21 @@ import com.massivecraft.factions.util.*;
 import com.massivecraft.factions.zcore.MPlugin;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TextUtil;
+import com.mongodb.DB;
+import com.mongodb.MongoClient;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
+import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
@@ -51,6 +55,8 @@ public class P extends MPlugin {
         this.setAutoSave(val);
     }
 
+    private DB db;
+
     private Integer AutoLeaveTask = null;
 
     // Commands
@@ -71,6 +77,9 @@ public class P extends MPlugin {
 
         // Load Conf from disk
         Conf.load();
+        if (Conf.backEnd == Conf.Backend.MONGODB) {
+            loadMongo();
+        }
         Essentials.setup();
         FPlayers.getInstance().load();
         Factions.getInstance().load();
@@ -139,7 +148,6 @@ public class P extends MPlugin {
 
         return new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().excludeFieldsWithModifiers(Modifier.TRANSIENT, Modifier.VOLATILE).registerTypeAdapter(LazyLocation.class, new MyLocationTypeAdapter()).registerTypeAdapter(mapFLocToStringSetType, new MapFLocToStringSetTypeAdapter()).registerTypeAdapterFactory(EnumTypeAdapter.ENUM_FACTORY);
     }
-
     @Override
     public void onDisable() {
         // only save data if plugin actually completely loaded successfully
@@ -153,6 +161,15 @@ public class P extends MPlugin {
 
         cmdBase.cmdSB.save();
         super.onDisable();
+    }
+    private void loadMongo() {
+        try {
+            ConfigurationSection config = getConfig().getConfigurationSection("mongodb");
+            db = new MongoClient(config.getString("host"), config.getInt("port")).getDB(config.getString("database"));
+            db.authenticate(config.getString("username"), config.getString("password").toCharArray());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
     }
 
     public void startAutoLeaveTask(boolean restartIfRunning) {
@@ -330,5 +347,9 @@ public class P extends MPlugin {
 
     public void debug(String s) {
         debug(Level.INFO, s);
+    }
+
+    public DB getMongo() {
+        return db;
     }
 }

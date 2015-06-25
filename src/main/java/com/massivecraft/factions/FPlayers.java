@@ -1,6 +1,7 @@
 package com.massivecraft.factions;
 
 import com.massivecraft.factions.zcore.persist.json.JSONFPlayers;
+import com.massivecraft.factions.zcore.persist.mongodb.MongoFPlayers;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -17,6 +18,8 @@ public abstract class FPlayers {
 
     private static FPlayers getFPlayersImpl() {
         switch (Conf.backEnd) {
+            case MONGODB:
+                return new MongoFPlayers();
             case JSON:
                 return new JSONFPlayers();
         }
