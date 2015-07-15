@@ -336,6 +336,10 @@ list:
 #  - {player-kills} : # of kills the player has
 #  - {player-deaths}: # of deaths the player has
 #  - {player-balance} : Players balance
+# From HCFEssentials by Itsmonkey. Only use these if you have that plugin installed.
+#  - {hcfe-enderpearltime} : Enderpearl cooldown time.
+#  - {hcfe-pvptimer} : Pvp time.
+#  - {hcfe-combattagtime} - combat tag time.
 # Faction variables. Can be used in tooltips.list, scoreboards, or /f show
 #  - {header}   : Default factions header (ex. /f show)
 #  - {faction}  : Factions tag (if none, uses lang.yml for factionless name)

@@ -127,6 +127,13 @@
             <artifactId>gson</artifactId>
             <version>2.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.itsmonkey</groupId>
+            <artifactId>HCFEssentials</artifactId>
+            <version>LATEST</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/HCFEssentials.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <repositories>

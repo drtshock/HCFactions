@@ -697,6 +697,7 @@ public enum TL {
     FACTION_LOGIN("faction-login", "&e%1$s &9logged in."),
     FACTION_LOGOUT("faction-logout", "&e%1$s &9logged out.."),
     DATE_FORMAT("date-format", "MM/d/yy h:mma"), // 3/31/15 7:49AM
+    NONE("cooldown-none", "&aNone"),
 
     /**
      * Raidable is used in multiple places. Allow more than just true/false.

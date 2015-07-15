@@ -6,6 +6,7 @@ import com.massivecraft.factions.struct.Relation;
 import org.apache.commons.lang.time.DurationFormatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.itsmonkey.hcfessentials.utils.CooldownUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +35,13 @@ public enum TagReplacer {
     PLAYER_BALANCE(TagType.PLAYER, "{player-balance}"),
     PLAYER_KILLS(TagType.PLAYER, "{player-kills}"),
     PLAYER_DEATHS(TagType.PLAYER, "{player-deaths}"),
+
+    /**
+     * HCFEssentials variables.
+     */
+    HCFE_ENDERPEARLTIME(TagType.PLAYER, "{hcfe-enderpearltime}"),
+    HCFE_PVPTIMER(TagType.PLAYER, "{hcfe-pvptimer}"),
+    HCFE_COMBATTAGTIME(TagType.PLAYER, "{hcfe-combattagtime}"),
 
     /**
      * Faction variables, require at least a player
@@ -132,12 +140,16 @@ public enum TagReplacer {
      *
      * @param fac Target faction
      * @param fp  Target player (can be null)
+     *
      * @return the value for this enum!
      */
     protected String getValue(Faction fac, FPlayer fp) {
         if (this.type == TagType.GENERAL) {
             return getValue();
         }
+
+        String none = TL.NONE.toString();
+
         boolean minimal = P.p.getConfig().getBoolean("minimal-show", false);
         if (fp != null) {
             switch (this) {
@@ -152,8 +164,7 @@ public enum TagReplacer {
                 case LAST_SEEN:
                     long lastSeen = System.currentTimeMillis() - fp.getLastLoginTime();
                     String humanized = DurationFormatUtils.formatDurationWords(lastSeen, true, true) + TL.COMMAND_STATUS_AGOSUFFIX;
-                    return fp.isOnline() ? ChatColor.GREEN + TL.COMMAND_STATUS_ONLINE.toString() :
-                            (lastSeen < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);
+                    return fp.isOnline() ? ChatColor.GREEN + TL.COMMAND_STATUS_ONLINE.toString() : (lastSeen < 432000000 ? ChatColor.YELLOW + humanized : ChatColor.RED + humanized);
                 case PLAYER_GROUP:
                     return P.p.getPrimaryGroup(Bukkit.getOfflinePlayer(UUID.fromString(fp.getId())));
                 case PLAYER_BALANCE:
@@ -162,7 +173,14 @@ public enum TagReplacer {
                     return String.valueOf(fp.getKills());
                 case PLAYER_DEATHS:
                     return String.valueOf(fp.getDeaths());
+                case HCFE_COMBATTAGTIME:
+                    return CooldownUtils.combatTag.containsKey(fp.getPlayer().getUniqueId()) ? String.valueOf(CooldownUtils.combatTag.get(fp.getPlayer().getUniqueId())) : none;
+                case HCFE_ENDERPEARLTIME:
+                    return CooldownUtils.enderpearl.containsKey(fp.getPlayer().getUniqueId()) ? String.valueOf(CooldownUtils.combatTag.get(fp.getPlayer().getUniqueId())) : none;
+                case HCFE_PVPTIMER:
+                    return CooldownUtils.pvpTimer.containsKey(fp.getPlayer().getUniqueId()) ? String.valueOf(CooldownUtils.combatTag.get(fp.getPlayer().getUniqueId())) : none;
             }
+
         }
         switch (this) {
             case DESCRIPTION:
@@ -246,6 +264,7 @@ public enum TagReplacer {
      * Returns a list of all the variables we can use for this type<br>
      *
      * @param type the type we want
+     *
      * @return a list of all the variables with this type
      */
     protected static List<TagReplacer> getByType(TagType type) {
@@ -265,6 +284,7 @@ public enum TagReplacer {
     /**
      * @param original raw line with variables
      * @param value    what to replace var in raw line with
+     *
      * @return the string with the new value
      */
     public String replace(String original, String value) {
@@ -273,6 +293,7 @@ public enum TagReplacer {
 
     /**
      * @param toSearch raw line with variables
+     *
      * @return if the raw line contains this enums variable
      */
     public boolean contains(String toSearch) {
