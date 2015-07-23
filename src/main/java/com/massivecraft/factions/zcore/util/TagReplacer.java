@@ -174,11 +174,11 @@ public enum TagReplacer {
                 case PLAYER_DEATHS:
                     return String.valueOf(fp.getDeaths());
                 case HCFE_COMBATTAGTIME:
-                    return CooldownUtils.combatTag.containsKey(fp.getPlayer().getUniqueId()) ? String.valueOf(CooldownUtils.combatTag.get(fp.getPlayer().getUniqueId())) : none;
+                    return org.itsmonkey.hcfessentials.utils.Utils.convertTime(CooldownUtils.combatTag.get(fp.getPlayer().getUniqueId()));
                 case HCFE_ENDERPEARLTIME:
-                    return CooldownUtils.enderpearl.containsKey(fp.getPlayer().getUniqueId()) ? String.valueOf(CooldownUtils.combatTag.get(fp.getPlayer().getUniqueId())) : none;
+                    return org.itsmonkey.hcfessentials.utils.Utils.convertTime(CooldownUtils.enderpearl.get(fp.getPlayer().getUniqueId()));
                 case HCFE_PVPTIMER:
-                    return CooldownUtils.pvpTimer.containsKey(fp.getPlayer().getUniqueId()) ? String.valueOf(CooldownUtils.combatTag.get(fp.getPlayer().getUniqueId())) : none;
+                    return org.itsmonkey.hcfessentials.utils.Utils.convertTime(CooldownUtils.pvpTimer.get(fp.getPlayer().getUniqueId()));
             }
 
         }
