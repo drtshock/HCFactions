@@ -242,20 +242,6 @@ public class FactionsPlayerListener implements Listener {
 
         if (!canPlayerUseBlock(player, block, false)) {
             event.setCancelled(true);
-            if (Conf.handleExploitInteractionSpam) {
-                String name = player.getName();
-                InteractAttemptSpam attempt = interactSpammers.get(name);
-                if (attempt == null) {
-                    attempt = new InteractAttemptSpam();
-                    interactSpammers.put(name, attempt);
-                }
-                int count = attempt.increment();
-                if (count >= 10) {
-                    FPlayer me = FPlayers.getInstance().getByPlayer(player);
-                    me.msg(TL.PLAYER_OUCH);
-                    player.damage(NumberConversions.floor((double) count / 10));
-                }
-            }
             return;
         }
 
@@ -265,27 +251,6 @@ public class FactionsPlayerListener implements Listener {
 
         if (!playerCanUseItemHere(player, block.getLocation(), event.getMaterial(), false)) {
             event.setCancelled(true);
-        }
-    }
-
-
-    // for handling people who repeatedly spam attempts to open a door (or similar) in another faction's territory
-    private Map<String, InteractAttemptSpam> interactSpammers = new HashMap<String, InteractAttemptSpam>();
-
-    private static class InteractAttemptSpam {
-        private int attempts = 0;
-        private long lastAttempt = System.currentTimeMillis();
-
-        // returns the current attempt count
-        public int increment() {
-            long Now = System.currentTimeMillis();
-            if (Now > lastAttempt + 2000) {
-                attempts = 1;
-            } else {
-                attempts++;
-            }
-            lastAttempt = Now;
-            return attempts;
         }
     }
 
