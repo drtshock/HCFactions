@@ -154,7 +154,7 @@ public interface FPlayer extends EconomyParticipator {
     //----------------------------------------------//
     public void heal(int amnt);
 
-    public void onDeath();
+    public void onDeath(String world);
 
     //----------------------------------------------//
     // Territory

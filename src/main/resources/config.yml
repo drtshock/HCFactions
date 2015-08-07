@@ -174,7 +174,12 @@ hcf:
     # Minimum DTR a faction can have 
     min-faction-dtr: -6.0
     # How much DTR is lost on death
-    death-dtr: 1.0
+    # Set per world with worlds in all lowercase.
+    death-dtr:
+      default: 1.0 # If the world isn't specified.
+      world: 1.0
+      world_nether: .5
+      world_the_end: 2
     # How much DTR is replenished per faction member per minute 
     minute-dtr: 0.01
     # How much max DTR should a faction gain per player?

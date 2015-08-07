@@ -78,7 +78,7 @@ public class FactionsEntityListener implements Listener {
 
         // Call player onDeath if the event is not cancelled
         if (!dtrEvent.isCancelled()) {
-            fplayer.onDeath();
+            fplayer.onDeath(entity.getWorld().getName());
             Faction disFac = fplayer.getFaction();
             for (FPlayer member : disFac.getFPlayersWhereOnline(true)) {
                 member.msg(TL.FACTION_DEATH, fplayer.getName(), TL.dc.format(disFac.getDTR()), TL.dc.format(disFac.getMaxDTR()));
