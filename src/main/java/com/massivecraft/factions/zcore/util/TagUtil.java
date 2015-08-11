@@ -161,6 +161,9 @@ public class TagUtil {
                 FancyMessage currentOnline = P.p.txt.parseFancy(prefix);
                 boolean firstOnline = true;
                 for (FPlayer p : MiscUtil.rankOrder(target.getFPlayersWhereOnline(true))) {
+                    if (P.p.getConfig().getBoolean("hcf.omit-leader", false) && target.getFPlayerAdmin().getName().equals(p.getName())) {
+                        continue;
+                    }
                     String name = p.getNameAndTitle();
                     currentOnline.then(firstOnline ? name : ", " + name);
                     currentOnline.tooltip(tipPlayer(p)).color(fme.getColorTo(p));
@@ -176,6 +179,9 @@ public class TagUtil {
                 FancyMessage currentOffline = P.p.txt.parseFancy(prefix);
                 boolean firstOffline = true;
                 for (FPlayer p : MiscUtil.rankOrder(target.getFPlayers())) {
+                    if (P.p.getConfig().getBoolean("hcf.omit-leader", false) && target.getFPlayerAdmin().getName().equals(p.getName())) {
+                        continue;
+                    }
                     String name = p.getNameAndTitle();
                     if (!p.isOnline()) {
                         currentOffline.then(firstOffline ? name : ", " + name);

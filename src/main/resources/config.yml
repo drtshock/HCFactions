@@ -316,6 +316,9 @@ permanent-show:
 # For a /f show that does not display fancy messages that are essentially empty, use minimal-show
 minimal-show: false
 
+# If enabled, will remove the {leader} from online/offline list
+omit-leader: false
+
 ############################################################
 # +------------------------------------------------------+ #
 # |                Configurable /f list                  | #
