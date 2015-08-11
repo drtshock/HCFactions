@@ -30,7 +30,12 @@ public class FCmdRoot extends FCommand {
     public CmdLock cmdLock = new CmdLock();
     public CmdMap cmdMap = new CmdMap();
     public CmdMod cmdMod = new CmdMod();
-    public CmdMoney cmdMoney = new CmdMoney();
+    public CmdMoneyBalance cmdMoneyBalance = new CmdMoneyBalance();
+    public CmdMoneyDeposit cmdMoneyDeposit = new CmdMoneyDeposit();
+    public CmdMoneyWithdraw cmdMoneyWithdraw = new CmdMoneyWithdraw();
+    public CmdMoneyTransferFf cmdMoneyTransferFf = new CmdMoneyTransferFf();
+    public CmdMoneyTransferFp cmdMoneyTransferFp = new CmdMoneyTransferFp();
+    public CmdMoneyTransferPf cmdMoneyTransferPf = new CmdMoneyTransferPf();
     public CmdOpen cmdOpen = new CmdOpen();
     public CmdOwner cmdOwner = new CmdOwner();
     public CmdOwnerList cmdOwnerList = new CmdOwnerList();
@@ -110,7 +115,12 @@ public class FCmdRoot extends FCommand {
         this.addSubCommand(this.cmdLock);
         this.addSubCommand(this.cmdMap);
         this.addSubCommand(this.cmdMod);
-        this.addSubCommand(this.cmdMoney);
+        this.addSubCommand(this.cmdMoneyBalance);
+        this.addSubCommand(this.cmdMoneyDeposit);
+        this.addSubCommand(this.cmdMoneyWithdraw);
+        this.addSubCommand(this.cmdMoneyTransferFf);
+        this.addSubCommand(this.cmdMoneyTransferFp);
+        this.addSubCommand(this.cmdMoneyTransferPf);
         this.addSubCommand(this.cmdOpen);
         this.addSubCommand(this.cmdOwner);
         this.addSubCommand(this.cmdOwnerList);
