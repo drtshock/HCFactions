@@ -196,6 +196,9 @@ hcf:
     # False unless you want factions to gain back the DTR
     # they would have generated during their DTR freeze
     allow-background-regen: false
+    # Should we let players /f leave inside their claim?
+    # Set to false to have better "insiding" protection.
+    allow-leave-in-claim: true
     # Should we let players leave a frozen faction?
     freeze-leave: false
     # Should we let players join a frozen faction?

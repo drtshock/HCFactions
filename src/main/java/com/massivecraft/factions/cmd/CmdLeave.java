@@ -1,5 +1,6 @@
 package com.massivecraft.factions.cmd;
 
+import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 
@@ -23,6 +24,10 @@ public class CmdLeave extends FCommand {
 
     @Override
     public void perform() {
+        if (fme.isInOwnTerritory() && P.p.getConfig().getBoolean("hcf.dtr.allow-leave-in-claim", false) && !fme.isAdminBypassing()) {
+            fme.msg(TL.LEAVE_DENY_INCLAIM);
+            return;
+        }
         fme.leave(true);
     }
 

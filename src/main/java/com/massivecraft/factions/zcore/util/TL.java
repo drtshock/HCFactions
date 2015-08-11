@@ -510,6 +510,7 @@ public enum TL {
     LEAVE_TOLEAVE("to leave your faction."),
     LEAVE_FORLEAVE("for leaving your faction."),
     LEAVE_DENY_FROZEN("<b>You aren't allowed to leave a frozen faction!"),
+    LEAVE_DENY_INCLAIM("<b>You cannot leave when inside your factions territory."),
     LEAVE_DENY_COOLING("<b>You cannot leave until you've cooled down from combat!"),
     LEAVE_LEFT("%s <i>left %s."),
     LEAVE_DISBANDED("<a>%s<i> was disbanded."),
