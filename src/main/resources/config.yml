@@ -217,8 +217,11 @@ hcf:
   # Max land a faction can have claimed
   faction-land-max: 36
   
-  # How much land a faction gets per member
+  # How much additional land a faction gets per member
   land-per-player: 6
+
+  # How much land a solo faction starts off with
+  initial-land: 6
 
   # Allows PVP betweeen faction allies
   friendly-fire: false
