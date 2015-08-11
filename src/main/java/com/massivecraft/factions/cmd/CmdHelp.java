@@ -110,7 +110,6 @@ public class CmdHelp extends FCommand {
             pageLines.add(p.txt.parse(TL.COMMAND_HELP_BANK_2.toString()));
             pageLines.add(p.txt.parse(TL.COMMAND_HELP_BANK_3.toString()));
             pageLines.add("");
-            pageLines.add(p.cmdBase.cmdMoney.getUseageTemplate(true));
             pageLines.add("");
             pageLines.add("");
             pageLines.add("");
