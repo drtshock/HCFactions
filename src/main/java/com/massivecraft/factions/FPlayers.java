@@ -29,7 +29,7 @@ public abstract class FPlayers {
 
     public abstract Collection<FPlayer> getAllFPlayers();
 
-    public abstract void forceSave();
+    public abstract void forceSave(boolean sync);
 
     public abstract FPlayer getByOfflinePlayer(OfflinePlayer player);
 

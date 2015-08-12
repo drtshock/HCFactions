@@ -73,7 +73,7 @@ public abstract class Board {
      */
     public abstract ArrayList<String> getMap(Faction faction, FLocation flocation, double inDegrees);
 
-    public abstract boolean forceSave();
+    public abstract void forceSave(boolean sync);
 
     public abstract boolean load();
 }

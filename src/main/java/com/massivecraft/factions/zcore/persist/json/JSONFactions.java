@@ -52,18 +52,23 @@ public class JSONFactions extends MemoryFactions {
         this.nextId = 1;
     }
 
-    public void forceSave() {
+    public void forceSave(boolean sync) {
         Map<String, JSONFaction> entitiesThatShouldBeSaved = new HashMap<String, JSONFaction>();
         for (Faction entity : this.factions.values()) {
             entitiesThatShouldBeSaved.put(entity.getId(), (JSONFaction) entity);
         }
 
-        this.saveCore(this.file, entitiesThatShouldBeSaved);
+        this.saveCore(this.file, entitiesThatShouldBeSaved, sync);
     }
 
     private boolean saveCore(File target, Map<String, JSONFaction> entities) {
-        return DiscUtil.writeCatch(target, this.gson.toJson(entities));
+        return saveCore(target, entities, true);
     }
+
+    private boolean saveCore(File target, Map<String, JSONFaction> entities, boolean sync) {
+        return DiscUtil.writeCatch(target, this.gson.toJson(entities), sync);
+    }
+
 
     public void load() {
         Map<String, JSONFaction> factions = this.loadCore();
@@ -253,7 +258,7 @@ public class JSONFactions extends MemoryFactions {
             }
         }));
         this.nextId = old.nextId;
-        forceSave();
+        forceSave(true);
         Factions.instance = this;
     }
 }

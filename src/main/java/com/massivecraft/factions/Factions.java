@@ -32,7 +32,7 @@ public abstract class Factions {
 
     public abstract Faction getWarZone();
 
-    public abstract void forceSave();
+    public abstract void forceSave(boolean sync);
 
     public static Factions getInstance() {
         return instance;

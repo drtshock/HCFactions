@@ -178,9 +178,9 @@ public abstract class MPlugin extends JavaPlugin {
         }
         // only save data if plugin actually loaded successfully
         if (loadSuccessful) {
-            Factions.getInstance().forceSave();
-            FPlayers.getInstance().forceSave();
-            Board.getInstance().forceSave();
+            Factions.getInstance().forceSave(true);
+            FPlayers.getInstance().forceSave(true);
+            Board.getInstance().forceSave(true);
         }
         log("Disabled");
     }

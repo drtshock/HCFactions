@@ -46,22 +46,26 @@ public class JSONFPlayers extends MemoryFPlayers {
                 return new JSONFPlayer((MemoryFPlayer) arg0);
             }
         }));
-        forceSave();
+        forceSave(true);
         FPlayers.instance = this;
     }
 
-    public void forceSave() {
+    public void forceSave(boolean sync) {
         Map<String, JSONFPlayer> entitiesThatShouldBeSaved = new HashMap<String, JSONFPlayer>();
         for (FPlayer entity : this.fPlayers.values()) {
             if (((MemoryFPlayer) entity).shouldBeSaved()) {
                 entitiesThatShouldBeSaved.put(entity.getId(), (JSONFPlayer) entity);
             }
         }
-        this.saveCore(this.file, entitiesThatShouldBeSaved);
+        this.saveCore(this.file, entitiesThatShouldBeSaved, sync);
     }
 
     private boolean saveCore(File target, Map<String, JSONFPlayer> data) {
-        return DiscUtil.writeCatch(target, this.gson.toJson(data));
+        return saveCore(target, data, true);
+    }
+
+    private boolean saveCore(File target, Map<String, JSONFPlayer> data, boolean sync) {
+        return DiscUtil.writeCatch(target, this.gson.toJson(data), sync);
     }
 
     public void load() {

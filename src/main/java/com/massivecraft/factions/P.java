@@ -171,7 +171,7 @@ public class P extends MPlugin {
 
     @Override
     public void postAutoSave() {
-        Board.getInstance().forceSave();
+        Board.getInstance().forceSave(true);
         Conf.save();
     }
 

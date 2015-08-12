@@ -62,18 +62,12 @@ public class JSONBoard extends MemoryBoard {
         }
     }
 
-    public boolean forceSave() {
-        //Factions.log("Saving board to disk");
+    public void forceSave() {
+        forceSave(true);
+    }
 
-        try {
-            DiscUtil.write(file, P.p.gson.toJson(dumpAsSaveFormat()));
-        } catch (Exception e) {
-            e.printStackTrace();
-            P.p.log("Failed to save the board to disk.");
-            return false;
-        }
-
-        return true;
+    public void forceSave(boolean sync) {
+        DiscUtil.writeCatch(file, P.p.gson.toJson(dumpAsSaveFormat()), sync);
     }
 
     public boolean load() {

@@ -42,7 +42,7 @@ public abstract class MemoryFPlayers extends FPlayers {
     }
 
     @Override
-    public abstract void forceSave();
+    public abstract void forceSave(boolean sync);
 
     public abstract void load();
 
