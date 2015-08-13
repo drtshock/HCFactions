@@ -409,8 +409,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
         int landPerPlayer = P.p.getConfig().getInt("hcf.land-per-player", 6);
         int maxFactionLand = P.p.getConfig().getInt("hcf.faction-land-max", 36);
         int initialLand = P.p.getConfig().getInt("hcf.initial-land", 6);
-        // if faction is a player made, permanent faction it has the max faction land
-        return isPermanent() && isNormal() ? maxFactionLand : initialLand + Math.min((getSize() - 1) * landPerPlayer, maxFactionLand);
+        return isPermanent() && isNormal() ? maxFactionLand : Math.min(initialLand + ((getSize() - 1) * landPerPlayer), maxFactionLand);
     }
 
     public int getLandInWorld(String worldName) {
