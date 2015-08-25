@@ -6,6 +6,7 @@ import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.scoreboards.FScoreboard;
 import com.massivecraft.factions.scoreboards.FTeamWrapper;
 import com.massivecraft.factions.scoreboards.sidebar.FDefaultSidebar;
+import com.massivecraft.factions.scoreboards.sidebar.FMapSidebar;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.struct.Role;
@@ -24,11 +25,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.*;
-import org.bukkit.util.NumberConversions;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -75,8 +74,12 @@ public class FactionsPlayerListener implements Listener {
         FScoreboard.init(me);
         if (P.p.getConfig().getBoolean("scoreboard.default-enabled", false)) {
             int interval = P.p.getConfig().getInt("default-update-interval", 5);
-            P.p.debug("Update interval: " + interval + " ticks: " + interval * 20);
+            P.p.debug("Default Update interval: " + interval + " ticks: " + interval * 20);
             FScoreboard.get(me).setDefaultSidebar(new FDefaultSidebar(), interval * 20);
+        } else if (P.p.getConfig().getBoolean("scoreboard.map-enabled", false)) {
+            int interval = P.p.getConfig().getInt("scoreboard.map-interval", 5);
+            P.p.debug("Map Update interval: " + interval + " ticks: " + interval * 20);
+            FScoreboard.get(me).setDefaultSidebar(new FMapSidebar(), interval * 20);
         }
         FScoreboard.get(me).setSidebarVisibility(P.p.cmdBase.cmdSB.showBoard(me));
 

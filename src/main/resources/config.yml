@@ -116,6 +116,8 @@ scoreboard:
     - "&aLand"
     - "{land}/{max-land}&f"
 
+  map-enabled: false
+  map-interval: 5
   factionless-enabled: false
   factionless:
     - "&6Make a new faction"
