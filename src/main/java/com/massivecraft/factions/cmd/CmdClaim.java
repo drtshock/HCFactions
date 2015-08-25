@@ -54,7 +54,7 @@ public class CmdClaim extends FCommand {
 
                 @Override
                 public boolean work() {
-                    boolean success = fme.attemptClaim(forFaction, this.currentLocation(), true);
+                    boolean success = fme.attemptClaim(forFaction, this.currentLocation(), true, false);
                     if (success) {
                         failCount = 0;
                     } else if (failCount++ >= limit) {
@@ -65,6 +65,7 @@ public class CmdClaim extends FCommand {
                     return true;
                 }
             };
+            msg(TL.COMMAND_CLAIM_FINISHED); // not technically sent after all chunks are claimed. . .
         }
     }
 

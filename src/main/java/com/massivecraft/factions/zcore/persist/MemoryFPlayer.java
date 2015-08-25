@@ -431,7 +431,7 @@ public abstract class MemoryFPlayer implements FPlayer {
         if (hasFaction()) {
             // updates DTR of each faction member so net effect is death-dtr
             double dtrLoss = -P.p.getConfig().getDouble("hcf.dtr.death-dtr.default", 1.0);
-            if(P.p.getConfig().contains("hcf.dtr.death-dtr." + world.toLowerCase())) {
+            if (P.p.getConfig().contains("hcf.dtr.death-dtr." + world.toLowerCase())) {
                 dtrLoss = -P.p.getConfig().getDouble("hcf.dtr.death-dtr." + world.toLowerCase());
             }
             this.getFaction().alterDTR(dtrLoss);
@@ -638,6 +638,10 @@ public abstract class MemoryFPlayer implements FPlayer {
     }
 
     public boolean attemptClaim(Faction forFaction, Location location, boolean notifyFailure) {
+        return attemptClaim(forFaction, location, notifyFailure, true); // notify by default
+    }
+
+    public boolean attemptClaim(Faction forFaction, Location location, boolean notifyFailure, boolean notifySuccess) {
         // notifyFailure is false if called by auto-claim; no need to notify on every failure for it
         // return value is false on failure, true on success
 
@@ -683,12 +687,14 @@ public abstract class MemoryFPlayer implements FPlayer {
             return false;
         }
 
-        // announce success
-        Set<FPlayer> informTheseFPlayers = new HashSet<FPlayer>();
-        informTheseFPlayers.add(this);
-        informTheseFPlayers.addAll(forFaction.getFPlayersWhereOnline(true));
-        for (FPlayer fp : informTheseFPlayers) {
-            fp.msg(TL.CLAIM_CLAIMED, this.describeTo(fp, true), forFaction.describeTo(fp), currentFaction.describeTo(fp));
+        if (notifySuccess) {
+            // announce success
+            Set<FPlayer> informTheseFPlayers = new HashSet<FPlayer>();
+            informTheseFPlayers.add(this);
+            informTheseFPlayers.addAll(forFaction.getFPlayersWhereOnline(true));
+            for (FPlayer fp : informTheseFPlayers) {
+                fp.msg(TL.CLAIM_CLAIMED, this.describeTo(fp, true), forFaction.describeTo(fp), currentFaction.describeTo(fp));
+            }
         }
 
         Board.getInstance().setFactionAt(forFaction, flocation);

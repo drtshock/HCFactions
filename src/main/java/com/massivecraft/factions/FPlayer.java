@@ -191,6 +191,8 @@ public interface FPlayer extends EconomyParticipator {
 
     public boolean attemptClaim(Faction forFaction, Location location, boolean notifyFailure);
 
+    public boolean attemptClaim(Faction forFaction, Location location, boolean notifyFailure, boolean notifySuccess);
+
     public void msg(String str, Object... args);
 
     public String getId();
