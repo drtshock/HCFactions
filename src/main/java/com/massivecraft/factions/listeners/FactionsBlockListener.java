@@ -166,7 +166,7 @@ public class FactionsBlockListener implements Listener {
             return true;
         }
 
-        if (otherFaction.isNone()) {
+        if (otherFaction.isWilderness()) {
             return !Conf.wildernessDenyBuild || Conf.worldsNoWildernessProtection.contains(target.getWorld().getName());
         } else if (otherFaction.isSafeZone()) {
             return !Conf.safeZoneDenyBuild;
@@ -193,7 +193,7 @@ public class FactionsBlockListener implements Listener {
         FLocation loc = new FLocation(location);
         Faction otherFaction = Board.getInstance().getFactionAt(loc);
 
-        if (otherFaction.isNone()) {
+        if (otherFaction.isWilderness()) {
             if (Conf.worldGuardBuildPriority && Worldguard.playerCanBuild(player, location)) {
                 return true;
             }

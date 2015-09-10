@@ -76,7 +76,7 @@ public class FTeamWrapper {
             FTeamWrapper.applyUpdates(Factions.getInstance().getNone());
         }
 
-        if (faction.isNone()) {
+        if (faction.isWilderness()) {
             // add faction-less players so we can format them in scoreboard
             for (FPlayer player : FPlayers.getInstance().getOnlinePlayers()) {
                 if (!player.hasFaction()) {

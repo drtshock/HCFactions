@@ -52,7 +52,7 @@ public class StuckRequest implements Runnable {
             public boolean work() {
                 FLocation chunk = currentFLocation();
                 Faction faction = board.getFactionAt(chunk);
-                if (faction.isNone()) {
+                if (faction.isWilderness()) {
                     int cx = FLocation.chunkToBlock((int) chunk.getX());
                     int cz = FLocation.chunkToBlock((int) chunk.getZ());
                     int y = world.getHighestBlockYAt(cx, cz);

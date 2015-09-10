@@ -79,7 +79,7 @@ public class FactionsPlayerListener implements Listener {
         FScoreboard.get(me).setSidebarVisibility(P.p.cmdBase.cmdSB.showBoard(me));
 
         Faction myFaction = me.getFaction();
-        if (!myFaction.isNone()) {
+        if (!myFaction.isWilderness()) {
             for (FPlayer other : myFaction.getFPlayersWhereOnline(true)) {
                 if (other != me && other.isMonitoringJoins()) {
                     other.msg(TL.FACTION_LOGIN, me.getName());
@@ -104,11 +104,11 @@ public class FactionsPlayerListener implements Listener {
         }
 
         Faction myFaction = me.getFaction();
-        if (!myFaction.isNone()) {
+        if (!myFaction.isWilderness()) {
             myFaction.memberLoggedOff();
         }
 
-        if (!myFaction.isNone()) {
+        if (!myFaction.isWilderness()) {
             for (FPlayer player : myFaction.getFPlayersWhereOnline(true)) {
                 if (player != me && player.isMonitoringJoins()) {
                     player.msg(TL.FACTION_LOGOUT, me.getName());
@@ -181,7 +181,7 @@ public class FactionsPlayerListener implements Listener {
                 if (Conf.ownedAreasEnabled && Conf.ownedMessageOnBorder && myFaction == factionTo && !ownersTo.isEmpty()) {
                     me.sendMessage(TL.GENERIC_OWNERS.format(ownersTo));
                 }
-            } else if (Conf.ownedAreasEnabled && Conf.ownedMessageInsideTerritory && myFaction == factionTo && !myFaction.isNone()) {
+            } else if (Conf.ownedAreasEnabled && Conf.ownedMessageInsideTerritory && myFaction == factionTo && !myFaction.isWilderness()) {
                 String ownersFrom = myFaction.getOwnerListString(from);
                 if (Conf.ownedMessageByChunk || !ownersFrom.equals(ownersTo)) {
                     if (!ownersTo.isEmpty()) {
@@ -281,7 +281,7 @@ public class FactionsPlayerListener implements Listener {
             }
         }
 
-        if (otherFaction.isNone()) {
+        if (otherFaction.isWilderness()) {
             if (!Conf.wildernessDenyUseage || Conf.worldsNoWildernessProtection.contains(location.getWorld().getName())) {
                 return true; // This is not faction territory. Use whatever you like here.
             }
