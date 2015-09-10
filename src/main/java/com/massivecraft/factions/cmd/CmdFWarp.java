@@ -7,9 +7,12 @@ import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.zcore.util.TL;
 import mkremins.fanciful.FancyMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 import java.util.Map;
+import java.util.UUID;
 
 public class CmdFWarp extends FCommand {
 
@@ -42,11 +45,14 @@ public class CmdFWarp extends FCommand {
                 if (!transact(fme)) {
                     return;
                 }
+                final FPlayer fplayer = fme;
+                final UUID uuid = fme.getPlayer().getUniqueId();
                 this.doWarmUp(TL.WARMUPS_NOTIFY_TELEPORT, warpName, new Runnable() {
                     @Override
                     public void run() {
-                        CmdFWarp.this.fme.getPlayer().teleport(CmdFWarp.this.myFaction.getWarp(warpName).getLocation());
-                        CmdFWarp.this.fme.msg(TL.COMMAND_FWARP_WARPED, warpName);
+                        Player player = Bukkit.getPlayer(uuid);
+                        player.teleport(fplayer.getFaction().getWarp(warpName).getLocation());
+                        fplayer.msg(TL.COMMAND_FWARP_WARPED, warpName);
                     }
                 }, this.p.getConfig().getLong("warmups.f-warp", 0));
             } else {
