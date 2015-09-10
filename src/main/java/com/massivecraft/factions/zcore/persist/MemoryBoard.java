@@ -1,26 +1,73 @@
 package com.massivecraft.factions.zcore.persist;
 
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 import com.massivecraft.factions.*;
 import com.massivecraft.factions.struct.Relation;
 import com.massivecraft.factions.util.AsciiCompass;
 import com.massivecraft.factions.util.LazyLocation;
 import org.bukkit.ChatColor;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 
 public abstract class MemoryBoard extends Board {
-    public HashMap<FLocation, String> flocationIds = new HashMap<FLocation, String>();
+
+    public class MemoryBoardMap extends HashMap<FLocation, String> {
+        Multimap<String, FLocation> factionToLandMap = HashMultimap.create();
+
+        @Override
+        public String put(FLocation floc, String factionId) {
+            String previousValue = super.put(floc, factionId);
+            if (previousValue != null) {
+                factionToLandMap.remove(previousValue, floc);
+            }
+
+            factionToLandMap.put(factionId, floc);
+            return previousValue;
+        }
+
+        @Override
+        public String remove(Object key) {
+            String result = super.remove(key);
+            if (result != null) {
+                FLocation floc = (FLocation) key;
+                factionToLandMap.remove(result, floc);
+            }
+
+            return result;
+        }
+
+        @Override
+        public void clear() {
+            super.clear();
+            factionToLandMap.clear();
+        }
+
+        public int getOwnedLandCount(String factionId) {
+            return factionToLandMap.get(factionId).size();
+        }
+
+        public void removeFaction(String factionId) {
+            Collection<FLocation> flocations = factionToLandMap.removeAll(factionId);
+            for (FLocation floc : flocations) {
+                super.remove(floc);
+            }
+        }
+    }
+
+    public MemoryBoardMap flocationIds = new MemoryBoardMap();
 
     //----------------------------------------------//
     // Get and Set
     //----------------------------------------------//
     public String getIdAt(FLocation flocation) {
-        return !flocationIds.containsKey(flocation) ? "0" : flocationIds.get(flocation);
+        if (!flocationIds.containsKey(flocation)) {
+            return "0";
+        }
+
+        return flocationIds.get(flocation);
     }
 
     public Faction getFactionAt(FLocation flocation) {
@@ -53,6 +100,22 @@ public abstract class MemoryBoard extends Board {
         flocationIds.remove(flocation);
     }
 
+    public Set<FLocation> getAllClaims(String factionId) {
+        Set<FLocation> locs = new HashSet<FLocation>();
+        Iterator<Entry<FLocation, String>> iter = flocationIds.entrySet().iterator();
+        while (iter.hasNext()) {
+            Entry<FLocation, String> entry = iter.next();
+            if (entry.getValue().equals(factionId)) {
+                locs.add(entry.getKey());
+            }
+        }
+        return locs;
+    }
+
+    public Set<FLocation> getAllClaims(Faction faction) {
+        return getAllClaims(faction.getId());
+    }
+
     // not to be confused with claims, ownership referring to further member-specific ownership of a claim
     public void clearOwnershipAt(FLocation flocation) {
         Faction faction = getFactionAt(flocation);
@@ -65,19 +128,13 @@ public abstract class MemoryBoard extends Board {
         Faction faction = Factions.getInstance().getFactionById(factionId);
         if (faction != null && faction.isNormal()) {
             faction.clearAllClaimOwnership();
+            faction.clearWarps();
         }
-        faction.clearWarps();
         clean(factionId);
     }
 
     public void clean(String factionId) {
-        Iterator<Entry<FLocation, String>> iter = flocationIds.entrySet().iterator();
-        while (iter.hasNext()) {
-            Entry<FLocation, String> entry = iter.next();
-            if (entry.getValue().equals(factionId)) {
-                iter.remove();
-            }
-        }
+        flocationIds.removeFaction(factionId);
     }
 
     // Is this coord NOT completely surrounded by coords claimed by the same faction?
@@ -107,7 +164,6 @@ public abstract class MemoryBoard extends Board {
      * @param flocation - center location.
      * @param faction   - faction checking for.
      * @param radius    - chunk radius to check.
-     *
      * @return true if another Faction is within the radius, otherwise false.
      */
     public boolean hasFactionWithin(FLocation flocation, Faction faction, int radius) {
@@ -149,13 +205,7 @@ public abstract class MemoryBoard extends Board {
     //----------------------------------------------//
 
     public int getFactionCoordCount(String factionId) {
-        int ret = 0;
-        for (String thatFactionId : flocationIds.values()) {
-            if (thatFactionId.equals(factionId)) {
-                ret += 1;
-            }
-        }
-        return ret;
+        return flocationIds.getOwnedLandCount(factionId);
     }
 
     public int getFactionCoordCount(Faction faction) {
@@ -219,10 +269,10 @@ public abstract class MemoryBoard extends Board {
                     } else if (factionHere.isWarZone()) {
                         row += ChatColor.DARK_RED + "+";
                     } else if (factionHere == faction ||
-                                       factionHere == factionLoc ||
-                                       relation.isAtLeast(Relation.ALLY) ||
-                                       (Conf.showNeutralFactionsOnMap && relation.equals(Relation.NEUTRAL)) ||
-                                       (Conf.showEnemyFactionsOnMap && relation.equals(Relation.ENEMY))) {
+                            factionHere == factionLoc ||
+                            relation.isAtLeast(Relation.ALLY) ||
+                            (Conf.showNeutralFactionsOnMap && relation.equals(Relation.NEUTRAL)) ||
+                            (Conf.showEnemyFactionsOnMap && relation.equals(Relation.ENEMY))) {
                         if (!fList.containsKey(factionHere.getTag())) {
                             fList.put(factionHere.getTag(), Conf.mapKeyChrs[Math.min(chrIdx++, Conf.mapKeyChrs.length - 1)]);
                         }
