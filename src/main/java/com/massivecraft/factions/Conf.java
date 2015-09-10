@@ -140,6 +140,8 @@ public class Conf {
     public static Set<String> territoryNeutralDenyCommands = new LinkedHashSet<String>();
     public static Set<String> territoryEnemyDenyCommands = new LinkedHashSet<String>();
     public static Set<String> warzoneDenyCommands = new LinkedHashSet<String>();
+    public static Set<String> territoryAllyDenyCommands = new LinkedHashSet<>();
+    public static Set<String> wildernessDenyCommands = new LinkedHashSet<>();
 
     public static boolean territoryDenyBuild = true;
     public static boolean territoryDenyBuildWhenOffline = true;

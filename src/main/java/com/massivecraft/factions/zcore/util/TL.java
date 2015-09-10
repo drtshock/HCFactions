@@ -655,6 +655,8 @@ public enum TL {
     PLAYER_COMMAND_NEUTRAL("<b>You can't use the command '%s' in neutral territory."),
     PLAYER_COMMAND_ENEMY("<b>You can't use the command '%s' in enemy territory."),
     PLAYER_COMMAND_PERMANENT("<b>You can't use the command '%s' because you are in a permanent faction."),
+    PLAYER_COMMAND_ALLY("<b>You can't use the command '%s' in ally territory."),
+    PLAYER_COMMAND_WILDERNESS("<b>You can't use the command '%s' in the wilderness."),
 
     PLAYER_DTR_NOLOSS_PEACEFUL("<i>You didn't lose any dtr since you are in a peaceful faction."),
     PLAYER_DTR_NOLOSS_WORLD("<i>You didn't lose any dtr due to the world you died in."),
