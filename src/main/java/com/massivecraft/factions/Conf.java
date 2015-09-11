@@ -116,6 +116,7 @@ public class Conf {
 
     public static boolean peacefulTerritoryDisablePVP = true;
     public static boolean peacefulTerritoryDisableMonsters = false;
+    public static boolean peacefulTerritoryDisableBoom = false;
     public static boolean peacefulMembersDisableDtrLoss = true;
 
     public static boolean permanentFactionsAreRaidable = false;
