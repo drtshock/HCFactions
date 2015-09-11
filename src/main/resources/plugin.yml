@@ -16,6 +16,7 @@ permissions:
       factions.lock: true
       factions.reload: true
       factions.save: true
+      factions.ahome: true
   factions.*:
     description: This is just an alias for factions.kit.admin
     children:
@@ -244,3 +245,5 @@ permissions:
     description: claim in a line
   factions.top:
     description: sort factions
+  factions.ahome:
+    descriptipn: Ability to send players to their faction home
