@@ -701,6 +701,7 @@ public enum TL {
     SAFEZONE("safezone", "&6Safezone"),
     SAFEZONE_DESCRIPTION("safezone-description", "Free from pvp and monsters."),
     TOGGLE_SB("toggle-sb", "You now have scoreboards set to {value}"),
+    FACTION_UNFROZEN("faction-unfrozen","<a>Your faction is no longer frozen."),
     FACTION_LEAVE("faction-leave", "<a>Leaving %1$s, <a>Entering %2$s"),
     FACTION_DEATH("faction-death", "&6Member death: &2%1$s &e(&6DTR = &5%2$s / %3$s&e)"),
     DEFAULT_PREFIX("default-prefix", "[&3{faction}&r]{relationcolor}"),

@@ -42,6 +42,7 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     protected long foundedDate;
     private long lastDeath;
     protected String tag;
+    protected transient boolean wasFrozen;
     protected double dtr;
     protected int land;
 
@@ -438,7 +439,12 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
                 // if we block background-regen, then we need to fake updates
                 this.lastDtrUpdateTime = System.currentTimeMillis();
             }
+            wasFrozen = true;
             return;
+        } else if (wasFrozen && P.p.getConfig().getBoolean("hcf.dtr.notify-unfreeze", false)) {
+            wasFrozen = false;
+            P.p.debug("Notified " + this.getTag() + " they are no longer frozen.");
+            this.msg(TL.FACTION_UNFROZEN);
         }
 
         long now = System.currentTimeMillis();
