@@ -262,7 +262,7 @@ public class Econ {
         if (isUUID(ep.getAccountId())) {
             OfflinePlayer offline = Bukkit.getOfflinePlayer(UUID.fromString(ep.getAccountId()));
             if (offline.getName() != null) {
-                currentBalance = econ.getBalance(Bukkit.getOfflinePlayer(UUID.fromString(ep.getAccountId())));
+                currentBalance = econ.getBalance(offline);
             } else {
                 currentBalance = 0;
             }
