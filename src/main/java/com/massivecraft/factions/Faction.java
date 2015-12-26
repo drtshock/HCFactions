@@ -97,6 +97,9 @@ public interface Faction extends EconomyParticipator {
 
     public boolean isNormal();
 
+    @Deprecated
+    public boolean isNone();
+
     public boolean isWilderness();
 
     public boolean isSafeZone();

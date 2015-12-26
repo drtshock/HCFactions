@@ -324,6 +324,11 @@ public abstract class MemoryFaction implements Faction, EconomyParticipator {
     // Understand the types
     // -------------------------------
 
+    @Deprecated
+    public boolean isNone() {
+        return isWilderness();
+    }
+
     public boolean isNormal() {
         return !(this.isWilderness() || this.isSafeZone() || this.isWarZone());
     }
