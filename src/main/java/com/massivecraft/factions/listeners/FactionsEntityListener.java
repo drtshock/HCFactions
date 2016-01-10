@@ -46,7 +46,13 @@ public class FactionsEntityListener implements Listener {
         FPlayer fplayer = FPlayers.getInstance().getByPlayer(player);
         Faction faction = Board.getInstance().getFactionAt(new FLocation(player.getLocation()));
 
-        DTRChangeEvent dtrEvent = new DTRChangeEvent(faction, faction.getDTR());
+        double delta = P.p.getConfig().getDouble("hcf.dtr.death-dtr.default", 1.0);
+        if (P.p.getConfig().contains("hcf.dtr.death-dtr." + player.getWorld().getName().toLowerCase())) {
+            delta = P.p.getConfig().getDouble("hcf.dtr.death-dtr." + player.getWorld().getName().toLowerCase());
+        }
+
+        DTRChangeEvent dtrEvent = new DTRChangeEvent(faction, fplayer, -delta);
+        fplayer.getl
         // Check for no dtr loss conditions
         if (faction.isWarZone()) {
             // war zones always override worldsNoDtrLoss either way, thus this layout

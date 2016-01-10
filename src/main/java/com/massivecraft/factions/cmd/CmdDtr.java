@@ -45,7 +45,7 @@ public class CmdDtr extends FCommand {
             return;
         } else {
             // needs own event call
-            DTRChangeEvent changeEvent = new DTRChangeEvent(targetFaction, targetFaction.getDTR(), targetDtr);
+            DTRChangeEvent changeEvent = new DTRChangeEvent(targetFaction, null, targetFaction.getDTR(), targetDtr);
             Bukkit.getServer().getPluginManager().callEvent(changeEvent);
             if (changeEvent.isCancelled()) {
                 return;

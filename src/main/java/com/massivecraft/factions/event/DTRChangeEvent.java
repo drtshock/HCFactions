@@ -1,27 +1,26 @@
 package com.massivecraft.factions.event;
 
+import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.Faction;
 import org.bukkit.event.Cancellable;
 
 /**
  * Event called when a factions dtr changes.
  */
-public class DTRChangeEvent extends FactionEvent implements Cancellable {
+public class DTRChangeEvent extends FactionPlayerEvent implements Cancellable {
 
     private boolean cancelled = false;
     private double from, to;
     private String message;
 
-    public DTRChangeEvent(Faction f, double from, double to) {
-        super(f);
+    public DTRChangeEvent(Faction f, FPlayer p, double from, double to) {
+        super(f, p);
         this.from = from;
         this.to = to;
     }
 
-    public DTRChangeEvent(Faction f, double from) {
-        super(f);
-        this.from = from;
-        this.to = from; // change of 0 ;p
+    public DTRChangeEvent(Faction faction, FPlayer player, double delta) {
+        this(faction, player, faction.getDTR(), faction.getDTR() + delta);
     }
 
     public double getFrom() {
