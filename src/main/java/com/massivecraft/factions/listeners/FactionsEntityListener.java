@@ -52,7 +52,7 @@ public class FactionsEntityListener implements Listener {
         }
 
         DTRChangeEvent dtrEvent = new DTRChangeEvent(faction, fplayer, -delta);
-        fplayer.getl
+
         // Check for no dtr loss conditions
         if (faction.isWarZone()) {
             // war zones always override worldsNoDtrLoss either way, thus this layout
