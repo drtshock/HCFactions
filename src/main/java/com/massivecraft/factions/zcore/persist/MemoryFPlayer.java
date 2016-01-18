@@ -29,9 +29,9 @@ import java.util.UUID;
  * Logged in players always have exactly one FPlayer instance. Logged out players may or may not have an FPlayer
  * instance. They will always have one if they are part of a faction. This is because only players with a faction are
  * saved to disk (in order to not waste disk space).
- * <p/>
+ * <p>
  * The FPlayer is linked to a minecraft player using the player name.
- * <p/>
+ * <p>
  * The same instance is always returned for the same player. This means you can use the == operator. No .equals method
  * necessary.
  */
@@ -212,14 +212,13 @@ public abstract class MemoryFPlayer implements FPlayer {
         this.isAdminBypassing = other.isAdminBypassing;
     }
 
-    public void login() {
-        this.kills = this.getPlayer().getStatistic(Statistic.PLAYER_KILLS);
-        this.deaths = this.getPlayer().getStatistic(Statistic.DEATHS);
-    }
-
-    public void logout() {
-        this.kills = this.getPlayer().getStatistic(Statistic.PLAYER_KILLS);
-        this.deaths = this.getPlayer().getStatistic(Statistic.DEATHS);
+    public void saveStats() {
+        Player player = this.getPlayer();
+        if (player == null) {
+            return;
+        }
+        this.kills = player.getStatistic(Statistic.PLAYER_KILLS);
+        this.deaths = player.getStatistic(Statistic.DEATHS);
     }
 
     public void resetFactionData(boolean doSpoutUpdate) {
