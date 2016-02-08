@@ -66,8 +66,12 @@ public class RelationUtil {
             return Relation.NEUTRAL; // ERROR
         }
 
-        if (!fthat.isNormal() || !fme.isNormal()) {
-            return Relation.fromString(P.p.getConfig().getString("default-relation", "enemy"));
+        if (!fthat.isNormal()) {
+            if (fthat.isSafeZone() || fme.isSafeZone()) {
+                return Relation.NEUTRAL; // safezone is neutral
+            } else if (!fme.isNormal()) {
+                return Relation.fromString(P.p.getConfig().getString("default-relation", "enemy"));
+            }
         }
 
         if (fthat.equals(fme)) {
