@@ -6,7 +6,7 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
 import com.massivecraft.factions.zcore.util.TagUtil;
-import mkremins.fanciful.FancyMessage;
+import net.md_5.bungee.api.chat.TextComponent;
 
 import java.util.List;
 
@@ -32,6 +32,7 @@ public class CmdShow extends FCommand {
         if (this.argIsSet(0)) {
             faction = this.argAsFaction(0);
         }
+
         if (faction == null) {
             return;
         }
@@ -49,6 +50,7 @@ public class CmdShow extends FCommand {
         if(faction.isNormal()) {
             if (faction.isPermanent() && faction.getFPlayers().size() == 0) {
                 List<String> perm_show = P.p.getConfig().getStringList("permanent-show");
+
                 if (perm_show != null && !perm_show.isEmpty()) {
                     show = perm_show; // we can show the permanent show from config
                 }
@@ -60,21 +62,30 @@ public class CmdShow extends FCommand {
 
         for (String raw : show) {
             String parsed = TagUtil.parsePlain(faction, fme, raw); // use relations
+
             if (parsed == null) {
                 continue; // line to be ignored, due to minimal show
             }
+
             if (TagUtil.hasFancy(parsed)) {
-                List<FancyMessage> fancy = TagUtil.parseFancy(faction, fme, parsed);
-                if (fancy != null) {
-                    sendFancyMessage(fancy);
+                String colorized = p.txt.parse(parsed);
+                List<TextComponent> components = TagUtil.parseFancy(faction, fme, colorized);
+
+                if (components != null) {
+                    for (TextComponent textComponent : components) {
+                        fme.getPlayer().spigot().sendMessage(textComponent);
+                    }
                 }
+
                 continue;
             }
+
             if (!parsed.contains("{notFrozen}") && !parsed.contains("{notPermanent}")) {
                 if (parsed.contains("{ig}")) {
                     // replaces all variables with no home TL
                     parsed = parsed.substring(0, parsed.indexOf("{ig}")) + TL.COMMAND_SHOW_NOHOME.toString();
                 }
+
                 // we don't add these entire lines to fshow, wouldn't make any sense to.
                 // Ex: DTR Freeze: 0 seconds. uhm, what?
                 msg(p.txt.parse(parsed));

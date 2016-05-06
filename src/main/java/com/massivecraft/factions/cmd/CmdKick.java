@@ -8,9 +8,12 @@ import com.massivecraft.factions.event.FPlayerLeaveEvent;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.struct.Role;
 import com.massivecraft.factions.zcore.util.TL;
-import mkremins.fanciful.FancyMessage;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 
 public class CmdKick extends FCommand {
 
@@ -34,19 +37,33 @@ public class CmdKick extends FCommand {
     public void perform() {
         FPlayer toKick = this.argIsSet(0) ? this.argAsBestFPlayerMatch(0) : null;
         if (toKick == null) {
-            FancyMessage msg = new FancyMessage(TL.COMMAND_KICK_CANDIDATES.toString()).color(ChatColor.GOLD);
+            TextComponent base = new TextComponent(TL.COMMAND_KICK_CANDIDATES.toString());
+            base.setColor(ChatColor.GOLD);
+
             for (FPlayer player : myFaction.getFPlayersWhereRole(Role.NORMAL)) {
                 String s = player.getName();
-                msg.then(s + " ").color(ChatColor.WHITE).tooltip(TL.COMMAND_KICK_CLICKTOKICK.toString() + s).command("/" + Conf.baseCommandAliases.get(0) + " kick " + s);
+
+                TextComponent normal = new TextComponent(s + " ");
+                normal.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(TL.COMMAND_KICK_CLICKTOKICK.toString() + s).create()));
+                normal.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + Conf.baseCommandAliases.get(0) + " kick " + s));
+                normal.setColor(ChatColor.WHITE);
+                base.addExtra(normal);
+
             }
+
             if (fme.getRole() == Role.ADMIN) {
                 for (FPlayer player : myFaction.getFPlayersWhereRole(Role.MODERATOR)) {
                     String s = player.getName();
-                    msg.then(s + " ").color(ChatColor.GRAY).tooltip(TL.COMMAND_KICK_CLICKTOKICK.toString() + s).command("/" + Conf.baseCommandAliases.get(0) + " kick " + s);
+
+                    TextComponent admin = new TextComponent(s + " ");
+                    admin.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(TL.COMMAND_KICK_CLICKTOKICK.toString() + s).create()));
+                    admin.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + Conf.baseCommandAliases.get(0) + " kick " + s));
+                    admin.setColor(ChatColor.GRAY);
+                    base.addExtra(admin);
                 }
             }
 
-            sendFancyMessage(msg);
+            fme.getPlayer().spigot().sendMessage(base);
             return;
         }
 

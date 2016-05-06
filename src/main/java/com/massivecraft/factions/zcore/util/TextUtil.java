@@ -1,6 +1,6 @@
 package com.massivecraft.factions.zcore.util;
 
-import mkremins.fanciful.FancyMessage;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
@@ -58,38 +58,47 @@ public class TextUtil {
     // Fancy parsing
     // -------------------------------------------- //
 
-    public FancyMessage parseFancy(String prefix) {
-        return toFancy(parse(prefix));
-    }
-
-    public static FancyMessage toFancy(String first) {
+    public static TextComponent toFancy(String prefix) {
         String text = "";
-        FancyMessage message = new FancyMessage(text);
-        ChatColor color = null;
-        char[] chars = first.toCharArray();
+        TextComponent base = new TextComponent(text);
+        net.md_5.bungee.api.ChatColor color = null;
+        char[] chars = parseColor(prefix).toCharArray();
 
-        for(int i = 0; i < chars.length; i++){
-            if (chars[i] == '§') {
-                if(color != null) {
-                    message.then(text).color(color);
+        for (int i = 0; i < chars.length; i++) {
+            if (chars[i] == net.md_5.bungee.api.ChatColor.COLOR_CHAR) {
+                if (color != null) {
+                    TextComponent next = new TextComponent(text);
+                    next.setColor(color);
+                    base.addExtra(next);
+
                     text = "";
-                    color = ChatColor.getByChar(chars[i+1]);
+                    color = net.md_5.bungee.api.ChatColor.getByChar(chars[i + 1]);
                 } else {
-                    color = ChatColor.getByChar(chars[i+1]);
+                    color = net.md_5.bungee.api.ChatColor.getByChar(chars[i + 1]);
                 }
                 i++; // skip color char
             } else {
                 text += chars[i];
             }
         }
-        if(text.length() > 0) {
-            if(color != null) {
-                message.then(text).color(color);
+
+        if (text.length() > 0) {
+            if (color != null) {
+                TextComponent next = new TextComponent(text);
+                next.setColor(color);
+                base.addExtra(next);
             } else {
-                message.text(text);
+                TextComponent next = new TextComponent(text);
+                next.setColor(net.md_5.bungee.api.ChatColor.RESET);
+                base.addExtra(next);
             }
         }
-        return message;
+
+        return base;
+    }
+
+    public static net.md_5.bungee.api.ChatColor toColor(ChatColor color) {
+        return net.md_5.bungee.api.ChatColor.valueOf(color.name());
     }
 
     // -------------------------------------------- //

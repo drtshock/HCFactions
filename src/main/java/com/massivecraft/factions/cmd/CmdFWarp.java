@@ -6,9 +6,12 @@ import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.util.LazyLocation;
 import com.massivecraft.factions.zcore.util.TL;
-import mkremins.fanciful.FancyMessage;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
@@ -31,12 +34,20 @@ public class CmdFWarp extends FCommand {
     public void perform() {
         //TODO: check if in combat.
         if (args.size() == 0) {
-            FancyMessage msg = new FancyMessage(TL.COMMAND_FWARP_WARPS.toString()).color(ChatColor.GOLD);
+            TextComponent base = new TextComponent(TL.COMMAND_FWARP_WARPS.toString());
+            base.setColor(net.md_5.bungee.api.ChatColor.GOLD);
+
             Map<String, LazyLocation> warps = myFaction.getWarps();
+
             for (String s : warps.keySet()) {
-                msg.then(s + " ").tooltip(TL.COMMAND_FWARP_CLICKTOWARP.toString()).command("/" + Conf.baseCommandAliases.get(0) + " warp " + s).color(ChatColor.WHITE);
+                TextComponent warp = new TextComponent(s + " ");
+                warp.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(TL.COMMAND_FWARP_CLICKTOWARP.toString()).create()));
+                warp.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + Conf.baseCommandAliases.get(0) + " warp " + s));
+                warp.setColor(ChatColor.WHITE);
+                base.addExtra(warp);
             }
-            sendFancyMessage(msg);
+
+            fme.getPlayer().spigot().sendMessage(base);
         } else if (args.size() > 1) {
             fme.msg(TL.COMMAND_FWARP_COMMANDFORMAT);
         } else {

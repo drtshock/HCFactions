@@ -5,8 +5,10 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.struct.Permission;
 import com.massivecraft.factions.zcore.util.TL;
-import mkremins.fanciful.FancyMessage;
-import org.bukkit.ChatColor;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 
 public class CmdInvite extends FCommand {
 
@@ -56,10 +58,25 @@ public class CmdInvite extends FCommand {
             return;
         }
 
-        // Tooltips, colors, and commands only apply to the string immediately before it.
-        FancyMessage message = new FancyMessage(fme.describeTo(you, true)).tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString()).command("/" + Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag()).then(TL.COMMAND_INVITE_INVITEDYOU.toString()).color(ChatColor.YELLOW).tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString()).command(Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag()).then(myFaction.describeTo(you)).tooltip(TL.COMMAND_INVITE_CLICKTOJOIN.toString()).command(Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag());
+        HoverEvent tooltip = new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder(TL.COMMAND_INVITE_CLICKTOJOIN.toString()).create());
+        ClickEvent clickEvent = new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/" + Conf.baseCommandAliases.get(0) + " join " + myFaction.getTag());
 
-        message.send(you.getPlayer());
+        TextComponent base = new TextComponent(fme.describeTo(you, true));
+        base.setHoverEvent(tooltip);
+        base.setClickEvent(clickEvent);
+
+        TextComponent next = new TextComponent(TL.COMMAND_INVITE_INVITEDYOU.toString());
+        next.setColor(net.md_5.bungee.api.ChatColor.YELLOW);
+        next.setHoverEvent(tooltip);
+        next.setClickEvent(clickEvent);
+        base.addExtra(next);
+
+        TextComponent next2 = new TextComponent(myFaction.describeTo(you));
+        next2.setHoverEvent(tooltip);
+        next2.setClickEvent(clickEvent);
+        base.addExtra(next2);
+
+        you.getPlayer().spigot().sendMessage(base);
 
         //you.msg("%s<i> invited you to %s", fme.describeTo(you, true), myFaction.describeTo(you));
         myFaction.msg(TL.COMMAND_INVITE_INVITED, fme.describeTo(myFaction, true), you.describeTo(myFaction));

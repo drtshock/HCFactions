@@ -6,11 +6,15 @@ import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.P;
 import com.massivecraft.factions.util.MiscUtil;
-import mkremins.fanciful.FancyMessage;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.massivecraft.factions.zcore.util.TagReplacer.TagType;
 
@@ -80,7 +84,7 @@ public class TagUtil {
      * @param line    fancy message prefix
      * @return
      */
-    public static List<FancyMessage> parseFancy(Faction faction, FPlayer fme, String line) {
+    public static List<TextComponent> parseFancy(Faction faction, FPlayer fme, String line) {
         for (TagReplacer tagReplacer : TagReplacer.getByType(TagType.FANCY)) {
             if (tagReplacer.contains(line)) {
                 String clean = line.replace(tagReplacer.getTag(), ""); // remove tag
@@ -113,89 +117,123 @@ public class TagUtil {
      * @param prefix First part of the fancy message
      * @return list of fancy messages to send
      */
-    protected static List<FancyMessage> getFancy(Faction target, FPlayer fme, TagReplacer type, String prefix) {
-        List<FancyMessage> fancyMessages = new ArrayList<FancyMessage>();
+    protected static List<TextComponent> getFancy(Faction target, FPlayer fme, TagReplacer type, String prefix) {
+        List<TextComponent> components = new ArrayList<>();
         boolean minimal = P.p.getConfig().getBoolean("minimal-show", false);
+
         switch (type) {
             case ALLIES_LIST:
-                FancyMessage currentAllies = P.p.txt.parseFancy(prefix);
+                TextComponent allies = TextUtil.toFancy(prefix);
+
                 boolean firstAlly = true;
+
                 for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
                     if (otherFaction == target) {
                         continue;
                     }
+
                     String s = otherFaction.getTag(fme);
+
                     if (otherFaction.getRelationTo(target).isAlly()) {
-                        currentAllies.then(firstAlly ? s : ", " + s);
-                        currentAllies.tooltip(tipFaction(otherFaction)).color(fme.getColorTo(otherFaction));
+                        TextComponent next = new TextComponent(firstAlly ? s : ", " + s);
+                        next.setColor(TextUtil.toColor(fme.getColorTo(otherFaction)));
+                        next.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, toComponent(tipFaction(otherFaction))));
+                        allies.addExtra(next);
+
                         firstAlly = false;
-                        if (currentAllies.toJSONString().length() > ARBITRARY_LIMIT) {
-                            fancyMessages.add(currentAllies);
-                            currentAllies = new FancyMessage("");
+
+                        if (next.toLegacyText().length() > ARBITRARY_LIMIT) {
+                            components.add(allies);
+                            allies = new TextComponent("");
                         }
                     }
                 }
-                fancyMessages.add(currentAllies);
-                return firstAlly && minimal ? null : fancyMessages; // we must return here and not outside the switch
+
+                components.add(allies);
+                return firstAlly && minimal ? null : components; // we must return here and not outside the switch
             case ENEMIES_LIST:
-                FancyMessage currentEnemies = P.p.txt.parseFancy(prefix);
+                TextComponent enemies = TextUtil.toFancy(prefix);
                 boolean firstEnemy = true;
+
                 for (Faction otherFaction : Factions.getInstance().getAllFactions()) {
                     if (otherFaction == target) {
                         continue;
                     }
+
                     String s = otherFaction.getTag(fme);
+
                     if (otherFaction.getRelationTo(target).isEnemy()) {
-                        currentEnemies.then(firstEnemy ? s : ", " + s);
-                        currentEnemies.tooltip(tipFaction(otherFaction)).color(fme.getColorTo(otherFaction));
+                        TextComponent next = new TextComponent(firstEnemy ? s : ", " + s);
+                        next.setColor(TextUtil.toColor(fme.getColorTo(otherFaction)));
+                        next.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, toComponent(tipFaction(otherFaction))));
+                        enemies.addExtra(next);
+
                         firstEnemy = false;
-                        if (currentEnemies.toJSONString().length() > ARBITRARY_LIMIT) {
-                            fancyMessages.add(currentEnemies);
-                            currentEnemies = new FancyMessage("");
+
+                        if (next.toLegacyText().length() > ARBITRARY_LIMIT) {
+                            components.add(enemies);
+                            enemies = new TextComponent("");
                         }
                     }
                 }
-                fancyMessages.add(currentEnemies);
-                return firstEnemy && minimal ? null : fancyMessages; // we must return here and not outside the switch
+
+                components.add(enemies);
+                return firstEnemy && minimal ? null : components; // we must return here and not outside the switch
             case ONLINE_LIST:
-                FancyMessage currentOnline = P.p.txt.parseFancy(prefix);
+                TextComponent online = TextUtil.toFancy(prefix);
                 boolean firstOnline = true;
+
                 for (FPlayer p : MiscUtil.rankOrder(target.getFPlayersWhereOnline(true))) {
                     if (P.p.getConfig().getBoolean("hcf.omit-leader", false) && target.getFPlayerAdmin().getName().equals(p.getName())) {
                         continue;
                     }
+
                     String name = p.getNameAndTitle();
-                    currentOnline.then(firstOnline ? name : ", " + name);
-                    currentOnline.tooltip(tipPlayer(p)).color(fme.getColorTo(p));
+                    TextComponent next = new TextComponent(firstOnline ? name : ", " + name);
+                    next.setColor(TextUtil.toColor(fme.getColorTo(p)));
+                    next.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, toComponent(tipPlayer(p))));
+                    online.addExtra(next);
+
                     firstOnline = false;
-                    if (currentOnline.toJSONString().length() > ARBITRARY_LIMIT) {
-                        fancyMessages.add(currentOnline);
-                        currentOnline = new FancyMessage("");
+
+                    if (next.toLegacyText().length() > ARBITRARY_LIMIT) {
+                        components.add(online);
+                        online = new TextComponent("");
                     }
                 }
-                fancyMessages.add(currentOnline);
-                return firstOnline && minimal ? null : fancyMessages; // we must return here and not outside the switch
+
+                components.add(online);
+                return firstOnline && minimal ? null : components; // we must return here and not outside the switch
             case OFFLINE_LIST:
-                FancyMessage currentOffline = P.p.txt.parseFancy(prefix);
+                TextComponent offline = TextUtil.toFancy(prefix);
                 boolean firstOffline = true;
+
                 for (FPlayer p : MiscUtil.rankOrder(target.getFPlayers())) {
                     if (P.p.getConfig().getBoolean("hcf.omit-leader", false) && target.getFPlayerAdmin().getName().equals(p.getName())) {
                         continue;
                     }
+
                     String name = p.getNameAndTitle();
+
                     if (!p.isOnline()) {
-                        currentOffline.then(firstOffline ? name : ", " + name);
-                        currentOffline.tooltip(tipPlayer(p)).color(fme.getColorTo(p));
+                        TextComponent next = new TextComponent(firstOffline ? name : ", " + name);
+                        next.setColor(TextUtil.toColor(fme.getColorTo(p)));
+                        next.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, toComponent(tipPlayer(p))));
+                        offline.addExtra(next);
+
                         firstOffline = false;
-                        if (currentOffline.toJSONString().length() > ARBITRARY_LIMIT) {
-                            fancyMessages.add(currentOffline);
-                            currentOffline = new FancyMessage("");
+
+                        if (next.toLegacyText().length() > ARBITRARY_LIMIT) {
+                            components.add(offline);
+                            offline = new TextComponent("");
                         }
                     }
                 }
-                fancyMessages.add(currentOffline);
-                return firstOffline && minimal ? null : fancyMessages; // we must return here and not outside the switch
+
+                components.add(offline);
+                return firstOffline && minimal ? null : components; // we must return here and not outside the switch
         }
+
         return null;
     }
 
@@ -208,11 +246,7 @@ public class TagUtil {
      * @return list of tooltips for a fancy message
      */
     private static List<String> tipFaction(Faction faction) {
-        List<String> lines = new ArrayList<String>();
-        for (String line : P.p.getConfig().getStringList("tooltips.list")) {
-            lines.add(ChatColor.translateAlternateColorCodes('&', TagUtil.parsePlain(faction, line)));
-        }
-        return lines;
+        return P.p.getConfig().getStringList("tooltips.list").stream().map(line -> ChatColor.translateAlternateColorCodes('&', TagUtil.parsePlain(faction, line))).collect(Collectors.toList());
     }
 
     /**
@@ -224,10 +258,16 @@ public class TagUtil {
      * @return list of tooltips for a fancy message
      */
     private static List<String> tipPlayer(FPlayer fplayer) {
-        List<String> lines = new ArrayList<String>();
-        for (String line : P.p.getConfig().getStringList("tooltips.show")) {
-            lines.add(ChatColor.translateAlternateColorCodes('&', TagUtil.parsePlain(fplayer, line)));
+        return P.p.getConfig().getStringList("tooltips.show").stream().map(line -> ChatColor.translateAlternateColorCodes('&', TagUtil.parsePlain(fplayer, line))).collect(Collectors.toList());
+    }
+
+    private static BaseComponent[] toComponent(List<String> list) {
+        String single = "";
+
+        for (String tip : list) {
+            single += tip + "\n";
         }
-        return lines;
+
+        return new ComponentBuilder(single).create();
     }
 }
